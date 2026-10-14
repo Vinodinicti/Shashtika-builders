@@ -18,6 +18,7 @@ import AboutPage from './pages/AboutPage';
 import GalleryPage from './pages/GalleryPage';
 import ContactPage from './pages/ContactPage';
 import AdminPage from './pages/AdminPage';
+import ErrorBoundary from './components/ErrorBoundary';
 
 export default function App() {
   const [navOpen, setNavOpen] = useState(false);
@@ -93,7 +94,9 @@ export default function App() {
         </main>
       ) : currentRoute === 'admin' ? (
         <main>
-          <AdminPage />
+          <ErrorBoundary>
+            <AdminPage />
+          </ErrorBoundary>
         </main>
       ) : (
         /* Main Home Content Area */

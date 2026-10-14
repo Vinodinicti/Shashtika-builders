@@ -486,7 +486,7 @@ export default function AdminPage() {
       `"${l.timeline}"`,
       `"${l.targetPlot}"`,
       `"${l.assignedStaff}"`,
-      `"${l.recommendation.replace(/"/g, '""')}"`,
+      `"${String(l.recommendation || '').replace(/"/g, '""')}"`,
       `"${l.date}"`
     ]);
 
@@ -1220,7 +1220,7 @@ export default function AdminPage() {
                           </tr>
                         ) : (
                           filteredLeads.map((lead) => {
-                            const cleanPhone = lead.phone.replace(/[^0-9]/g, '');
+                            const cleanPhone = String(lead.phone || '').replace(/[^0-9]/g, '');
                             const isHot = lead.category === 'HOT';
                             const isWarm = lead.category === 'WARM';
 
@@ -1304,7 +1304,7 @@ export default function AdminPage() {
                                     ))}
                                   </select>
                                   <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#A9823A', marginTop: '4px' }}>
-                                    &check; {lead.assignedStaff.split(' ')[0]}
+                                    &check; {String(lead.assignedStaff || staffRoster[0] || 'Staff').split(' ')[0]}
                                   </div>
                                 </td>
 
@@ -1662,7 +1662,7 @@ export default function AdminPage() {
                         ) : (
                           filteredCustomers.map((cust) => {
                             const isManual = cust.source === 'MANUAL WALK-IN';
-                            const cleanPhone = cust.phone.replace(/[^0-9]/g, '');
+                            const cleanPhone = String(cust.phone || '').replace(/[^0-9]/g, '');
 
                             let stageBadgeStyle = { background: 'rgba(43, 67, 96, 0.12)', color: '#2B4360', border: '1px solid #2B4360' };
                             let stageLabel = 'INQUIRY';
@@ -1720,7 +1720,7 @@ export default function AdminPage() {
 
                                 <td style={{ verticalAlign: 'top' }}>
                                   <select
-                                    value={cust.assignedStaff}
+                                    value={cust.assignedStaff || staffRoster[0]}
                                     onChange={(e) => handleUpdateCustomerStaff(cust.id, e.target.value)}
                                     style={{ padding: '6px 10px', borderRadius: '4px', border: '1.5px solid var(--gold-border)', fontSize: '0.8rem', fontWeight: 700, background: 'var(--bg-cream)', color: '#1A0709', width: '100%', cursor: 'pointer' }}
                                   >
@@ -1729,7 +1729,7 @@ export default function AdminPage() {
                                     ))}
                                   </select>
                                   <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#A9823A', marginTop: '4px' }}>
-                                    &check; {cust.assignedStaff.split(' ')[0]}
+                                    &check; {String(cust.assignedStaff || staffRoster[0] || 'Staff').split(' ')[0]}
                                   </div>
                                 </td>
 
