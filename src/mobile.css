@@ -1,0 +1,1462 @@
+/* ==========================================================================
+   SHASHTIKA - DEDICATED MASTER MOBILE STYLESHEET (mobile.css)
+   Pioneering Luxury Plotted Construction & Estates
+   Brand Palette: Creamy Biscuit Canvas (#F5EFEB) + Deep Espresso/Burgundy Noir (#1A0709) + Royal Gold (#C6A15B)
+   Architectural Typography: Cinzel / Cormorant Garamond / Inter / Space Mono
+   RULE: Absolute parity of elegance between Desktop and Mobile.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   01. GLOBAL MOBILE ARCHITECTURE & RESETS (Screens <= 991px & <= 768px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 991px) {
+  :root {
+    --mobile-header-height: 54px;
+    --mobile-nav-width: 85vw;
+  }
+
+  html, body {
+    overflow-x: hidden !important;
+    width: 100%;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(198, 161, 91, 0.2);
+  }
+
+  /* Smooth momentum touch scrolling across all scrollable containers */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Input fields: 16px minimum font size prevents iOS Safari auto-zoom */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   02. MOBILE HEADER & NAVIGATION DRAWER
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  /* Header Bar */
+  header {
+    padding-top: max(8px, env(safe-area-inset-top, 8px)) !important;
+    padding-bottom: 8px !important;
+  }
+
+  header .h-\[56px\] {
+    height: 48px !important;
+  }
+
+  /* Brand Logo & Typography in Header */
+  header .logo-title {
+    font-size: 1.18rem !important;
+    letter-spacing: 1.5px !important;
+    line-height: 1.1 !important;
+  }
+
+  header .font-mono.tracking-\[2px\] {
+    font-size: 0.52rem !important;
+    letter-spacing: 1.2px !important;
+  }
+
+  header img {
+    height: 32px !important;
+  }
+
+  /* Hamburger Menu Button */
+  header button[aria-label="Open Navigation Menu"] {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+  }
+
+  /* Navigation Drawer Panel */
+  .bg-blueprint-dark {
+    width: 88vw !important;
+    max-width: 340px !important;
+    padding: 20px 18px !important;
+    padding-bottom: max(24px, env(safe-area-inset-bottom, 24px)) !important;
+  }
+
+  .bg-blueprint-dark nav a {
+    font-size: 1.05rem !important;
+    padding: 12px 14px !important;
+  }
+
+  .bg-blueprint-dark nav a span:first-child {
+    font-size: 0.75rem !important;
+    margin-right: 10px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  header .logo-title {
+    font-size: 1.08rem !important;
+    letter-spacing: 1px !important;
+  }
+
+  header .font-mono.tracking-\[2px\] {
+    font-size: 0.48rem !important;
+    letter-spacing: 0.8px !important;
+  }
+
+  header img {
+    height: 28px !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   03. FLOATING ACTION STACK (CALL & WHATSAPP)
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .fixed.bottom-6.right-6 {
+    bottom: max(16px, env(safe-area-inset-bottom, 16px)) !important;
+    right: 14px !important;
+    gap: 10px !important;
+  }
+
+  .fixed.bottom-6.right-6 a {
+    width: 46px !important;
+    height: 46px !important;
+    box-shadow: 0 4px 18px rgba(26, 7, 9, 0.45), 0 0 10px rgba(198, 161, 91, 0.25) !important;
+  }
+
+  .fixed.bottom-6.right-6 a svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  /* Hide hover tooltip on touch devices */
+  .fixed.bottom-6.right-6 span {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   04. HOME PAGE — HERO SECTION & STATS BAR
+   -------------------------------------------------------------------------- */
+@media (max-width: 991px) {
+  .hero-100vh-section,
+  .plots-hero-section {
+    min-height: 100svh !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    padding-top: max(80px, calc(env(safe-area-inset-top, 0px) + 72px)) !important;
+    padding-bottom: 24px !important;
+  }
+
+  .hero-fit-content {
+    max-width: 100% !important;
+  }
+
+  .hero-headline {
+    font-size: clamp(2.1rem, 7.8vw, 3.2rem) !important;
+    line-height: 1.08 !important;
+    margin-bottom: 14px !important;
+  }
+
+  .gold-hero-badge {
+    font-size: 0.72rem !important;
+    padding: 3px 12px !important;
+    letter-spacing: 1.5px !important;
+    display: inline-block !important;
+    margin-bottom: 6px !important;
+  }
+
+  .hero-subtext {
+    font-size: 0.88rem !important;
+    line-height: 1.55 !important;
+    margin-bottom: 18px !important;
+    max-width: 100% !important;
+  }
+
+  /* Hero Call To Action Buttons on Mobile */
+  .hero-fit-content .flex.flex-wrap.items-center.gap-4 {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 10px !important;
+    margin-top: 14px !important;
+  }
+
+  .hero-fit-content .flex.flex-wrap.items-center.gap-4 a {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 13px 18px !important;
+    font-size: 0.76rem !important;
+    letter-spacing: 1.2px !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Slide Indicators */
+  .hero-slide-controls {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+    margin-top: 6px !important;
+    margin-bottom: 6px !important;
+  }
+
+  /* Mobile Hero Stats Banner — Luxury Frosted Glass Cards */
+  .hero-stats-banner {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 20px !important;
+    padding: 10px !important;
+    background: rgba(26, 7, 9, 0.72) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(198, 161, 91, 0.45) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
+  }
+
+  .hero-stats-banner .stat-card {
+    padding: 10px 8px !important;
+    background: rgba(45, 14, 18, 0.5) !important;
+    border: 1px solid rgba(198, 161, 91, 0.25) !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+  }
+
+  .hero-stats-banner .stat-card:nth-child(5):last-child {
+    grid-column: span 2 !important;
+    max-width: 100% !important;
+    background: linear-gradient(135deg, rgba(45, 14, 18, 0.7), rgba(198, 161, 91, 0.2)) !important;
+    border-color: rgba(198, 161, 91, 0.5) !important;
+  }
+
+  .hero-stats-banner .stat-number {
+    font-size: 1.35rem !important;
+    line-height: 1.1 !important;
+    color: #E5D2A6 !important;
+    font-weight: 800 !important;
+    font-family: var(--font-heading) !important;
+  }
+
+  .hero-stats-banner .stat-label {
+    font-size: 0.65rem !important;
+    letter-spacing: 0.8px !important;
+    text-transform: uppercase !important;
+    color: #FAF7F2 !important;
+    margin-top: 3px !important;
+    font-family: var(--font-mono) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-headline {
+    font-size: clamp(1.85rem, 8vw, 2.35rem) !important;
+  }
+
+  .hero-stats-banner .stat-number {
+    font-size: 1.2rem !important;
+  }
+
+  .hero-stats-banner .stat-label {
+    font-size: 0.6rem !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   05. INFINITE ARCHITECTURAL MARQUEE TICKER BANNER
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .marquee-track {
+    animation-duration: 26s !important;
+  }
+
+  .marquee-content {
+    gap: 16px !important;
+  }
+
+  .marquee-content > div {
+    font-size: 0.72rem !important;
+    gap: 8px !important;
+  }
+
+  .marquee-content span.font-mono {
+    font-size: 0.58rem !important;
+    padding: 2px 6px !important;
+  }
+
+  .marquee-divider {
+    font-size: 0.65rem !important;
+    margin: 0 4px !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   06. LOCATION MASTERPLANS SECTION (HOME PAGE)
+   -------------------------------------------------------------------------- */
+@media (max-width: 991px) {
+  /* Masterplan City Selector Tabs: Elegant Horizontal Touch-Scroll Strip */
+  .masterplan-tabs-container {
+    display: flex !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    gap: 8px !important;
+    padding: 6px 4px 12px 4px !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .masterplan-tabs-container::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .masterplan-tab-btn {
+    flex: 0 0 auto !important;
+    scroll-snap-align: start !important;
+    padding: 8px 16px !important;
+    font-size: 0.72rem !important;
+    white-space: nowrap !important;
+  }
+
+  /* Location Cards Grid */
+  .location-cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .location-card {
+    border-radius: 14px !important;
+  }
+
+  .location-card-img-wrap {
+    height: 180px !important;
+    min-height: 180px !important;
+  }
+
+  .location-card-body {
+    padding: 18px 16px !important;
+  }
+
+  .location-card-title {
+    font-size: 1.22rem !important;
+  }
+
+  /* Masterplan Spec Badges */
+  .location-specs-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .location-spec-pill {
+    padding: 8px 10px !important;
+  }
+
+  .location-spec-val {
+    font-size: 0.85rem !important;
+  }
+
+  .location-spec-lbl {
+    font-size: 0.62rem !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   07. UPCOMING PROJECTS & 3D ORBIT SHOWCASE
+   -------------------------------------------------------------------------- */
+@media (max-width: 991px) {
+  .upcoming-showcase-container {
+    padding: 20px 12px !important;
+  }
+
+  .orbit-project-card {
+    width: 100% !important;
+    max-width: 380px !important;
+    margin: 0 auto !important;
+  }
+
+  .orbit-carousel-controls {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    margin-top: 16px !important;
+  }
+
+  .orbit-carousel-controls button {
+    width: 44px !important;
+    height: 44px !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   08. CONSTRUCTION PROGRESS TIMELINE (HOME PAGE)
+   -------------------------------------------------------------------------- */
+@media (max-width: 991px) {
+  .construction-stages-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .construction-stage-card {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+  }
+
+  .construction-stage-img-wrap {
+    height: 190px !important;
+  }
+
+  .construction-stage-body {
+    padding: 16px !important;
+  }
+
+  .construction-stage-title {
+    font-size: 1.15rem !important;
+  }
+
+  /* Progress Bar Glow on Mobile */
+  .stage-progress-fill {
+    box-shadow: 0 0 10px rgba(198, 161, 91, 0.6) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   09. WHY CHOOSE SHASHTIKA & CORE VALUES
+   -------------------------------------------------------------------------- */
+@media (max-width: 991px) {
+  .why-choose-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .why-choose-card {
+    padding: 20px 18px !important;
+    border-radius: 12px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 14px !important;
+  }
+
+  .why-choose-icon-wrap {
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    border-radius: 10px !important;
+  }
+
+  .why-choose-icon-wrap svg {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .why-choose-card h3 {
+    font-size: 1.05rem !important;
+    margin-bottom: 4px !important;
+  }
+
+  .why-choose-card p {
+    font-size: 0.78rem !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Core Values Pillars */
+  .core-values-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .core-value-card {
+    border-radius: 14px !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   10. CUSTOMER REVIEWS & TESTIMONIALS
+   -------------------------------------------------------------------------- */
+@media (max-width: 991px) {
+  .reviews-cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .review-card {
+    padding: 18px 16px !important;
+    border-radius: 12px !important;
+  }
+
+  .review-quote-text {
+    font-size: 0.82rem !important;
+    line-height: 1.55 !important;
+  }
+
+  .reviewer-name {
+    font-size: 0.95rem !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   11. QUICK ENQUIRY SECTION & FOOTER (HOME & GLOBAL)
+   -------------------------------------------------------------------------- */
+@media (max-width: 991px) {
+  .quick-enquiry-card {
+    padding: 24px 18px !important;
+    border-radius: 14px !important;
+  }
+
+  .quick-enquiry-form .grid-cols-2 {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .quick-enquiry-form input,
+  .quick-enquiry-form select,
+  .quick-enquiry-form textarea {
+    padding: 12px 14px !important;
+    border-radius: 8px !important;
+    min-height: 46px !important;
+  }
+
+  .quick-enquiry-submit-btn {
+    width: 100% !important;
+    padding: 14px 20px !important;
+    font-size: 0.84rem !important;
+    letter-spacing: 1.2px !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     11. FOOTER MOBILE ARCHITECTURE & LUXURY PRESENTATION
+     -------------------------------------------------------------------------- */
+  footer {
+    padding-top: 40px !important;
+    padding-bottom: max(32px, env(safe-area-inset-bottom, 32px)) !important;
+    background: #1A0709 !important;
+    border-top: 1.5px solid rgba(198, 161, 91, 0.7) !important;
+    box-shadow: 0 -12px 35px rgba(26, 7, 9, 0.6) !important;
+  }
+
+  footer .max-w-7xl {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  footer .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-4 {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    margin-bottom: 24px !important;
+  }
+
+  /* Each footer column gets an architectural subtle gold separator */
+  .footer-col {
+    padding-top: 20px !important;
+    padding-bottom: 24px !important;
+    border-bottom: 1px solid rgba(198, 161, 91, 0.22) !important;
+  }
+
+  .footer-col:first-child {
+    padding-top: 0 !important;
+  }
+
+  .footer-col:last-child {
+    border-bottom: none !important;
+    padding-bottom: 8px !important;
+  }
+
+  /* Col 1: Brand block */
+  footer .gold-glow-letters {
+    font-size: 1.55rem !important;
+    letter-spacing: 1.5px !important;
+  }
+
+  footer .font-mono.tracking-\[2px\] {
+    font-size: 0.6rem !important;
+    letter-spacing: 1.5px !important;
+    margin-bottom: 10px !important;
+  }
+
+  footer p.font-body {
+    font-size: 0.78rem !important;
+    line-height: 1.55 !important;
+    color: rgba(239, 230, 216, 0.85) !important;
+    margin-bottom: 14px !important;
+  }
+
+  /* Col 2: Quick Links (Clean 2-Column Touch Grid on Mobile) */
+  .footer-nav-list {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px 16px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+  }
+
+  .footer-nav-list li a {
+    display: flex !important;
+    align-items: center !important;
+    min-height: 38px !important;
+    padding: 6px 12px !important;
+    background: rgba(45, 14, 18, 0.45) !important;
+    border: 1px solid rgba(198, 161, 91, 0.25) !important;
+    border-radius: 6px !important;
+    font-size: 0.78rem !important;
+    color: #FAF7F2 !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .footer-nav-list li a:active,
+  .footer-nav-list li a:hover {
+    background: rgba(198, 161, 91, 0.2) !important;
+    border-color: #C6A15B !important;
+    color: #E5D2A6 !important;
+    transform: translateX(2px) !important;
+  }
+
+  /* Col 3: Regional Offices */
+  .footer-offices-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .footer-office-card {
+    padding: 12px 14px !important;
+    background: rgba(45, 14, 18, 0.5) !important;
+    border: 1px solid rgba(198, 161, 91, 0.28) !important;
+    border-radius: 8px !important;
+  }
+
+  .footer-office-card span {
+    font-size: 0.78rem !important;
+    color: #FFFDF9 !important;
+    letter-spacing: 0.8px !important;
+  }
+
+  .footer-office-card p {
+    font-size: 0.72rem !important;
+    color: rgba(239, 230, 216, 0.75) !important;
+    margin-top: 2px !important;
+  }
+
+  /* Col 4: Direct Contact & Helpline Cards */
+  .footer-contact-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .footer-contact-card {
+    width: 100% !important;
+    padding: 12px 14px !important;
+    min-height: 54px !important;
+    background: #230A0D !important;
+    border: 1px solid rgba(198, 161, 91, 0.45) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  .footer-contact-card:active {
+    border-color: #E5D2A6 !important;
+    transform: scale(0.98) !important;
+  }
+
+  /* Bottom Copyright & Legal Links */
+  .footer-bottom-bar {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 12px !important;
+    padding-top: 20px !important;
+    border-top: 1px solid rgba(198, 161, 91, 0.25) !important;
+    font-size: 0.68rem !important;
+    line-height: 1.5 !important;
+  }
+
+  .footer-bottom-bar > div {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 14px !important;
+  }
+
+  .footer-bottom-bar button {
+    padding: 6px 8px !important;
+    font-size: 0.72rem !important;
+    color: #E5D2A6 !important;
+    text-decoration: underline !important;
+  }
+}
+
+/* ==========================================================================
+   12. PLOTS PAGE — MOBILE VIEW MANAGEMENT (PlotsPage.jsx)
+   ========================================================================== */
+@media (max-width: 991px) {
+  .plots-page-container {
+    padding-bottom: 40px !important;
+  }
+
+  /* Availability Filter Chips — Horizontal Scrollable Carousel */
+  .availability-bar {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    gap: 8px !important;
+    padding: 4px 6px 12px 6px !important;
+    justify-content: flex-start !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    margin-bottom: 16px !important;
+  }
+
+  .availability-bar::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .filter-chip {
+    flex: 0 0 auto !important;
+    scroll-snap-align: start !important;
+    padding: 8px 14px !important;
+    font-size: 0.72rem !important;
+    border-radius: 8px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Masterplan Blueprint Card */
+  .masterplan-card {
+    padding: 14px 12px !important;
+    border-radius: 12px !important;
+  }
+
+  .masterplan-toolbar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    padding-bottom: 12px !important;
+  }
+
+  .masterplan-toolbar > div:last-child {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+
+  /* Zoom controls: touch-friendly bar */
+  .masterplan-toolbar .flex.items-center.gap-1\.5 {
+    gap: 6px !important;
+  }
+
+  .masterplan-toolbar button {
+    padding: 6px 12px !important;
+    font-size: 0.75rem !important;
+    min-height: 36px !important;
+  }
+
+  /* Masterplan SVG Container: Touch Pan & Zoom */
+  .masterplan-svg-container {
+    min-height: 380px !important;
+    max-height: 60vh !important;
+    overflow: auto !important;
+    padding: 8px !important;
+    border-radius: 8px !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-x pan-y !important;
+    position: relative !important;
+  }
+
+  /* SVG Blueprint inside container */
+  #plot-masterplan-svg {
+    min-width: 680px !important;
+    height: auto !important;
+  }
+
+  /* Mobile Pan Indicator Pill */
+  .masterplan-svg-container::after {
+    content: "↔ Swipe to pan 64 plots";
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(26, 7, 9, 0.85);
+    color: #E5D2A6;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(198, 161, 91, 0.5);
+    pointer-events: none;
+    backdrop-filter: blur(4px);
+    z-index: 10;
+  }
+
+  /* 64 Plots Directory Specification Card */
+  .layout-summary-table-card {
+    padding: 16px 12px !important;
+    border-radius: 12px !important;
+    margin-top: 24px !important;
+  }
+
+  .plots-table-header-bar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .plots-table-header-bar h3 {
+    font-size: 1.18rem !important;
+  }
+
+  /* Filter buttons on Directory */
+  .plots-table-header-bar .flex.flex-wrap.gap-2 {
+    width: 100% !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    padding-bottom: 4px !important;
+    scrollbar-width: none !important;
+  }
+
+  .plots-table-header-bar .flex.flex-wrap.gap-2 button {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+    padding: 6px 12px !important;
+  }
+
+  /* Dual Table Container: Stacks into full-width responsive tables */
+  .layout-summary-table-card .grid.grid-cols-1.lg\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    padding: 4px !important;
+  }
+
+  .layout-summary-table-card table th,
+  .layout-summary-table-card table td {
+    padding: 8px 6px !important;
+    font-size: 0.72rem !important;
+  }
+
+  /* Plot Inspector Modal — Elegant Native Mobile Bottom-Sheet Behavior */
+  .plots-page-container .fixed.inset-0.z-50 {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+
+  .plots-page-container .animate-modalFadeIn {
+    border-radius: 22px 22px 0 0 !important;
+    max-height: 88vh !important;
+    padding: 22px 18px !important;
+    padding-bottom: max(24px, env(safe-area-inset-bottom, 24px)) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    border-bottom: none !important;
+    box-shadow: 0 -12px 40px rgba(26, 7, 9, 0.6) !important;
+  }
+
+  /* Modal Heading & Key Metrics */
+  .plots-page-container .animate-modalFadeIn h3 {
+    font-size: 1.35rem !important;
+    margin-bottom: 2px !important;
+  }
+
+  .plots-page-container .animate-modalFadeIn .grid-cols-2 {
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .plots-page-container .animate-modalFadeIn .grid-cols-2 > div {
+    padding: 10px 12px !important;
+  }
+
+  .plots-page-container .animate-modalFadeIn .text-2xl.sm\:text-3xl {
+    font-size: 1.55rem !important;
+  }
+
+  .plots-page-container .animate-modalFadeIn .text-xl.sm\:text-2xl {
+    font-size: 1.25rem !important;
+  }
+
+  /* Modal Spec Rows */
+  .plots-page-container .animate-modalFadeIn .divide-y > div {
+    padding: 8px 12px !important;
+    font-size: 0.75rem !important;
+  }
+
+  /* Modal CTA Booking Buttons */
+  .plots-page-container .animate-modalFadeIn .flex.flex-col.sm\:flex-row {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .plots-page-container .animate-modalFadeIn .flex.flex-col.sm\:flex-row button,
+  .plots-page-container .animate-modalFadeIn .flex.flex-col.sm\:flex-row a {
+    width: 100% !important;
+    padding: 13px 16px !important;
+    font-size: 0.8rem !important;
+    min-height: 48px !important;
+  }
+}
+
+/* ==========================================================================
+   13. ABOUT PAGE — MOBILE VIEW MANAGEMENT (AboutPage.jsx)
+   ========================================================================== */
+@media (max-width: 991px) {
+  .about-page-container {
+    padding-bottom: 30px !important;
+  }
+
+  /* Hero Video Section */
+  .about-hero-video-section {
+    height: 48vh !important;
+    min-height: 320px !important;
+    max-height: 420px !important;
+  }
+
+  /* Content Section below Video */
+  .about-hero-content-section {
+    padding: 24px 16px !important;
+    position: relative !important;
+  }
+
+  .about-hero-title {
+    font-size: clamp(1.8rem, 6.5vw, 2.4rem) !important;
+    line-height: 1.15 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .shashtika-wave-watermark {
+    font-size: 3.8rem !important;
+    opacity: 0.04 !important;
+  }
+
+  /* Our Story Section */
+  #our-story-section {
+    padding: 30px 14px !important;
+  }
+
+  #our-story-section .grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  #our-story-section img {
+    height: 220px !important;
+  }
+
+  /* 5-Stage Flip Cards Grid on Mobile */
+  .flip-card {
+    height: 410px !important;
+    width: 100% !important;
+    margin-bottom: 12px !important;
+  }
+
+  .flip-card-front,
+  .flip-card-back {
+    border-radius: 12px !important;
+    padding: 14px !important;
+  }
+
+  .flip-card-front .h-32.sm\:h-36 {
+    height: 140px !important;
+  }
+
+  .flip-card-front h3 {
+    font-size: 1.05rem !important;
+    margin-bottom: 4px !important;
+  }
+
+  .flip-card-front p {
+    font-size: 0.76rem !important;
+    line-height: 1.45 !important;
+  }
+
+  .flip-card-back h4 {
+    font-size: 0.95rem !important;
+  }
+
+  .flip-card-back ul li {
+    font-size: 0.68rem !important;
+    padding: 4px 6px !important;
+  }
+
+  .flip-card-back button {
+    padding: 10px 12px !important;
+    font-size: 0.75rem !important;
+    min-height: 40px !important;
+  }
+
+  /* Row 2 centered cards */
+  .flex.flex-col.md\:flex-row.justify-center.items-stretch.gap-6 {
+    gap: 12px !important;
+    margin-top: 0 !important;
+  }
+
+  /* Workflow CTA Banner */
+  .workflow-cta-banner {
+    padding: 20px 16px !important;
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 14px !important;
+  }
+
+  .workflow-cta-banner h4 {
+    font-size: 1.1rem !important;
+  }
+
+  .workflow-cta-banner a {
+    width: 100% !important;
+    padding: 12px 18px !important;
+    font-size: 0.78rem !important;
+  }
+}
+
+/* ==========================================================================
+   14. GALLERY PAGE — MOBILE VIEW MANAGEMENT (GalleryPage.jsx)
+   ========================================================================== */
+@media (max-width: 900px) {
+  /* Hero Compact */
+  .gallery-hero-compact {
+    min-height: 72svh !important;
+    padding-top: max(80px, calc(env(safe-area-inset-top, 0px) + 70px)) !important;
+    padding-bottom: 24px !important;
+  }
+
+  .gallery-hero-compact .hero-stats-banner {
+    grid-template-columns: repeat(2, 1fr) !important;
+    margin-top: 18px !important;
+  }
+
+  /* Classifying Filter Bar: Horizontal Scrollable Strip */
+  .gallery-filter-bar {
+    display: flex !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    gap: 6px !important;
+    padding: 4px 2px 12px 2px !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .gallery-filter-bar::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .gallery-filter-bar span {
+    display: none !important;
+  }
+
+  .filter-btn {
+    flex: 0 0 auto !important;
+    scroll-snap-align: start !important;
+    padding: 8px 14px !important;
+    font-size: 0.72rem !important;
+    white-space: nowrap !important;
+  }
+
+  /* Mobile Gallery Grid Transformation — Elegant Vertical/Swipe Cards */
+  .gallery-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    gap: 14px !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .gallery-item {
+    flex: none !important;
+    width: 100% !important;
+    height: 320px !important;
+    min-width: 100% !important;
+    border-radius: 14px !important;
+    background: #1A0709 !important;
+    border: 1px solid rgba(198, 161, 91, 0.45) !important;
+    box-shadow: 0 8px 24px rgba(26, 7, 9, 0.35) !important;
+  }
+
+  /* Hide vertical label on mobile stacked cards */
+  .gallery-vertical-label {
+    display: none !important;
+  }
+
+  .gallery-item-img-wrap {
+    height: 200px !important;
+    min-height: 200px !important;
+  }
+
+  .gallery-card-body {
+    padding: 14px 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    background: linear-gradient(180deg, #1A0709 0%, #2A0D12 100%) !important;
+  }
+
+  .gallery-card-title {
+    font-size: 1.15rem !important;
+  }
+
+  /* Modal Details Overlay on Mobile */
+  .gallery-modal-overlay {
+    padding: 10px !important;
+    align-items: flex-end !important;
+  }
+
+  .gallery-modal-box {
+    border-radius: 20px 20px 0 0 !important;
+    max-height: 90vh !important;
+    padding: 20px 16px !important;
+    width: 100% !important;
+  }
+
+  .gallery-modal-box img {
+    height: 200px !important;
+    border-radius: 10px !important;
+  }
+
+  .gallery-modal-box h2 {
+    font-size: 1.35rem !important;
+  }
+
+  .gallery-modal-specs-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+}
+
+/* ==========================================================================
+   15. CONTACT PAGE — MOBILE VIEW MANAGEMENT (ContactPage.jsx)
+   ========================================================================== */
+@media (max-width: 991px) {
+  .contact-hero-section {
+    min-height: 55svh !important;
+    padding-top: max(80px, calc(env(safe-area-inset-top, 0px) + 68px)) !important;
+    padding-bottom: 24px !important;
+  }
+
+  .contact-hero-title {
+    font-size: clamp(2rem, 7.5vw, 2.75rem) !important;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  .contact-info-box,
+  .contact-form-box {
+    padding: 24px 18px !important;
+    border-radius: 14px !important;
+  }
+
+  /* Regional Office Cards */
+  .office-card {
+    padding: 16px !important;
+    border-radius: 10px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .office-card h4 {
+    font-size: 1.05rem !important;
+  }
+
+  /* Form Fields */
+  .contact-form-box .grid.grid-cols-1.sm\:grid-cols-2 {
+    gap: 12px !important;
+  }
+
+  .contact-form-box input,
+  .contact-form-box select,
+  .contact-form-box textarea {
+    padding: 12px 14px !important;
+    min-height: 46px !important;
+    border-radius: 8px !important;
+  }
+
+  .contact-form-box button[type="submit"] {
+    width: 100% !important;
+    padding: 14px 20px !important;
+    font-size: 0.84rem !important;
+    min-height: 48px !important;
+  }
+
+  .direct-helpline-strip {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .direct-helpline-strip a {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 12px 16px !important;
+  }
+}
+
+/* ==========================================================================
+   16. UNIVERSAL MODALS, DRAWERS & LIGHTBOX RESPONSIVENESS
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Generic modal backdrop padding */
+  .fixed.inset-0.z-50 {
+    padding: 0 !important;
+  }
+
+  /* Close Buttons: Minimum 44px tap zone */
+  button[title="Close"],
+  button[aria-label="Close"],
+  .modal-close-btn {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Universal safe bottom padding */
+  .modal-safe-bottom {
+    padding-bottom: max(20px, env(safe-area-inset-bottom, 20px)) !important;
+  }
+}
+
+/* ==========================================================================
+   17. ADMIN PAGE — MOBILE VIEW MANAGEMENT (AdminPage.jsx)
+   ========================================================================== */
+@media (max-width: 991px) {
+  /* Login Gateway Card */
+  .admin-login-card {
+    max-width: 94vw !important;
+    padding: 24px 18px !important;
+    margin: 0 auto !important;
+    border-radius: 14px !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(198, 161, 91, 0.25) !important;
+  }
+
+  .admin-login-card h2 {
+    font-size: 1.45rem !important;
+    margin-bottom: 2px !important;
+  }
+
+  .admin-login-card input {
+    font-size: 16px !important;
+    min-height: 48px !important;
+    border-radius: 8px !important;
+    padding: 12px 14px !important;
+  }
+
+  .admin-login-card button[type="submit"] {
+    min-height: 48px !important;
+    font-size: 0.82rem !important;
+    letter-spacing: 1.2px !important;
+    padding: 14px 18px !important;
+  }
+
+  /* Admin Hero Section */
+  .admin-hero-section {
+    padding-top: max(80px, calc(env(safe-area-inset-top, 0px) + 68px)) !important;
+    padding-bottom: 20px !important;
+  }
+
+  .admin-hero-section h1 {
+    font-size: clamp(1.65rem, 6.5vw, 2.3rem) !important;
+    line-height: 1.15 !important;
+  }
+
+  .admin-hero-section p {
+    font-size: 0.8rem !important;
+    line-height: 1.45 !important;
+  }
+
+  /* Admin Header Actions (View Plots & Logout) */
+  .admin-header-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 8px !important;
+    margin-top: 10px !important;
+  }
+
+  .admin-header-actions a,
+  .admin-header-actions button {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 12px 16px !important;
+    font-size: 0.76rem !important;
+    min-height: 44px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Navigation Tabs Bar — Smooth Horizontal Touch Carousel */
+  .admin-tabs-nav {
+    padding: 8px !important;
+    border-radius: 12px !important;
+    margin-bottom: 18px !important;
+    overflow: hidden !important;
+  }
+
+  .admin-tabs-nav > div {
+    display: flex !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    gap: 8px !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 4px !important;
+  }
+
+  .admin-tabs-nav > div::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .admin-tab-btn {
+    flex: 0 0 auto !important;
+    scroll-snap-align: start !important;
+    min-width: 180px !important;
+    max-width: 230px !important;
+    padding: 10px 12px !important;
+    border-radius: 8px !important;
+  }
+
+  .admin-tab-btn span.font-heading {
+    font-size: 0.8rem !important;
+    white-space: nowrap !important;
+  }
+
+  .admin-tab-btn span.font-mono {
+    font-size: 0.62rem !important;
+    white-space: nowrap !important;
+  }
+
+  /* Tab 1: AI Lead Intelligence Metrics 2x2 Grid */
+  .admin-metrics-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .admin-metrics-grid > div {
+    padding: 12px 10px !important;
+    border-radius: 8px !important;
+  }
+
+  .admin-metrics-grid .text-3xl {
+    font-size: 1.6rem !important;
+    line-height: 1.1 !important;
+  }
+
+  .admin-metrics-grid p {
+    font-size: 0.62rem !important;
+    margin-top: 2px !important;
+  }
+
+  /* Filter & Search Bar */
+  .admin-filter-bar {
+    flex-direction: column !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+    margin-bottom: 14px !important;
+    padding-bottom: 12px !important;
+  }
+
+  .admin-filter-chips {
+    display: flex !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    gap: 6px !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+    padding-bottom: 2px !important;
+  }
+
+  .admin-filter-chips::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .admin-filter-chips button {
+    flex: 0 0 auto !important;
+    scroll-snap-align: start !important;
+    padding: 6px 12px !important;
+    font-size: 0.72rem !important;
+    white-space: nowrap !important;
+  }
+
+  .admin-filter-bar input {
+    width: 100% !important;
+    font-size: 16px !important;
+    min-height: 44px !important;
+    padding: 10px 14px !important;
+    border-radius: 8px !important;
+  }
+
+  /* Tables Container: Touch Scrolling & Sizing */
+  .admin-table-container {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    border-radius: 8px !important;
+    position: relative !important;
+  }
+
+  .admin-table-container table {
+    min-width: 650px !important;
+  }
+
+  .admin-table-container th,
+  .admin-table-container td {
+    padding: 10px 8px !important;
+    font-size: 0.72rem !important;
+  }
+
+  /* Quick Toggle Dropdown in Table */
+  .admin-table-container select {
+    min-height: 40px !important;
+    font-size: 0.74rem !important;
+    padding: 6px 8px !important;
+    border-radius: 6px !important;
+  }
+
+  /* Add Customer Modal — Native Mobile Bottom Sheet */
+  .admin-modal-overlay {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+
+  .admin-modal-card {
+    border-radius: 20px 20px 0 0 !important;
+    max-height: 88vh !important;
+    overflow-y: auto !important;
+    padding: 22px 18px !important;
+    padding-bottom: max(24px, env(safe-area-inset-bottom, 24px)) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    border-bottom: none !important;
+    box-shadow: 0 -10px 35px rgba(0, 0, 0, 0.7) !important;
+  }
+
+  .admin-modal-card input,
+  .admin-modal-card select,
+  .admin-modal-card textarea {
+    font-size: 16px !important;
+    min-height: 44px !important;
+    border-radius: 8px !important;
+    padding: 10px 12px !important;
+  }
+
+  .admin-modal-card button[type="submit"] {
+    width: 100% !important;
+    min-height: 48px !important;
+    font-size: 0.82rem !important;
+    padding: 12px 18px !important;
+  }
+}
+

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ENQ-033208",
+    "customerName": "Ram",
+    "phone": "9494949499",
+    "project": "Coimbatore",
+    "plotNumber": "13",
+    "message": "Residential Construction • Site visit request",
+    "budget": "₹25 Lakhs - ₹50 Lakhs",
+    "timeline": "3 to 6 Months",
+    "paymentMode": "Residential Construction",
+    "siteVisitRequested": true,
+    "aiScore": 98,
+    "aiPriority": "HIGH PRIORITY",
+    "aiSummary": "Customer intent evaluated at 98/100 based on Verified phone number, High intent for direct site visit, Specific plot selected, High budget allocation.",
+    "recommendedAction": "Direct call from Senior Project Engineer within 30 minutes",
+    "status": "NEW",
+    "createdAt": "2026-10-14T15:33:53.208Z"
+  },
+  {
+    "id": "ENQ-442036",
+    "customerName": "Karthik Raman",
+    "phone": "9842211223",
+    "project": "Pollachi",
+    "plotNumber": "P-105",
+    "message": "Looking for 3 BHK construction",
+    "budget": "₹ 25.00 - 40.00 Lakhs",
+    "timeline": "Immediate (Within 15 Days)",
+    "paymentMode": "Bank Loan / Self Funded",
+    "siteVisitRequested": false,
+    "aiScore": 90,
+    "aiPriority": "HIGH PRIORITY",
+    "aiSummary": "Customer intent evaluated at 90/100 based on Verified phone number, Specific plot selected.",
+    "recommendedAction": "Direct call from Senior Project Engineer within 30 minutes",
+    "status": "NEW",
+    "createdAt": "2026-10-14T07:37:22.036Z"
+  }
+]
