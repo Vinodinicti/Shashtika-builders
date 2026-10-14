@@ -332,16 +332,20 @@ export default function PlotsPage() {
           </div>
 
           {/* Masterplan Visual Canvas */}
-          <div className="masterplan-svg-container relative bg-[#F9F7F1] border border-gold-border/60 rounded-lg p-2 sm:p-4 overflow-auto flex justify-center items-center min-h-[520px]">
+          <div className="masterplan-svg-container relative bg-[#F9F7F1] border border-gold-border/60 rounded-lg p-2 sm:p-4 overflow-auto flex justify-center items-center md:min-h-[520px] w-full">
             {/* Exact Vector Blueprint Replication with Tamil Text, Numbers & Interactions */}
             <div
-              className="w-full flex justify-center transition-transform duration-200"
-              style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'top center' }}
+              className="masterplan-viewport-wrapper w-full flex justify-center transition-transform duration-200"
+              style={{
+                transform: zoomLevel !== 1 ? `scale(${zoomLevel})` : undefined,
+                transformOrigin: 'top center',
+                minWidth: zoomLevel > 1 ? `${zoomLevel * 100}%` : '100%'
+              }}
             >
                 <svg
                   id="plot-masterplan-svg"
                   viewBox="0 0 1180 840"
-                  className="w-full max-w-[1140px] h-auto select-none"
+                  className="w-full max-w-[1140px] h-auto select-none block"
                   style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.06))' }}
                 >
                   <defs>
@@ -854,6 +858,16 @@ export default function PlotsPage() {
                   </g>
                 </svg>
               </div>
+          </div>
+          
+          {/* Mobile Interactive Hint */}
+          <div className="flex sm:hidden items-center justify-between text-[11px] font-mono text-espresso-700 px-1 py-2 mt-2 border-t border-gold-border/30">
+            <span className="flex items-center gap-1 text-gold-antique font-bold">
+              <span>💡</span> Tap any plot to view specs &amp; book
+            </span>
+            <span className="text-espresso-600 font-semibold">
+              Use + / - to zoom
+            </span>
           </div>
         </div>
 

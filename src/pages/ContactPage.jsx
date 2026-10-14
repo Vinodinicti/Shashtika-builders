@@ -74,6 +74,21 @@ export default function ContactPage() {
     }
 
     if (!savedRecord) {
+      const rawPlot = formData.plot.trim();
+      const rawMsg = formData.message.trim();
+      const hasSpecificPlot = rawPlot && !/general|layout|any/i.test(rawPlot);
+      const hasCustomNotes = rawMsg && rawMsg.length >= 8 && !/^(site visit request)$/i.test(rawMsg);
+
+      let calcScore = 70;
+      if (hasSpecificPlot) calcScore += 10;
+      if (hasCustomNotes) calcScore += 10;
+      if (hasSpecificPlot && hasCustomNotes) {
+        calcScore = 95; // High-Intent ready buyer
+      } else if (formData.phone.replace(/\D/g, '').length >= 10) {
+        calcScore += 8;
+      }
+      calcScore = Math.min(calcScore, 98);
+
       savedRecord = {
         id: `ENQ-${Math.floor(1000 + Math.random() * 9000)}`,
         customerName: formData.name.trim(),
@@ -85,8 +100,11 @@ export default function ContactPage() {
         budget: formData.budget,
         plotNumber: formData.plot.trim() || 'General Layout Enquiry',
         message: formData.message.trim() || 'Site visit request',
-        aiScore: 85,
-        aiPriority: 'HOT',
+        aiScore: calcScore,
+        aiPriority: calcScore >= 80 ? 'HIGH PRIORITY' : 'MEDIUM PRIORITY',
+        aiSummary: hasSpecificPlot && hasCustomNotes
+          ? `High-Priority buyer: Specific plot chosen (${rawPlot}) with custom requirements.`
+          : 'Verified layout inquiry with direct contact number.',
         status: 'NEW',
         date: dateStr
       };
@@ -103,7 +121,7 @@ export default function ContactPage() {
       filtered.unshift(savedRecord);
       localStorage.setItem('shashtika_enquiries', JSON.stringify(filtered));
 
-      // Also directly add to Admin Leads for immediate visibility in Admin Portal
+      // Also directly add to Admin Leads for immediate visibility in Admin Portal on top
       const adminLeads = JSON.parse(localStorage.getItem('shashtika_admin_leads') || '[]');
       const newAdminLead = {
         id: savedRecord.id,
@@ -118,6 +136,8 @@ export default function ContactPage() {
         score: savedRecord.aiScore || 85,
         category: (savedRecord.aiScore || 85) >= 80 ? 'HOT' : 'WARM',
         assignedStaff: 'Ramesh Kumar (Senior Sales Lead)',
+        actionTaken: 'NEW LEAD',
+        isNew: true,
         recommendation: savedRecord.aiSummary || 'Direct call from Senior Project Engineer within 30 minutes',
         date: dateStr,
         notes: `${formData.purpose} • ${formData.message.trim() || 'Site visit request via Contact Page'}`
@@ -125,6 +145,27 @@ export default function ContactPage() {
       const filteredAdmin = adminLeads.filter((item) => item.id !== newAdminLead.id);
       filteredAdmin.unshift(newAdminLead);
       localStorage.setItem('shashtika_admin_leads', JSON.stringify(filteredAdmin));
+
+      // Also directly add to Customer Details registry on top
+      const adminCusts = JSON.parse(localStorage.getItem('shashtika_customers_registry') || '[]');
+      const newCustRec = {
+        id: `CUST-WEB-${savedRecord.id.replace(/\D/g, '').slice(-5) || Math.floor(10000 + Math.random() * 90000)}`,
+        name: formData.name.trim(),
+        phone: formData.phone.trim(),
+        email: formData.email.trim() || 'N/A',
+        requirement: `${formData.plot.trim() || 'General Layout'} (${formData.location})`,
+        assignedStaff: 'Ramesh Kumar (Senior Sales Lead)',
+        stage: 'INQUIRY',
+        source: 'WEB ENQUIRY',
+        isNew: true,
+        date: dateStr,
+        notes: `${formData.purpose} • ${formData.message.trim() || 'Site visit request via Contact Page'}`
+      };
+      const filteredCusts = adminCusts.filter((item) => (item.phone || '').replace(/\D/g, '').slice(-10) !== cleanPhone);
+      filteredCusts.unshift(newCustRec);
+      localStorage.setItem('shashtika_customers_registry', JSON.stringify(filteredCusts));
+
+      window.dispatchEvent(new Event('shashtika_new_enquiry'));
     } catch (e) {
       console.error(e);
     }
@@ -160,10 +201,11 @@ export default function ContactPage() {
         {/* Rich Luxury Dark Vignette Overlay */}
         <div className="contact-hero-fade" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+        {/* Main Container - Exact matching max-w-[1320px] and alignment as Home, Plots & Gallery Hero */}
+        <div className="max-w-[1320px] mx-auto px-4 sm:px-8 w-full flex flex-col justify-center h-full relative z-[3] flex-1">
           <div className="hero-fit-content">
-            <div className="architectural-tag mb-4 text-gold-light">
-              PROPERTY & SITE VISIT ENQUIRIES
+            <div className="architectural-tag" style={{ marginBottom: '14px', color: '#E5D2A6' }}>
+              PROPERTY &amp; SITE VISIT ENQUIRIES
             </div>
 
             <h1 className="hero-headline">
@@ -173,17 +215,23 @@ export default function ContactPage() {
             </h1>
 
             <p className="hero-subtext">
-              Connect with our property advisors in Coimbatore & Pollachi to schedule site visits or discuss DTCP plot layouts.
+              Connect with our property advisors in Coimbatore &amp; Pollachi to schedule site visits or discuss DTCP plot layouts.
             </p>
 
-            <div className="flex flex-wrap gap-4 items-center mb-8">
-              <a href="#enquiry-form-section" className="btn-primary">
+            <div className="flex flex-wrap items-center gap-4 mt-6">
+              <a
+                href="#enquiry-form-section"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded bg-gold-primary text-espresso-950 font-mono text-[0.78rem] font-extrabold tracking-[1.5px] border border-gold-light hover:bg-gold-light transition-all shadow-[0_6px_20px_rgba(0,0,0,0.4)] cursor-pointer"
+              >
                 BOOK SITE VISIT
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M19 9l-7 7-7-7" />
                 </svg>
               </a>
-              <a href="#plots" className="btn-outline-gold">
+              <a
+                href="#plots"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded border-[1.8px] border-gold-primary text-cream font-mono text-[0.78rem] font-extrabold tracking-[1.5px] bg-gold-primary/20 backdrop-blur-md hover:bg-gold-primary hover:text-espresso-950 transition-all shadow-[0_4px_18px_rgba(0,0,0,0.4)] cursor-pointer"
+              >
                 VIEW PLOTS MAP
               </a>
             </div>
@@ -198,34 +246,77 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="contact-grid">
             
-            {/* LEFT COLUMN: REGIONAL OFFICES */}
+            {/* LEFT COLUMN: DIRECT CONTACT & ADVISORY */}
             <div className="contact-info-box">
-              {/* Coimbatore Office */}
-              <div className="office-card">
-                <h3 className="office-city">COIMBATORE OFFICE</h3>
-                <p className="office-address">
-                  Peelamedu Main Road, Near Hope College, Coimbatore - 641004
-                </p>
-                <p className="office-phone">
-                  <strong>Phone:</strong>{' '}
-                  <a href="tel:+919842212345" className="hover:text-gold-primary transition-colors">
-                    +91 98422 12345
-                  </a>
-                </p>
-              </div>
+              <span className="architectural-tag" style={{ color: 'var(--gold-antique)', marginBottom: '10px', display: 'inline-block' }}>
+                DIRECT ASSISTANCE
+              </span>
+              <h3 style={{
+                fontFamily: 'var(--font-heading)',
+                fontSize: '1.45rem',
+                fontWeight: 700,
+                color: '#1A0709',
+                marginBottom: '10px'
+              }}>
+                SPEAK TO OUR PROPERTY EXPERTS
+              </h3>
+              <p style={{ color: '#521D24', fontSize: '0.88rem', lineHeight: '1.6', marginBottom: '24px' }}>
+                Have questions about DTCP layouts, pricing, or custom villa construction? Our dedicated property advisors are ready to assist you.
+              </p>
 
-              {/* Pollachi Office */}
-              <div className="office-card">
-                <h3 className="office-city">POLLACHI OFFICE</h3>
-                <p className="office-address">
-                  Mahalingapuram Main Road, Opp. Municipal Park, Pollachi - 642002
-                </p>
-                <p className="office-phone">
-                  <strong>Phone:</strong>{' '}
-                  <a href="tel:+919443367890" className="hover:text-gold-primary transition-colors">
-                    +91 94433 67890
-                  </a>
-                </p>
+              <div className="space-y-4 font-body text-sm text-[#1A0709]">
+                {/* Phone Helpline */}
+                <div className="flex items-start gap-3 p-3.5 rounded-lg bg-[#FAF6EE] border border-gold-border/40">
+                  <div className="w-10 h-10 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <span className="font-mono text-[10px] tracking-wider text-gold-antique uppercase font-bold block">
+                      CALL HELPLINE
+                    </span>
+                    <a href="tel:+919363599754" className="font-bold text-[#1A0709] hover:text-gold-primary transition-colors text-base block mt-0.5">
+                      +91 93635 99754
+                    </a>
+                  </div>
+                </div>
+
+                {/* Email Address */}
+                <div className="flex items-start gap-3 p-3.5 rounded-lg bg-[#FAF6EE] border border-gold-border/40">
+                  <div className="w-10 h-10 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect width="20" height="16" x="2" y="4" rx="2"/>
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <span className="font-mono text-[10px] tracking-wider text-gold-antique uppercase font-bold block">
+                      EMAIL INQUIRIES
+                    </span>
+                    <a href="mailto:contact@shashtika.com" className="font-bold text-[#1A0709] hover:text-gold-primary transition-colors block mt-0.5">
+                      contact@shashtika.com
+                    </a>
+                  </div>
+                </div>
+
+                {/* Advisory Hours */}
+                <div className="flex items-start gap-3 p-3.5 rounded-lg bg-[#FAF6EE] border border-gold-border/40">
+                  <div className="w-10 h-10 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10"/>
+                      <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <span className="font-mono text-[10px] tracking-wider text-gold-antique uppercase font-bold block">
+                      ADVISORY HOURS
+                    </span>
+                    <span className="font-bold text-[#1A0709] block mt-0.5">
+                      Mon – Sun: 9:00 AM – 7:30 PM
+                    </span>
+                  </div>
+                </div>
               </div>
 
               {/* WhatsApp Quick Enquiry Button */}

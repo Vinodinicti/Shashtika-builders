@@ -1,14 +1,32 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { PLOTS_DATA, PROJECT_METADATA } from '../data/plotsKambalapattiData';
 
-// Default 5-Staff Roster matching old project
+// Default Staff Roster with Names and WhatsApp Mobile Numbers
 const DEFAULT_STAFF_ROSTER = [
-  'Ramesh Kumar (Senior Sales Lead)',
-  'Priya Sharma (Client Advisor)',
-  'Karthik V (Site Manager)',
-  'Anitha Raj (Relationship Manager)',
-  'Suresh Babu (Executive Officer)'
+  { id: 'STAFF-1', name: 'Ramesh Kumar (Senior Sales Lead)', phone: '9363599754' },
+  { id: 'STAFF-2', name: 'Priya Sharma (Client Advisor)', phone: '9842218451' },
+  { id: 'STAFF-3', name: 'Karthik V (Site Manager)', phone: '9789044321' },
+  { id: 'STAFF-4', name: 'Anitha Raj (Relationship Manager)', phone: '9894031256' },
+  { id: 'STAFF-5', name: 'Suresh Babu (Executive Officer)', phone: '9361088214' }
 ];
+
+const normalizeStaffRoster = (raw) => {
+  if (!Array.isArray(raw) || raw.length === 0) return DEFAULT_STAFF_ROSTER;
+  return raw.map((item, idx) => {
+    if (typeof item === 'string') {
+      return {
+        id: `STAFF-${idx + 1}`,
+        name: item,
+        phone: idx === 0 ? '9363599754' : `984220000${idx + 1}`
+      };
+    }
+    return {
+      id: item.id || `STAFF-${idx + 1}`,
+      name: item.name || `Staff ${idx + 1}`,
+      phone: item.phone || (idx === 0 ? '9363599754' : `984220000${idx + 1}`)
+    };
+  });
+};
 
 // Default Scored AI Leads matching old project format
 const DEFAULT_AI_LEADS = [
@@ -25,6 +43,7 @@ const DEFAULT_AI_LEADS = [
     score: 96,
     category: 'HOT',
     assignedStaff: 'Ramesh Kumar (Senior Sales Lead)',
+    actionTaken: 'IN PROGRESS',
     recommendation: 'Call immediately with Kambalapatti corner plot layout blueprint; client visited site on Sunday and is ready to transfer booking token.',
     date: '14 Oct 2026, 11:30 AM',
     notes: 'Visited site with family. Ready to execute initial booking token agreement.'
@@ -42,6 +61,7 @@ const DEFAULT_AI_LEADS = [
     score: 92,
     category: 'HOT',
     assignedStaff: 'Priya Sharma (Client Advisor)',
+    actionTaken: 'SITE VISIT SCHEDULED',
     recommendation: 'Arrange video walk-through with site engineer to inspect 12.00m Panchayat tar road and DTCP approval documents.',
     date: '14 Oct 2026, 09:15 AM',
     notes: 'Requested DTCP approval copy & guideline value document for NRI investment.'
@@ -59,6 +79,7 @@ const DEFAULT_AI_LEADS = [
     score: 78,
     category: 'WARM',
     assignedStaff: 'Karthik V (Site Manager)',
+    actionTaken: 'CONTACTED',
     recommendation: 'Send bank loan pre-approval calculation sheet (HDFC / SBI / Canara) and site photos.',
     date: '13 Oct 2026, 04:45 PM',
     notes: 'Software professional based in Pollachi, planning retirement villa.'
@@ -76,6 +97,7 @@ const DEFAULT_AI_LEADS = [
     score: 68,
     category: 'WARM',
     assignedStaff: 'Anitha Raj (Relationship Manager)',
+    actionTaken: 'CONTACTED',
     recommendation: 'Follow up after 10 days; clarify TANGEDCO EB transformer reserve distance and water storage availability.',
     date: '13 Oct 2026, 02:10 PM',
     notes: 'Enquired about upcoming phase 2 development schedule.'
@@ -93,6 +115,7 @@ const DEFAULT_AI_LEADS = [
     score: 46,
     category: 'COLD',
     assignedStaff: 'Suresh Babu (Executive Officer)',
+    actionTaken: 'REJECTED',
     recommendation: 'Add to quarterly brochure newsletter; long-term agricultural boundary investor.',
     date: '12 Oct 2026, 06:20 PM',
     notes: 'Enquired about park boundary & EB powerline height clearance.'
@@ -108,6 +131,7 @@ const DEFAULT_CUSTOMERS = [
     email: 'rajesh.k@gmail.com',
     requirement: 'Plot #01 Corner (1615 Sq.Ft), Kambalapatti',
     assignedStaff: 'Ramesh Kumar (Senior Sales Lead)',
+    actionTaken: 'TOKEN PAID',
     stage: 'TOKEN_PAID',
     source: 'MANUAL WALK-IN',
     date: '14 Oct 2026, 11:30 AM',
@@ -120,6 +144,7 @@ const DEFAULT_CUSTOMERS = [
     email: 'meenakshi.s@outlook.com',
     requirement: 'Plot #14 East Facing (1142 Sq.Ft), Kambalapatti',
     assignedStaff: 'Priya Sharma (Client Advisor)',
+    actionTaken: 'SITE VISIT SCHEDULED',
     stage: 'INQUIRY',
     source: 'WEB ENQUIRY',
     date: '14 Oct 2026, 09:15 AM',
@@ -132,6 +157,7 @@ const DEFAULT_CUSTOMERS = [
     email: 'balu.pollachi@gmail.com',
     requirement: 'Plot #05 North Facing (1178 Sq.Ft), Kambalapatti',
     assignedStaff: 'Ramesh Kumar (Senior Sales Lead)',
+    actionTaken: 'TOKEN PAID',
     stage: 'BOUGHT',
     source: 'MANUAL WALK-IN',
     date: '10 Oct 2026, 03:00 PM',
@@ -144,6 +170,7 @@ const DEFAULT_CUSTOMERS = [
     email: 'priya.raman@apollohospital.org',
     requirement: 'General Layout Enquiry, Kambalapatti',
     assignedStaff: 'Suresh Babu (Executive Officer)',
+    actionTaken: 'REJECTED',
     stage: 'REJECTED',
     source: 'WEB ENQUIRY',
     date: '08 Oct 2026, 05:40 PM',
@@ -170,20 +197,22 @@ export default function AdminPage() {
     return localStorage.getItem('shashtika_admin_active_tab') || 'ai-leads';
   });
 
-  // 5-Staff Roster
+  // Staff & Agent Roster with WhatsApp Mobile Numbers
   const [staffRoster, setStaffRoster] = useState(() => {
     const saved = localStorage.getItem('shashtika_staff_roster') || localStorage.getItem('vels_staff_roster');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length === 5) return parsed;
+        return normalizeStaffRoster(parsed);
       } catch (e) {}
     }
     return DEFAULT_STAFF_ROSTER;
   });
 
   const [staffModalOpen, setStaffModalOpen] = useState(false);
-  const [tempStaff, setTempStaff] = useState([...staffRoster]);
+  const [tempStaff, setTempStaff] = useState(() => normalizeStaffRoster(staffRoster));
+
+  const defaultStaffName = (staffRoster[0] && (typeof staffRoster[0] === 'string' ? staffRoster[0] : staffRoster[0].name)) || 'Ramesh Kumar (Senior Sales Lead)';
 
   // AI Leads State
   const [leads, setLeads] = useState(() => {
@@ -239,7 +268,7 @@ export default function AdminPage() {
     phone: '',
     email: '',
     requirement: '',
-    assignedStaff: DEFAULT_STAFF_ROSTER[0],
+    assignedStaff: DEFAULT_STAFF_ROSTER[0].name,
     stage: 'INQUIRY',
     notes: ''
   });
@@ -308,15 +337,34 @@ export default function AdminPage() {
       });
 
       if (allRaw.length > 0) {
+        let readSet = new Set();
+        try {
+          readSet = new Set(JSON.parse(localStorage.getItem('shashtika_read_enquiries') || '[]'));
+        } catch (e) {}
+
         // Map to leads format with strict type guards
         const convertedLeads = allRaw.map((item) => {
-          if (!item) return null;
-          const score = Number(item.aiScore) || 85;
-          const cat = score >= 80 ? 'HOT' : score >= 60 ? 'WARM' : 'COLD';
           const plotRaw = String(item.plotNumber || item.targetPlot || 'General Layout');
+          const msgRaw = String(item.message || item.notes || '');
+          const hasSpecificPlot = plotRaw && !/general|layout|any/i.test(plotRaw);
+          const hasCustomNotes = msgRaw && msgRaw.length >= 8 && !/^(site visit request)$/i.test(msgRaw);
+
+          let score = Number(item.aiScore);
+          if (!score || isNaN(score)) {
+            score = 75;
+            if (hasSpecificPlot) score += 10;
+            if (hasCustomNotes) score += 10;
+          }
+          // If specific plot and custom notes provided -> AUTOMATIC HIGH PRIORITY HOT LEAD (92-98)
+          if (hasSpecificPlot && hasCustomNotes) {
+            score = Math.max(score, 94);
+          }
+          const cat = score >= 80 ? 'HOT' : score >= 60 ? 'WARM' : 'COLD';
           const dt = item.createdAt 
             ? new Date(item.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
             : String(item.date || 'Today');
+
+          const isAlreadyRead = readSet.has(String(item.id)) || item.isNew === false;
 
           return {
             id: String(item.id || `LEAD-${Date.now()}`),
@@ -330,9 +378,11 @@ export default function AdminPage() {
             targetPlot: plotRaw.toLowerCase().startsWith('plot') ? plotRaw : `Plot #${plotRaw}`,
             score: score,
             category: cat,
-            assignedStaff: String(item.assignedStaff || DEFAULT_STAFF_ROSTER[0]),
+            assignedStaff: String(item.assignedStaff || DEFAULT_STAFF_ROSTER[0].name),
+            actionTaken: String(item.actionTaken || 'NEW LEAD'),
             recommendation: String(item.aiSummary || item.recommendedAction || item.recommendation || 'Direct call from Senior Project Engineer within 30 minutes'),
             date: dt,
+            isNew: !isAlreadyRead && Boolean(item.isNew || item.actionTaken === 'NEW LEAD' || !item.actionTaken),
             notes: String(item.message || item.notes || 'Website Enquiry via Contact Page')
           };
         }).filter(Boolean);
@@ -345,7 +395,7 @@ export default function AdminPage() {
           return [...toAdd, ...list];
         });
 
-        // Also ensure customer registry has them safely
+        // Also ensure customer registry has them safely on top
         setCustomers((prev) => {
           const list = Array.isArray(prev) ? prev : [];
           const updated = [...list];
@@ -359,15 +409,18 @@ export default function AdminPage() {
                 : String(item.date || 'Today');
               const rawId = String(item.id || '');
               const cleanNum = rawId.replace(/[^0-9]/g, '').slice(-5) || Math.floor(10000 + Math.random() * 90000);
+              const isCustRead = readSet.has(String(item.id)) || readSet.has(String(rawId)) || item.isNew === false;
               updated.unshift({
                 id: `CUST-WEB-${cleanNum}`,
                 name: String(item.customerName || item.name || 'Website Client'),
                 phone: String(item.phone || ''),
                 email: String(item.email || 'N/A'),
                 requirement: `${String(item.plotNumber || 'General Layout')} (${String(item.project || 'Pollachi')})`,
-                assignedStaff: DEFAULT_STAFF_ROSTER[0],
+                assignedStaff: DEFAULT_STAFF_ROSTER[0].name,
+                actionTaken: String(item.actionTaken || 'NEW LEAD'),
                 stage: 'INQUIRY',
                 source: 'WEB ENQUIRY',
+                isNew: !isCustRead && Boolean(item.isNew !== false),
                 date: dt,
                 notes: String(item.message || 'Website Enquiry via Contact Page')
               });
@@ -383,6 +436,15 @@ export default function AdminPage() {
 
   useEffect(() => {
     syncLiveEnquiries();
+    const handleNewEnq = () => {
+      syncLiveEnquiries();
+    };
+    window.addEventListener('shashtika_new_enquiry', handleNewEnq);
+    window.addEventListener('storage', handleNewEnq);
+    return () => {
+      window.removeEventListener('shashtika_new_enquiry', handleNewEnq);
+      window.removeEventListener('storage', handleNewEnq);
+    };
   }, []);
 
   // Handle Login Authentication
@@ -415,21 +477,61 @@ export default function AdminPage() {
     setIsAuthenticated(false);
   };
 
+  // WhatsApp Notification Helper for Assigned Staff
+  const notifyStaffViaWhatsApp = (staffName, clientInfo) => {
+    if (!staffName) return;
+    const staffMember = staffRoster.find((s) => {
+      const sName = typeof s === 'string' ? s : s.name;
+      return sName === staffName;
+    });
+
+    const staffPhone = staffMember && typeof staffMember === 'object' ? staffMember.phone : '';
+    if (!staffPhone) {
+      console.warn('No mobile number registered for staff:', staffName);
+      return;
+    }
+
+    const cleanStaffPhone = String(staffPhone).replace(/\D/g, '');
+    const fullStaffPhone = cleanStaffPhone.length === 10 ? '91' + cleanStaffPhone : cleanStaffPhone;
+
+    const messageText = 
+`🔔 *NEW CUSTOMER LEAD ASSIGNED*
+*SHASHTIKA PLOT DEVELOPERS*
+
+👤 *Customer Name:* ${clientInfo.customerName || 'N/A'}
+📞 *Phone Number:* ${clientInfo.phone || 'N/A'}
+✉️ *Email:* ${clientInfo.email && clientInfo.email !== 'N/A' ? clientInfo.email : 'Not provided'}
+📍 *Requirement / Plot:* ${clientInfo.requirement || 'Kambalapatti DTCP Layout'}
+💰 *Budget / Status:* ${clientInfo.budget || 'Standard'}
+📅 *Date:* ${clientInfo.date || 'Today'}
+📝 *Remarks / Notes:* ${clientInfo.notes || 'Immediate follow-up required'}
+
+_Please contact this client immediately and arrange site inspection / discussion._`;
+
+    const waUrl = `https://wa.me/${fullStaffPhone}?text=${encodeURIComponent(messageText)}`;
+    window.open(waUrl, '_blank');
+  };
+
   // Staff Roster Handlers
   const handleOpenStaffModal = () => {
-    setTempStaff([...staffRoster]);
+    setTempStaff(staffRoster.map((s) => ({ ...s })));
     setStaffModalOpen(true);
   };
 
   const handleSaveStaffRoster = () => {
-    const valid = tempStaff.filter((s) => s.trim() !== '');
-    if (valid.length === 5) {
-      setStaffRoster(valid);
-      setStaffModalOpen(false);
-      alert('Staff Roster updated successfully! Dropdowns on all client enquiries have been refreshed.');
-    } else {
-      alert('Please enter names for all 5 staff members.');
+    const valid = tempStaff.filter((s) => s.name && s.name.trim() !== '');
+    if (valid.length === 0) {
+      alert('Please enter at least one staff member with a name.');
+      return;
     }
+    const formatted = valid.map((s, idx) => ({
+      id: s.id || `STAFF-${idx + 1}`,
+      name: s.name.trim(),
+      phone: String(s.phone || '9363599754').trim()
+    }));
+    setStaffRoster(formatted);
+    setStaffModalOpen(false);
+    alert(`Staff Roster updated! ${formatted.length} staff members saved with WhatsApp notification numbers.`);
   };
 
   // Plot Status Updater
@@ -439,11 +541,158 @@ export default function AdminPage() {
     );
   };
 
-  // Lead Actions
-  const handleUpdateLeadStaff = (leadId, newStaff) => {
+  // Lead Actions with Automatic Cross-Sync & WhatsApp Notification
+  const handleUpdateLeadStaff = (leadId, newStaff, triggerWhatsapp = true) => {
+    const targetLead = (Array.isArray(leads) ? leads : []).find((l) => l.id === leadId);
+    const cleanLeadPhone = targetLead ? String(targetLead.phone || '').replace(/\D/g, '').slice(-10) : '';
+    const leadName = targetLead ? String(targetLead.name || '').trim().toLowerCase() : '';
+
     setLeads((prev) =>
       prev.map((l) => (l.id === leadId ? { ...l, assignedStaff: newStaff } : l))
     );
+
+    // Synchronize to Customer Details everywhere
+    setCustomers((prev) =>
+      prev.map((c) => {
+        const cPhone = String(c.phone || '').replace(/\D/g, '').slice(-10);
+        const cName = String(c.name || '').trim().toLowerCase();
+        if (
+          (cleanLeadPhone && cPhone === cleanLeadPhone) ||
+          c.id === leadId ||
+          (leadName && cName === leadName)
+        ) {
+          return { ...c, assignedStaff: newStaff };
+        }
+        return c;
+      })
+    );
+
+    if (triggerWhatsapp && targetLead) {
+      notifyStaffViaWhatsApp(newStaff, {
+        customerName: targetLead.name,
+        phone: targetLead.phone,
+        email: targetLead.email,
+        requirement: targetLead.targetPlot || targetLead.location || 'Plot Enquiry',
+        budget: targetLead.budget,
+        notes: targetLead.notes || targetLead.recommendation,
+        date: targetLead.date
+      });
+    }
+  };
+
+  const handleUpdateLeadAction = (leadId, newAction) => {
+    const targetLead = (Array.isArray(leads) ? leads : []).find((l) => l.id === leadId);
+    const cleanLeadPhone = targetLead ? String(targetLead.phone || '').replace(/\D/g, '').slice(-10) : '';
+
+    if (newAction !== 'NEW LEAD') {
+      try {
+        const readSet = new Set(JSON.parse(localStorage.getItem('shashtika_read_enquiries') || '[]'));
+        readSet.add(String(leadId));
+        localStorage.setItem('shashtika_read_enquiries', JSON.stringify(Array.from(readSet)));
+      } catch (e) {}
+    }
+
+    setLeads((prev) =>
+      (Array.isArray(prev) ? prev : []).map((l) => (l.id === leadId ? { ...l, actionTaken: newAction, isNew: newAction === 'NEW LEAD' ? l.isNew : false } : l))
+    );
+
+    setCustomers((prev) =>
+      (Array.isArray(prev) ? prev : []).map((c) => {
+        const cleanCustPhone = String(c.phone || '').replace(/\D/g, '').slice(-10);
+        if (c.id === leadId || (cleanLeadPhone && cleanLeadPhone === cleanCustPhone)) {
+          return { ...c, actionTaken: newAction, isNew: newAction === 'NEW LEAD' ? c.isNew : false };
+        }
+        return c;
+      })
+    );
+  };
+
+  const handleUpdateCustomerAction = (custId, newAction) => {
+    const targetCust = (Array.isArray(customers) ? customers : []).find((c) => c.id === custId);
+    const cleanCustPhone = targetCust ? String(targetCust.phone || '').replace(/\D/g, '').slice(-10) : '';
+
+    if (newAction !== 'NEW LEAD') {
+      try {
+        const readSet = new Set(JSON.parse(localStorage.getItem('shashtika_read_enquiries') || '[]'));
+        readSet.add(String(custId));
+        localStorage.setItem('shashtika_read_enquiries', JSON.stringify(Array.from(readSet)));
+      } catch (e) {}
+    }
+
+    setCustomers((prev) =>
+      (Array.isArray(prev) ? prev : []).map((c) => (c.id === custId ? { ...c, actionTaken: newAction, isNew: newAction === 'NEW LEAD' ? c.isNew : false } : c))
+    );
+
+    setLeads((prev) =>
+      (Array.isArray(prev) ? prev : []).map((l) => {
+        const cleanLeadPhone = String(l.phone || '').replace(/\D/g, '').slice(-10);
+        if (l.id === custId || (cleanCustPhone && cleanCustPhone === cleanLeadPhone)) {
+          return { ...l, actionTaken: newAction, isNew: newAction === 'NEW LEAD' ? l.isNew : false };
+        }
+        return l;
+      })
+    );
+  };
+
+  // Mark an incoming enquiry as read: removes the NEW ENQUIRY tag and restores normal row styling
+  const handleMarkAsRead = (id) => {
+    // 1. Add ID to read set in localStorage
+    try {
+      const readSet = new Set(JSON.parse(localStorage.getItem('shashtika_read_enquiries') || '[]'));
+      readSet.add(String(id));
+      localStorage.setItem('shashtika_read_enquiries', JSON.stringify(Array.from(readSet)));
+    } catch (e) {}
+
+    // 2. Update local enquiries cache if present
+    try {
+      const localEnqs = JSON.parse(localStorage.getItem('shashtika_enquiries') || '[]');
+      if (Array.isArray(localEnqs)) {
+        const updatedLocal = localEnqs.map((item) => (item.id === id ? { ...item, isNew: false } : item));
+        localStorage.setItem('shashtika_enquiries', JSON.stringify(updatedLocal));
+      }
+    } catch (e) {}
+
+    // 3. Update leads state
+    const targetLead = (Array.isArray(leads) ? leads : []).find((l) => l.id === id);
+    const cleanLeadPhone = targetLead ? String(targetLead.phone || '').replace(/\D/g, '').slice(-10) : '';
+
+    setLeads((prev) =>
+      (Array.isArray(prev) ? prev : []).map((l) => {
+        const lPhone = String(l.phone || '').replace(/\D/g, '').slice(-10);
+        if (l.id === id || (cleanLeadPhone && cleanLeadPhone === lPhone)) {
+          return {
+            ...l,
+            isNew: false,
+            actionTaken: l.actionTaken === 'NEW LEAD' ? 'ACKNOWLEDGED' : l.actionTaken
+          };
+        }
+        return l;
+      })
+    );
+
+    // 4. Update customers state
+    setCustomers((prev) =>
+      (Array.isArray(prev) ? prev : []).map((c) => {
+        const cPhone = String(c.phone || '').replace(/\D/g, '').slice(-10);
+        if (c.id === id || (cleanLeadPhone && cleanLeadPhone === cPhone)) {
+          return {
+            ...c,
+            isNew: false,
+            actionTaken: c.actionTaken === 'NEW LEAD' ? 'ACKNOWLEDGED' : c.actionTaken
+          };
+        }
+        return c;
+      })
+    );
+
+    // 5. Notify backend API / MongoDB
+    try {
+      fetch(`/api/enquiries/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isNew: false, status: 'CONTACTED' })
+      }).catch(() => {});
+    } catch (e) {}
   };
 
   const handleDeleteLead = (leadId) => {
@@ -500,7 +749,7 @@ export default function AdminPage() {
     document.body.removeChild(link);
   };
 
-  // Customer Registry Handlers
+  // Customer Registry Handlers with Automatic Lead Sync & WhatsApp Notification
   const handleOpenAddCustomerModal = (editId = null) => {
     if (editId) {
       const rec = customers.find((c) => c.id === editId);
@@ -511,7 +760,7 @@ export default function AdminPage() {
           phone: rec.phone || '',
           email: rec.email === 'N/A' ? '' : rec.email || '',
           requirement: rec.requirement || '',
-          assignedStaff: rec.assignedStaff || staffRoster[0],
+          assignedStaff: rec.assignedStaff || defaultStaffName,
           stage: rec.stage || 'INQUIRY',
           notes: rec.notes || ''
         });
@@ -523,7 +772,7 @@ export default function AdminPage() {
         phone: '',
         email: '',
         requirement: '',
-        assignedStaff: staffRoster[0],
+        assignedStaff: defaultStaffName,
         stage: 'INQUIRY',
         notes: ''
       });
@@ -544,6 +793,8 @@ export default function AdminPage() {
       ', ' +
       now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
 
+    const cleanCustPhone = custForm.phone.replace(/\D/g, '').slice(-10);
+
     if (editingCustId) {
       setCustomers((prev) =>
         prev.map((c) =>
@@ -562,7 +813,29 @@ export default function AdminPage() {
             : c
         )
       );
-      alert('Customer record updated successfully!');
+
+      // Automatically sync assigned staff to matching lead everywhere
+      setLeads((prev) =>
+        prev.map((l) => {
+          const lPhone = String(l.phone || '').replace(/\D/g, '').slice(-10);
+          if (lPhone === cleanCustPhone || l.id === editingCustId) {
+            return { ...l, assignedStaff: custForm.assignedStaff };
+          }
+          return l;
+        })
+      );
+
+      notifyStaffViaWhatsApp(custForm.assignedStaff, {
+        customerName: custForm.name,
+        phone: custForm.phone,
+        email: custForm.email,
+        requirement: custForm.requirement,
+        budget: 'Standard',
+        notes: custForm.notes,
+        date: dateStr
+      });
+
+      alert(`Customer record updated and assigned to ${custForm.assignedStaff}! Details sent to staff WhatsApp.`);
     } else {
       const newRec = {
         id: `CUST-MAN-${Math.floor(10000 + Math.random() * 90000)}`,
@@ -577,7 +850,18 @@ export default function AdminPage() {
         date: dateStr
       };
       setCustomers([newRec, ...customers]);
-      alert('New walk-in customer added to directory!');
+
+      notifyStaffViaWhatsApp(custForm.assignedStaff, {
+        customerName: custForm.name,
+        phone: custForm.phone,
+        email: custForm.email,
+        requirement: custForm.requirement,
+        budget: 'Standard',
+        notes: custForm.notes,
+        date: dateStr
+      });
+
+      alert(`New walk-in customer added and assigned to ${custForm.assignedStaff}! Details sent to staff WhatsApp.`);
     }
     setCustomerModalOpen(false);
   };
@@ -594,10 +878,42 @@ export default function AdminPage() {
     );
   };
 
-  const handleUpdateCustomerStaff = (id, newStaff) => {
+  const handleUpdateCustomerStaff = (customerId, newStaff, triggerWhatsapp = true) => {
+    const targetCust = (Array.isArray(customers) ? customers : []).find((c) => c.id === customerId);
+    const cleanCustPhone = targetCust ? String(targetCust.phone || '').replace(/\D/g, '').slice(-10) : '';
+    const custName = targetCust ? String(targetCust.name || '').trim().toLowerCase() : '';
+
     setCustomers((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, assignedStaff: newStaff } : c))
+      prev.map((c) => (c.id === customerId ? { ...c, assignedStaff: newStaff } : c))
     );
+
+    // Synchronize to AI Leads everywhere
+    setLeads((prev) =>
+      prev.map((l) => {
+        const lPhone = String(l.phone || '').replace(/\D/g, '').slice(-10);
+        const lName = String(l.name || '').trim().toLowerCase();
+        if (
+          (cleanCustPhone && lPhone === cleanCustPhone) ||
+          l.id === customerId ||
+          (custName && lName === custName)
+        ) {
+          return { ...l, assignedStaff: newStaff };
+        }
+        return l;
+      })
+    );
+
+    if (triggerWhatsapp && targetCust) {
+      notifyStaffViaWhatsApp(newStaff, {
+        customerName: targetCust.name,
+        phone: targetCust.phone,
+        email: targetCust.email,
+        requirement: targetCust.requirement,
+        budget: 'Standard',
+        notes: targetCust.notes,
+        date: targetCust.date
+      });
+    }
   };
 
   // Filtered Leads (Safe against null/undefined)
@@ -620,6 +936,14 @@ export default function AdminPage() {
         staff.includes(q) ||
         email.includes(q);
       return matchCat && matchSearch;
+    });
+
+    return [...filtered].sort((a, b) => {
+      const aNew = Boolean(a && a.isNew);
+      const bNew = Boolean(b && b.isNew);
+      if (aNew && !bNew) return -1;
+      if (!aNew && bNew) return 1;
+      return 0;
     });
   }, [leads, leadCategoryFilter, leadSearchQuery]);
 
@@ -665,10 +989,14 @@ export default function AdminPage() {
   const filteredCustomers = useMemo(() => {
     const list = Array.isArray(customers) ? customers : [];
     const q = (customerSearchQuery || '').toLowerCase().trim();
-    return list.filter((cust) => {
+    const filtered = list.filter((cust) => {
       if (!cust) return false;
-      const matchStage = customerFilter === 'ALL' || cust.stage === customerFilter;
-      if (!q) return matchStage;
+      const isManual = cust.source === 'MANUAL WALK-IN';
+      const matchSource =
+        customerFilter === 'ALL' ||
+        (customerFilter === 'WEB' && !isManual) ||
+        (customerFilter === 'WALK_IN' && isManual);
+      if (!q) return matchSource;
       const name = String(cust.name || '').toLowerCase();
       const phone = String(cust.phone || '');
       const req = String(cust.requirement || '').toLowerCase();
@@ -680,16 +1008,22 @@ export default function AdminPage() {
         req.includes(q) ||
         notes.includes(q) ||
         staff.includes(q);
-      return matchStage && matchSearch;
+      return matchSource && matchSearch;
+    });
+
+    return [...filtered].sort((a, b) => {
+      const aNew = Boolean(a && a.isNew);
+      const bNew = Boolean(b && b.isNew);
+      if (aNew && !bNew) return -1;
+      if (!aNew && bNew) return 1;
+      return 0;
     });
   }, [customers, customerFilter, customerSearchQuery]);
 
   // Customer Counts
   const custCountAll = (Array.isArray(customers) ? customers : []).length;
-  const custCountInquiry = (Array.isArray(customers) ? customers : []).filter((c) => c && c.stage === 'INQUIRY').length;
-  const custCountToken = (Array.isArray(customers) ? customers : []).filter((c) => c && c.stage === 'TOKEN_PAID').length;
-  const custCountBought = (Array.isArray(customers) ? customers : []).filter((c) => c && c.stage === 'BOUGHT').length;
-  const custCountRejected = (Array.isArray(customers) ? customers : []).filter((c) => c && c.stage === 'REJECTED').length;
+  const custCountWeb = (Array.isArray(customers) ? customers : []).filter((c) => c && c.source !== 'MANUAL WALK-IN').length;
+  const custCountWalkIn = (Array.isArray(customers) ? customers : []).filter((c) => c && c.source === 'MANUAL WALK-IN').length;
 
   // 1. RENDER LOGIN GATEWAY IF NOT AUTHENTICATED (MATCHING USER SCREENSHOT)
   if (!isAuthenticated) {
@@ -989,7 +1323,7 @@ export default function AdminPage() {
                   </div>
                 </button>
 
-                {/* BUTTON 3: CUSTOMER DETAILS & TRACKER */}
+                {/* BUTTON 3: CUSTOMER DETAILS */}
                 <button
                   type="button"
                   className={`admin-nav-tab-btn ${activeTab === 'customer-tracker' ? 'active' : ''}`}
@@ -1004,7 +1338,7 @@ export default function AdminPage() {
                     </svg>
                   </div>
                   <div className="tab-btn-text">
-                    <span className="tab-btn-title">Customer Details &amp; 3-Stage Tracker</span>
+                    <span className="tab-btn-title">Customer Details</span>
                     <span className="tab-btn-sub">Centralized Client Registry ({customers.length})</span>
                   </div>
                 </button>
@@ -1032,53 +1366,74 @@ export default function AdminPage() {
                       </p>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap', marginTop: '4px' }}>
+                    <div className="admin-action-toolbar" style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', marginTop: '6px' }}>
                       <button
-                        className="btn btn-gold"
                         onClick={() => setActiveTab('customer-tracker')}
-                        style={{ fontSize: '0.74rem', padding: '9px 16px', fontWeight: 800, borderRadius: '4px', display: 'inline-flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 15px rgba(198, 161, 91, 0.3)', cursor: 'pointer' }}
-                      >
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
-                        CUSTOMER DIRECTORY &amp; TRACKER &rarr;
-                      </button>
-
-                      <button
-                        className="btn btn-outline-gold"
-                        onClick={() => {
-                          syncLiveEnquiries();
-                          alert('Live enquiries refreshed from backend API & web submissions!');
+                        style={{
+                          fontSize: '0.80rem',
+                          padding: '10px 18px',
+                          fontWeight: 800,
+                          borderRadius: '6px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          background: '#1A0709',
+                          color: '#F3E5AB',
+                          border: '1.5px solid #C6A15B',
+                          boxShadow: '0 4px 14px rgba(26, 7, 9, 0.25)',
+                          cursor: 'pointer',
+                          letterSpacing: '0.4px',
+                          transition: 'all 0.2s ease'
                         }}
-                        style={{ fontSize: '0.74rem', padding: '9px 16px', fontWeight: 800, borderRadius: '4px', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
-                        title="Fetch latest enquiries from Contact Page"
                       >
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                        REFRESH LIVE ENQUIRIES
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+                        CUSTOMER DETAILS &rarr;
                       </button>
 
                       <button
-                        className="btn btn-outline-gold"
                         onClick={handleExportCSV}
-                        style={{ fontSize: '0.74rem', padding: '9px 16px', fontWeight: 800, borderRadius: '4px', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
+                        style={{
+                          fontSize: '0.80rem',
+                          padding: '10px 18px',
+                          fontWeight: 800,
+                          borderRadius: '6px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          background: '#065F46',
+                          color: '#FFFFFF',
+                          border: '1.5px solid #047857',
+                          boxShadow: '0 4px 12px rgba(6, 95, 70, 0.25)',
+                          cursor: 'pointer',
+                          letterSpacing: '0.4px',
+                          transition: 'all 0.2s ease'
+                        }}
                       >
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
                         CSV EXPORT
                       </button>
 
                       <button
-                        className="btn btn-outline-gold"
                         onClick={handleOpenStaffModal}
-                        style={{ fontSize: '0.74rem', padding: '9px 16px', fontWeight: 800, borderRadius: '4px', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
+                        style={{
+                          fontSize: '0.80rem',
+                          padding: '10px 18px',
+                          fontWeight: 800,
+                          borderRadius: '6px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          background: '#1E3A8A',
+                          color: '#FFFFFF',
+                          border: '1.5px solid #1D4ED8',
+                          boxShadow: '0 4px 12px rgba(30, 58, 138, 0.25)',
+                          cursor: 'pointer',
+                          letterSpacing: '0.4px',
+                          transition: 'all 0.2s ease'
+                        }}
                       >
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
-                        MANAGE STAFF (5)
-                      </button>
-
-                      <button
-                        className="btn btn-outline-gold"
-                        onClick={handleResetLeads}
-                        style={{ fontSize: '0.74rem', padding: '9px 16px', fontWeight: 800, borderRadius: '4px', cursor: 'pointer' }}
-                      >
-                        RESET DATA
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.4"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+                        MANAGE STAFF
                       </button>
                     </div>
                   </div>
@@ -1198,17 +1553,17 @@ export default function AdminPage() {
                   </div>
 
                   {/* Scored Leads Table */}
-                  <div style={{ overflowX: 'auto', borderRadius: '4px', border: '1.5px solid var(--gold-border)' }}>
-                    <table className="admin-table">
+                  <div className="admin-table-container" style={{ overflowX: 'auto', borderRadius: '4px', border: '1.5px solid var(--gold-border)' }}>
+                    <table className="admin-table" style={{ width: '100%', minWidth: '1060px' }}>
                       <thead>
                         <tr>
-                          <th style={{ width: '11%', textAlign: 'center' }}>AI SCORE</th>
+                          <th style={{ width: '9%', textAlign: 'center' }}>AI SCORE</th>
                           <th style={{ width: '18%' }}>CLIENT &amp; CONTACT</th>
                           <th style={{ width: '15%' }}>REQUIREMENTS &amp; BUDGET</th>
-                          <th style={{ width: '15%' }}>TIMELINE &amp; TARGET PLOT</th>
-                          <th style={{ width: '16%' }}>ASSIGNED STAFF</th>
-                          <th style={{ width: '17%' }}>AI RECOMMENDATION</th>
-                          <th style={{ width: '11%', minWidth: '135px', textAlign: 'center' }}>ACTIONS</th>
+                          <th style={{ width: '14%' }}>TIMELINE &amp; TARGET PLOT</th>
+                          <th style={{ width: '15%', minWidth: '160px' }}>ASSIGNED STAFF</th>
+                          <th style={{ width: '16%', minWidth: '165px' }}>ACTIONS TAKEN</th>
+                          <th style={{ width: '13%', minWidth: '130px', textAlign: 'center' }}>CONTACT</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -1223,9 +1578,18 @@ export default function AdminPage() {
                             const cleanPhone = String(lead.phone || '').replace(/[^0-9]/g, '');
                             const isHot = lead.category === 'HOT';
                             const isWarm = lead.category === 'WARM';
+                            const currentAction = lead.actionTaken || 'NEW LEAD';
 
                             return (
-                              <tr key={lead.id} style={{ borderBottom: '1px solid rgba(198, 161, 91, 0.2)' }}>
+                              <tr
+                                key={lead.id}
+                                style={{
+                                  borderBottom: '1px solid rgba(198, 161, 91, 0.2)',
+                                  background: lead.isNew ? 'rgba(37, 211, 102, 0.06)' : undefined,
+                                  borderLeft: lead.isNew ? '4px solid #10B981' : 'none',
+                                  transition: 'all 0.3s ease'
+                                }}
+                              >
                                 <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                   <div
                                     style={{
@@ -1254,6 +1618,66 @@ export default function AdminPage() {
                                 </td>
 
                                 <td style={{ verticalAlign: 'top' }}>
+                                  {lead.isNew && (
+                                    <div style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                                      <span
+                                        style={{
+                                          display: 'inline-flex',
+                                          alignItems: 'center',
+                                          gap: '4px',
+                                          background: 'linear-gradient(135deg, #10B981, #059669)',
+                                          color: '#FFFFFF',
+                                          fontSize: '0.64rem',
+                                          fontWeight: 800,
+                                          padding: '2px 8px',
+                                          borderRadius: '12px',
+                                          letterSpacing: '0.6px',
+                                          boxShadow: '0 2px 6px rgba(16, 185, 129, 0.35)',
+                                          textTransform: 'uppercase'
+                                        }}
+                                      >
+                                        <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#FFFFFF' }}></span>
+                                        NEW ENQUIRY
+                                      </span>
+
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          handleMarkAsRead(lead.id);
+                                        }}
+                                        title="Mark as read (remove New Enquiry tag)"
+                                        style={{
+                                          display: 'inline-flex',
+                                          alignItems: 'center',
+                                          gap: '4px',
+                                          background: '#FAF6EE',
+                                          border: '1.2px solid #10B981',
+                                          color: '#065F46',
+                                          fontSize: '0.66rem',
+                                          fontWeight: 700,
+                                          padding: '2px 8px',
+                                          borderRadius: '8px',
+                                          cursor: 'pointer',
+                                          boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+                                          transition: 'all 0.18s ease'
+                                        }}
+                                        onMouseEnter={(e) => {
+                                          e.currentTarget.style.background = '#10B981';
+                                          e.currentTarget.style.color = '#FFFFFF';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                          e.currentTarget.style.background = '#FAF6EE';
+                                          e.currentTarget.style.color = '#065F46';
+                                        }}
+                                      >
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                          <polyline points="20 6 9 17 4 12" />
+                                        </svg>
+                                        <span>Mark as read</span>
+                                      </button>
+                                    </div>
+                                  )}
                                   <div style={{ fontWeight: 800, color: '#1A0709', fontSize: '0.95rem', marginBottom: '4px' }}>
                                     {lead.name}
                                   </div>
@@ -1283,39 +1707,95 @@ export default function AdminPage() {
                                   </div>
                                 </td>
 
-                                <td style={{ verticalAlign: 'top' }}>
+                                <td style={{ verticalAlign: 'middle' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                    <select
+                                      value={lead.assignedStaff || defaultStaffName}
+                                      onChange={(e) => handleUpdateLeadStaff(lead.id, e.target.value)}
+                                      style={{
+                                        flex: 1,
+                                        padding: '8px 10px',
+                                        borderRadius: '4px',
+                                        border: '1.5px solid var(--gold-border)',
+                                        fontSize: '0.82rem',
+                                        fontWeight: 700,
+                                        background: 'var(--bg-cream)',
+                                        color: '#1A0709',
+                                        cursor: 'pointer'
+                                      }}
+                                    >
+                                      {staffRoster.map((s) => {
+                                        const sName = typeof s === 'string' ? s : s.name;
+                                        return (
+                                          <option key={sName} value={sName}>
+                                            {sName}
+                                          </option>
+                                        );
+                                      })}
+                                    </select>
+                                    <button
+                                      type="button"
+                                      className="admin-icon-btn"
+                                      onClick={() => {
+                                        const staffToNotify = lead.assignedStaff || defaultStaffName;
+                                        notifyStaffViaWhatsApp(staffToNotify, {
+                                          customerName: lead.name,
+                                          phone: lead.phone,
+                                          email: lead.email,
+                                          requirement: lead.targetPlot || 'Plot Enquiry',
+                                          budget: lead.budget || 'Standard',
+                                          notes: lead.notes || lead.recommendation,
+                                          date: lead.date
+                                        });
+                                      }}
+                                      title={`Send lead details directly to assigned staff (${lead.assignedStaff || defaultStaffName}) via WhatsApp`}
+                                      style={{ background: '#25D366', border: '1.5px solid #25D366', color: '#FFFFFF', flexShrink: 0, width: '32px', height: '32px' }}
+                                    >
+                                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 0C5.385 0 0 5.386 0 12.031c0 2.124.553 4.197 1.604 6.02L0 24l6.155-1.614A11.968 11.968 0 0 0 12.03 24c6.645 0 12.03-5.385 12.03-12.031C24.06 5.386 18.675 0 12.031 0zm.012 22.012c-1.808 0-3.585-.486-5.143-1.408l-.369-.219-3.817 1.001 1.019-3.721-.241-.383A9.99 9.99 0 0 1 2.012 12.03c0-5.524 4.496-10.02 10.031-10.02 5.524 0 10.02 4.496 10.02 10.02 0 5.536-4.496 10.012-10.02 10.012zm5.503-7.519c-.302-.152-1.785-.881-2.062-.981-.277-.101-.479-.152-.68.152-.202.302-.782.981-.959 1.183-.176.201-.353.226-.655.075-1.745-.875-2.894-1.559-4.04-3.535-.302-.52.302-.482.864-1.608.101-.201.05-.378-.025-.529-.075-.152-.68-1.636-.932-2.24-.244-.588-.493-.508-.68-.518-.176-.009-.378-.009-.58-.009-.201 0-.528.075-.804.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.92 1.233 3.122.151.201 2.128 3.25 5.156 4.558 2.164.935 2.809.845 3.791.7.636-.094 1.785-.73 2.037-1.435.252-.705.252-1.309.176-1.435-.076-.125-.278-.201-.58-.352z" /></svg>
+                                    </button>
+                                  </div>
+                                </td>
+
+                                <td style={{ verticalAlign: 'middle' }}>
                                   <select
-                                    value={lead.assignedStaff}
-                                    onChange={(e) => handleUpdateLeadStaff(lead.id, e.target.value)}
+                                    value={currentAction}
+                                    onChange={(e) => handleUpdateLeadAction(lead.id, e.target.value)}
                                     style={{
                                       width: '100%',
-                                      padding: '7px 10px',
+                                      padding: '8px 10px',
                                       borderRadius: '4px',
                                       border: '1.5px solid var(--gold-border)',
                                       fontSize: '0.80rem',
-                                      fontWeight: 700,
-                                      background: 'var(--bg-cream)',
-                                      color: '#1A0709',
-                                      cursor: 'pointer'
+                                      fontWeight: 800,
+                                      letterSpacing: '0.4px',
+                                      cursor: 'pointer',
+                                      background:
+                                        currentAction === 'CONTACTED' ? 'rgba(198, 161, 91, 0.22)' :
+                                        currentAction === 'IN PROGRESS' ? 'rgba(44, 74, 111, 0.2)' :
+                                        currentAction === 'SITE VISIT SCHEDULED' ? 'rgba(40, 167, 69, 0.2)' :
+                                        currentAction === 'TOKEN PAID' ? 'rgba(169, 130, 58, 0.28)' :
+                                        currentAction === 'REJECTED' ? 'rgba(217, 83, 79, 0.2)' :
+                                        'rgba(26, 7, 9, 0.08)',
+                                      color:
+                                        currentAction === 'CONTACTED' ? '#8C6B28' :
+                                        currentAction === 'IN PROGRESS' ? '#2C4A6F' :
+                                        currentAction === 'SITE VISIT SCHEDULED' ? '#1e7e34' :
+                                        currentAction === 'TOKEN PAID' ? '#8C6B28' :
+                                        currentAction === 'REJECTED' ? '#C53030' :
+                                        '#1A0709'
                                     }}
                                   >
-                                    {staffRoster.map((s) => (
-                                      <option key={s} value={s}>{s}</option>
-                                    ))}
+                                    <option value="NEW LEAD">NEW LEAD</option>
+                                    <option value="CONTACTED">CONTACTED</option>
+                                    <option value="IN PROGRESS">IN PROGRESS</option>
+                                    <option value="SITE VISIT SCHEDULED">SITE VISIT SCHEDULED</option>
+                                    <option value="TOKEN PAID">TOKEN PAID</option>
+                                    <option value="REJECTED">REJECTED</option>
                                   </select>
-                                  <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#A9823A', marginTop: '4px' }}>
-                                    &check; {String(lead.assignedStaff || staffRoster[0] || 'Staff').split(' ')[0]}
-                                  </div>
-                                </td>
-
-                                <td style={{ verticalAlign: 'top' }}>
-                                  <div className="ai-recommendation-box">
-                                    &ldquo;{lead.recommendation}&rdquo;
-                                  </div>
                                 </td>
 
                                 <td style={{ verticalAlign: 'middle', textAlign: 'center' }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                                     {/* Call button */}
                                     <a
                                       href={`tel:${lead.phone}`}
@@ -1543,45 +2023,92 @@ export default function AdminPage() {
                 </div>
               )}
 
-              {/* PANEL 3: CUSTOMER DETAILS & TRACKER TABLE */}
+              {/* PANEL 3: CUSTOMER DETAILS TABLE */}
               {activeTab === 'customer-tracker' && (
                 <div style={{ background: 'var(--bg-ivory)', border: '1.5px solid var(--gold-border)', borderRadius: 'var(--radius-md)', padding: '28px', boxShadow: 'var(--shadow-soft)' }}>
                   <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1.5px solid var(--gold-border)' }}>
                     <div>
                       <span className="architectural-tag">CENTRALIZED CLIENT REGISTRY</span>
                       <h3 style={{ fontSize: '1.4rem', color: '#1A0709', marginTop: '4px', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
-                        Customer Details &amp; 3-Stage Conversion Tracker
+                        Customer Details
                       </h3>
                       <p style={{ fontSize: '0.88rem', color: 'rgba(26, 7, 9, 0.75)', marginTop: '4px' }}>
-                        Track all web enquiries &amp; manual walk-in clients with 3 editable conversion stages and staff assignment.
+                        Complete directory of web enquiries and walk-in clients with requirements, contact information, and assigned staff.
                       </p>
                     </div>
-                    <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                    <div className="admin-action-toolbar" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
                       <button
-                        className="btn btn-outline-gold"
-                        onClick={() => {
-                          syncLiveEnquiries();
-                          alert('Customer records synchronized with latest web submissions!');
+                        onClick={() => setActiveTab('ai-scoring')}
+                        style={{
+                          fontSize: '0.80rem',
+                          padding: '10px 18px',
+                          fontWeight: 800,
+                          borderRadius: '6px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          background: '#1A0709',
+                          color: '#F3E5AB',
+                          border: '1.5px solid #C6A15B',
+                          boxShadow: '0 4px 14px rgba(26, 7, 9, 0.25)',
+                          cursor: 'pointer',
+                          letterSpacing: '0.4px',
+                          transition: 'all 0.2s ease'
                         }}
-                        style={{ fontSize: '0.78rem', padding: '10px 16px', fontWeight: 800, borderRadius: '4px', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
-                        title="Fetch latest enquiries from Contact Page"
                       >
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                        REFRESH LIVE LEADS
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.5"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>
+                        &larr; AI LEADS PORTAL
                       </button>
 
                       <button
-                        className="btn btn-gold"
-                        onClick={() => handleOpenAddCustomerModal()}
-                        style={{ fontSize: '0.78rem', padding: '10px 18px', fontWeight: 800, borderRadius: '4px', display: 'inline-flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(198, 161, 91, 0.3)', cursor: 'pointer' }}
+                        onClick={handleOpenStaffModal}
+                        style={{
+                          fontSize: '0.80rem',
+                          padding: '10px 18px',
+                          fontWeight: 800,
+                          borderRadius: '6px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          background: '#1E3A8A',
+                          color: '#FFFFFF',
+                          border: '1.5px solid #1D4ED8',
+                          boxShadow: '0 4px 12px rgba(30, 58, 138, 0.25)',
+                          cursor: 'pointer',
+                          letterSpacing: '0.4px',
+                          transition: 'all 0.2s ease'
+                        }}
                       >
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.4"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+                        MANAGE STAFF
+                      </button>
+
+                      <button
+                        onClick={() => handleOpenAddCustomerModal()}
+                        style={{
+                          fontSize: '0.80rem',
+                          padding: '10px 18px',
+                          fontWeight: 800,
+                          borderRadius: '6px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          background: 'linear-gradient(135deg, #C6A15B 0%, #AA7C11 100%)',
+                          color: '#1A0709',
+                          border: '1.5px solid #8C6B28',
+                          boxShadow: '0 4px 14px rgba(198, 161, 91, 0.35)',
+                          cursor: 'pointer',
+                          letterSpacing: '0.4px',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A0709" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                         + ADD NEW CUSTOMER RECORD
                       </button>
                     </div>
                   </div>
 
-                  {/* Stage Filter Chips & Search Bar */}
+                  {/* Filter Chips & Search Bar */}
                   <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '14px', marginBottom: '20px', background: 'rgba(198, 161, 91, 0.08)', padding: '14px 18px', borderRadius: 'var(--radius-md)', border: '1px solid var(--gold-border)' }}>
                     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
                       <button
@@ -1591,28 +2118,16 @@ export default function AdminPage() {
                         ALL CUSTOMERS ({custCountAll})
                       </button>
                       <button
-                        className={`public-table-chip ${customerFilter === 'INQUIRY' ? 'active' : ''}`}
-                        onClick={() => setCustomerFilter('INQUIRY')}
+                        className={`public-table-chip ${customerFilter === 'WEB' ? 'active' : ''}`}
+                        onClick={() => setCustomerFilter('WEB')}
                       >
-                        INQUIRY ({custCountInquiry})
+                        WEB ENQUIRIES ({custCountWeb})
                       </button>
                       <button
-                        className={`public-table-chip ${customerFilter === 'TOKEN_PAID' ? 'active' : ''}`}
-                        onClick={() => setCustomerFilter('TOKEN_PAID')}
+                        className={`public-table-chip ${customerFilter === 'WALK_IN' ? 'active' : ''}`}
+                        onClick={() => setCustomerFilter('WALK_IN')}
                       >
-                        TOKEN PAID ({custCountToken})
-                      </button>
-                      <button
-                        className={`public-table-chip ${customerFilter === 'BOUGHT' ? 'active' : ''}`}
-                        onClick={() => setCustomerFilter('BOUGHT')}
-                      >
-                        BOUGHT ({custCountBought})
-                      </button>
-                      <button
-                        className={`public-table-chip ${customerFilter === 'REJECTED' ? 'active' : ''}`}
-                        onClick={() => setCustomerFilter('REJECTED')}
-                      >
-                        REJECTED ({custCountRejected})
+                        WALK-IN CLIENTS ({custCountWalkIn})
                       </button>
                     </div>
 
@@ -1639,17 +2154,17 @@ export default function AdminPage() {
                   </div>
 
                   {/* Customer Registry Table */}
-                  <div style={{ overflowX: 'auto', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--gold-border)' }}>
-                    <table className="admin-table">
+                  <div className="admin-table-container" style={{ overflowX: 'auto', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--gold-border)' }}>
+                    <table className="admin-table" style={{ width: '100%', minWidth: '1060px' }}>
                       <thead>
                         <tr>
-                          <th style={{ width: '13%' }}>DATE &amp; ID</th>
+                          <th style={{ width: '11%' }}>DATE &amp; ID</th>
                           <th style={{ width: '20%' }}>CUSTOMER DETAILS</th>
-                          <th style={{ width: '20%' }}>REQUIREMENT &amp; LOCATION</th>
-                          <th style={{ width: '18%' }}>ASSIGNED STAFF</th>
-                          <th style={{ width: '15%' }}>CONVERSION STAGE</th>
-                          <th style={{ width: '7%', textAlign: 'center' }}>SOURCE</th>
-                          <th style={{ width: '12%', minWidth: '135px', textAlign: 'center' }}>ACTION</th>
+                          <th style={{ width: '21%' }}>REQUIREMENT &amp; NOTES</th>
+                          <th style={{ width: '15%', minWidth: '160px' }}>ASSIGNED STAFF</th>
+                          <th style={{ width: '15%', minWidth: '165px' }}>ACTIONS TAKEN</th>
+                          <th style={{ width: '8%', textAlign: 'center' }}>SOURCE</th>
+                          <th style={{ width: '10%', minWidth: '110px', textAlign: 'center' }}>CONTACT</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -1663,23 +2178,77 @@ export default function AdminPage() {
                           filteredCustomers.map((cust) => {
                             const isManual = cust.source === 'MANUAL WALK-IN';
                             const cleanPhone = String(cust.phone || '').replace(/[^0-9]/g, '');
-
-                            let stageBadgeStyle = { background: 'rgba(43, 67, 96, 0.12)', color: '#2B4360', border: '1px solid #2B4360' };
-                            let stageLabel = 'INQUIRY';
-                            if (cust.stage === 'TOKEN_PAID') {
-                              stageBadgeStyle = { background: 'rgba(198, 161, 91, 0.18)', color: '#8C6B28', border: '1px solid #C6A15B' };
-                              stageLabel = 'TOKEN PAID';
-                            } else if (cust.stage === 'BOUGHT') {
-                              stageBadgeStyle = { background: 'rgba(40, 167, 69, 0.18)', color: '#1e7e34', border: '1px solid #28a745' };
-                              stageLabel = 'BOUGHT';
-                            } else if (cust.stage === 'REJECTED') {
-                              stageBadgeStyle = { background: 'rgba(217, 83, 79, 0.15)', color: '#d9534f', border: '1px solid #d9534f' };
-                              stageLabel = 'REJECTED';
-                            }
-
                             return (
-                              <tr key={cust.id} style={{ borderBottom: '1px solid rgba(198, 161, 91, 0.2)' }}>
+                              <tr
+                                key={cust.id}
+                                style={{
+                                  borderBottom: '1px solid rgba(198, 161, 91, 0.2)',
+                                  background: cust.isNew ? 'rgba(37, 211, 102, 0.06)' : undefined,
+                                  borderLeft: cust.isNew ? '4px solid #10B981' : 'none',
+                                  transition: 'all 0.3s ease'
+                                }}
+                              >
                                 <td style={{ verticalAlign: 'top' }}>
+                                  {cust.isNew && (
+                                    <div style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                                      <span
+                                        style={{
+                                          display: 'inline-flex',
+                                          alignItems: 'center',
+                                          gap: '4px',
+                                          background: 'linear-gradient(135deg, #10B981, #059669)',
+                                          color: '#FFFFFF',
+                                          fontSize: '0.64rem',
+                                          fontWeight: 800,
+                                          padding: '2px 8px',
+                                          borderRadius: '12px',
+                                          letterSpacing: '0.6px',
+                                          boxShadow: '0 2px 6px rgba(16, 185, 129, 0.35)',
+                                          textTransform: 'uppercase'
+                                        }}
+                                      >
+                                        <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#FFFFFF' }}></span>
+                                        NEW ENQUIRY
+                                      </span>
+
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          handleMarkAsRead(cust.id);
+                                        }}
+                                        title="Mark as read (remove New Enquiry tag)"
+                                        style={{
+                                          display: 'inline-flex',
+                                          alignItems: 'center',
+                                          gap: '4px',
+                                          background: '#FAF6EE',
+                                          border: '1.2px solid #10B981',
+                                          color: '#065F46',
+                                          fontSize: '0.66rem',
+                                          fontWeight: 700,
+                                          padding: '2px 8px',
+                                          borderRadius: '8px',
+                                          cursor: 'pointer',
+                                          boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+                                          transition: 'all 0.18s ease'
+                                        }}
+                                        onMouseEnter={(e) => {
+                                          e.currentTarget.style.background = '#10B981';
+                                          e.currentTarget.style.color = '#FFFFFF';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                          e.currentTarget.style.background = '#FAF6EE';
+                                          e.currentTarget.style.color = '#065F46';
+                                        }}
+                                      >
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                          <polyline points="20 6 9 17 4 12" />
+                                        </svg>
+                                        <span>Mark as read</span>
+                                      </button>
+                                    </div>
+                                  )}
                                   <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#1A0709', marginBottom: '4px' }}>
                                     {cust.date}
                                   </div>
@@ -1718,38 +2287,84 @@ export default function AdminPage() {
                                   )}
                                 </td>
 
-                                <td style={{ verticalAlign: 'top' }}>
-                                  <select
-                                    value={cust.assignedStaff || staffRoster[0]}
-                                    onChange={(e) => handleUpdateCustomerStaff(cust.id, e.target.value)}
-                                    style={{ padding: '6px 10px', borderRadius: '4px', border: '1.5px solid var(--gold-border)', fontSize: '0.8rem', fontWeight: 700, background: 'var(--bg-cream)', color: '#1A0709', width: '100%', cursor: 'pointer' }}
-                                  >
-                                    {staffRoster.map((s) => (
-                                      <option key={s} value={s}>{s}</option>
-                                    ))}
-                                  </select>
-                                  <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#A9823A', marginTop: '4px' }}>
-                                    &check; {String(cust.assignedStaff || staffRoster[0] || 'Staff').split(' ')[0]}
+                                <td style={{ verticalAlign: 'middle', minWidth: '160px' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                    <select
+                                      value={cust.assignedStaff || defaultStaffName}
+                                      onChange={(e) => handleUpdateCustomerStaff(cust.id, e.target.value)}
+                                      style={{ padding: '8px 10px', borderRadius: '4px', border: '1.5px solid var(--gold-border)', fontSize: '0.8rem', fontWeight: 700, background: 'var(--bg-cream)', color: '#1A0709', flex: 1, cursor: 'pointer' }}
+                                    >
+                                      {staffRoster.map((s) => {
+                                        const sName = typeof s === 'string' ? s : s.name;
+                                        return (
+                                          <option key={sName} value={sName}>
+                                            {sName}
+                                          </option>
+                                        );
+                                      })}
+                                    </select>
+                                    <button
+                                      type="button"
+                                      className="admin-icon-btn"
+                                      onClick={() => {
+                                        const staffToNotify = cust.assignedStaff || defaultStaffName;
+                                        notifyStaffViaWhatsApp(staffToNotify, {
+                                          customerName: cust.name,
+                                          phone: cust.phone,
+                                          email: cust.email,
+                                          requirement: cust.requirement,
+                                          budget: 'Standard',
+                                          notes: cust.notes,
+                                          date: cust.date
+                                        });
+                                      }}
+                                      title={`Send customer details directly to assigned staff (${cust.assignedStaff || defaultStaffName}) via WhatsApp`}
+                                      style={{ background: '#25D366', border: '1.5px solid #25D366', color: '#FFFFFF', flexShrink: 0, width: '32px', height: '32px' }}
+                                    >
+                                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 0C5.385 0 0 5.386 0 12.031c0 2.124.553 4.197 1.604 6.02L0 24l6.155-1.614A11.968 11.968 0 0 0 12.03 24c6.645 0 12.03-5.385 12.03-12.031C24.06 5.386 18.675 0 12.031 0zm.012 22.012c-1.808 0-3.585-.486-5.143-1.408l-.369-.219-3.817 1.001 1.019-3.721-.241-.383A9.99 9.99 0 0 1 2.012 12.03c0-5.524 4.496-10.02 10.031-10.02 5.524 0 10.02 4.496 10.02 10.02 0 5.536-4.496 10.012-10.02 10.012zm5.503-7.519c-.302-.152-1.785-.881-2.062-.981-.277-.101-.479-.152-.68.152-.202.302-.782.981-.959 1.183-.176.201-.353.226-.655.075-1.745-.875-2.894-1.559-4.04-3.535-.302-.52.302-.482.864-1.608.101-.201.05-.378-.025-.529-.075-.152-.68-1.636-.932-2.24-.244-.588-.493-.508-.68-.518-.176-.009-.378-.009-.58-.009-.201 0-.528.075-.804.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.92 1.233 3.122.151.201 2.128 3.25 5.156 4.558 2.164.935 2.809.845 3.791.7.636-.094 1.785-.73 2.037-1.435.252-.705.252-1.309.176-1.435-.076-.125-.278-.201-.58-.352z" /></svg>
+                                    </button>
                                   </div>
                                 </td>
 
-                                <td style={{ verticalAlign: 'top' }}>
+                                <td style={{ verticalAlign: 'middle', minWidth: '165px' }}>
                                   <select
-                                    value={cust.stage}
-                                    onChange={(e) => handleUpdateCustomerStage(cust.id, e.target.value)}
-                                    style={{ padding: '6px 10px', borderRadius: '4px', border: '1.5px solid var(--gold-border)', fontSize: '0.8rem', fontWeight: 800, background: 'var(--bg-cream)', color: '#1A0709', width: '100%', marginBottom: '6px', cursor: 'pointer' }}
+                                    value={cust.actionTaken || 'NEW LEAD'}
+                                    onChange={(e) => handleUpdateCustomerAction(cust.id, e.target.value)}
+                                    style={{
+                                      width: '100%',
+                                      padding: '8px 10px',
+                                      borderRadius: '4px',
+                                      border: '1.5px solid var(--gold-border)',
+                                      fontSize: '0.80rem',
+                                      fontWeight: 800,
+                                      letterSpacing: '0.4px',
+                                      cursor: 'pointer',
+                                      background:
+                                        (cust.actionTaken || 'NEW LEAD') === 'CONTACTED' ? 'rgba(198, 161, 91, 0.22)' :
+                                        (cust.actionTaken || 'NEW LEAD') === 'IN PROGRESS' ? 'rgba(44, 74, 111, 0.2)' :
+                                        (cust.actionTaken || 'NEW LEAD') === 'SITE VISIT SCHEDULED' ? 'rgba(40, 167, 69, 0.2)' :
+                                        (cust.actionTaken || 'NEW LEAD') === 'TOKEN PAID' ? 'rgba(169, 130, 58, 0.28)' :
+                                        (cust.actionTaken || 'NEW LEAD') === 'REJECTED' ? 'rgba(217, 83, 79, 0.2)' :
+                                        'rgba(26, 7, 9, 0.08)',
+                                      color:
+                                        (cust.actionTaken || 'NEW LEAD') === 'CONTACTED' ? '#8C6B28' :
+                                        (cust.actionTaken || 'NEW LEAD') === 'IN PROGRESS' ? '#2C4A6F' :
+                                        (cust.actionTaken || 'NEW LEAD') === 'SITE VISIT SCHEDULED' ? '#1e7e34' :
+                                        (cust.actionTaken || 'NEW LEAD') === 'TOKEN PAID' ? '#8C6B28' :
+                                        (cust.actionTaken || 'NEW LEAD') === 'REJECTED' ? '#C53030' :
+                                        '#1A0709'
+                                    }}
                                   >
-                                    <option value="INQUIRY">INQUIRY</option>
-                                    <option value="TOKEN_PAID">TOKEN PAID</option>
-                                    <option value="BOUGHT">BOUGHT</option>
+                                    <option value="NEW LEAD">NEW LEAD</option>
+                                    <option value="CONTACTED">CONTACTED</option>
+                                    <option value="IN PROGRESS">IN PROGRESS</option>
+                                    <option value="SITE VISIT SCHEDULED">SITE VISIT SCHEDULED</option>
+                                    <option value="TOKEN PAID">TOKEN PAID</option>
                                     <option value="REJECTED">REJECTED</option>
                                   </select>
-                                  <span style={{ ...stageBadgeStyle, fontSize: '0.7rem', fontWeight: 800, padding: '4px 10px', borderRadius: '4px', display: 'inline-block', width: '100%', textAlign: 'center', boxSizing: 'border-box' }}>
-                                    {stageLabel}
-                                  </span>
                                 </td>
 
-                                <td style={{ verticalAlign: 'top', textAlign: 'center' }}>
+                                <td style={{ verticalAlign: 'middle', textAlign: 'center' }}>
                                   <span style={{ fontSize: '0.68rem', fontWeight: 800, padding: '4px 8px', borderRadius: '12px', background: isManual ? 'rgba(198, 161, 91, 0.2)' : 'rgba(43, 67, 96, 0.12)', color: isManual ? '#8C6B28' : '#2B4360', border: `1px solid ${isManual ? '#C6A15B' : '#2B4360'}`, display: 'inline-block' }}>
                                     {cust.source}
                                   </span>
@@ -1769,7 +2384,7 @@ export default function AdminPage() {
 
                                     {/* WhatsApp button */}
                                     <a
-                                      href={`https://wa.me/${cleanPhone.length === 10 ? '91' + cleanPhone : cleanPhone}?text=Hello%20${encodeURIComponent(cust.name)},%20this%20is%20SHASHTIKA%20Plot%20Developers%20regarding%20your%20requirement%20for%20${encodeURIComponent(cust.requirement)}.`}
+                                      href={`https://wa.me/${cleanPhone.length === 10 ? '91' + cleanPhone : cleanPhone}?text=Hello%20${encodeURIComponent(cust.name)},%20this%20is%20SHASHTIKA%20Plot%20Developers%20regarding%20your%20property%20requirement.`}
                                       target="_blank"
                                       rel="noopener noreferrer"
                                       className="admin-icon-btn"
@@ -1783,20 +2398,20 @@ export default function AdminPage() {
                                     <button
                                       onClick={() => handleOpenAddCustomerModal(cust.id)}
                                       className="admin-icon-btn"
-                                      title={`Edit Customer ${cust.id}`}
-                                      style={{ background: 'var(--bg-cream)', border: '1.5px solid var(--gold-border)', color: '#1A0709' }}
+                                      title={`Edit ${cust.name}`}
+                                      style={{ background: 'var(--gold-primary)', border: '1.5px solid var(--gold-primary)', color: '#1A0709' }}
                                     >
-                                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+                                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1A0709" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>
                                     </button>
 
                                     {/* Delete button */}
                                     <button
                                       onClick={() => handleDeleteCustomer(cust.id)}
                                       className="admin-icon-btn"
-                                      title={`Delete Customer ${cust.id}`}
+                                      title={`Delete ${cust.name}`}
                                       style={{ background: '#D9534F', border: '1.5px solid #D9534F', color: '#FFFFFF' }}
                                     >
-                                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                                     </button>
                                   </div>
                                 </td>
@@ -1814,15 +2429,15 @@ export default function AdminPage() {
         </div>
       </section>
 
-      {/* STAFF ROSTER MANAGEMENT MODAL */}
+      {/* STAFF ROSTER MANAGEMENT MODAL WITH EDITABLE MOBILE NUMBERS */}
       {staffModalOpen && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(4px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div style={{ background: 'var(--bg-ivory)', border: '1.5px solid var(--gold-border)', borderRadius: 'var(--radius-md)', maxWidth: '480px', width: '100%', padding: '24px 28px', boxShadow: '0 20px 50px rgba(0,0,0,0.4)', position: 'relative' }}>
+        <div className="admin-modal-overlay" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(4px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div className="admin-modal-card admin-staff-modal-card" style={{ background: 'var(--bg-ivory)', border: '1.5px solid var(--gold-border)', borderRadius: 'var(--radius-md)', maxWidth: '640px', width: '100%', padding: '24px 28px', boxShadow: '0 20px 50px rgba(0,0,0,0.4)', position: 'relative', maxHeight: '90vh', overflowY: 'auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid var(--gold-border)', paddingBottom: '10px' }}>
               <div>
-                <span className="architectural-tag" style={{ fontSize: '0.65rem' }}>OWNER ADMIN CONTROL</span>
+                <span className="architectural-tag" style={{ fontSize: '0.65rem' }}>TEAM MANAGEMENT &amp; WHATSAPP DISPATCH</span>
                 <h3 style={{ color: '#1A0709', marginTop: '2px', fontSize: '1.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
-                  Manage 5 Staff / Agent Roster
+                  Manage Staff
                 </h3>
               </div>
               <button
@@ -1833,55 +2448,187 @@ export default function AdminPage() {
               </button>
             </div>
 
-            <p style={{ fontSize: '0.84rem', color: 'rgba(26,7,9,0.75)', marginBottom: '16px', lineHeight: 1.45 }}>
-              Customize the 5 staff member/agent names. Owner can assign these names to every received customer enquiry from the dropdown box.
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {tempStaff.map((staffVal, idx) => (
-                <div key={idx}>
-                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#1A0709', marginBottom: '3px' }}>
-                    STAFF MEMBER #{idx + 1}
-                  </label>
-                  <input
-                    type="text"
-                    value={staffVal}
-                    onChange={(e) => {
-                      const updated = [...tempStaff];
-                      updated[idx] = e.target.value;
-                      setTempStaff(updated);
-                    }}
-                    placeholder={`Staff Name ${idx + 1}`}
-                    required
-                    style={{
-                      width: '100%',
-                      padding: '8px 12px',
-                      fontSize: '0.88rem',
-                      borderRadius: '4px',
-                      border: '1px solid var(--gold-border)',
-                      background: 'var(--bg-cream)',
-                      color: '#1A0709',
-                      boxSizing: 'border-box'
-                    }}
-                  />
-                </div>
-              ))}
+            <div style={{ background: 'rgba(37, 211, 102, 0.1)', border: '1px solid rgba(37, 211, 102, 0.4)', borderRadius: '6px', padding: '10px 14px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#25D366" style={{ flexShrink: 0 }}><path d="M12.031 0C5.385 0 0 5.386 0 12.031c0 2.124.553 4.197 1.604 6.02L0 24l6.155-1.614A11.968 11.968 0 0 0 12.03 24c6.645 0 12.03-5.385 12.03-12.031C24.06 5.386 18.675 0 12.031 0zm.012 22.012c-1.808 0-3.585-.486-5.143-1.408l-.369-.219-3.817 1.001 1.019-3.721-.241-.383A9.99 9.99 0 0 1 2.012 12.03c0-5.524 4.496-10.02 10.031-10.02 5.524 0 10.02 4.496 10.02 10.02 0 5.536-4.496 10.012-10.02 10.012zm5.503-7.519c-.302-.152-1.785-.881-2.062-.981-.277-.101-.479-.152-.68.152-.202.302-.782.981-.959 1.183-.176.201-.353.226-.655.075-1.745-.875-2.894-1.559-4.04-3.535-.302-.52.302-.482.864-1.608.101-.201.05-.378-.025-.529-.075-.152-.68-1.636-.932-2.24-.244-.588-.493-.508-.68-.518-.176-.009-.378-.009-.58-.009-.201 0-.528.075-.804.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.92 1.233 3.122.151.201 2.128 3.25 5.156 4.558 2.164.935 2.809.845 3.791.7.636-.094 1.785-.73 2.037-1.435.252-.705.252-1.309.176-1.435-.076-.125-.278-.201-.58-.352z" /></svg>
+              <p style={{ margin: 0, fontSize: '0.80rem', color: '#1A0709', lineHeight: 1.4 }}>
+                <strong>Automated WhatsApp Notifications:</strong> When a customer is assigned to a staff member, their enquiry details will automatically reach that staff member&apos;s WhatsApp number.
+              </p>
             </div>
 
-            <div style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {tempStaff.map((staffObj, idx) => {
+                const sName = typeof staffObj === 'string' ? staffObj : staffObj.name || '';
+                const sPhone = typeof staffObj === 'string' ? '' : staffObj.phone || '';
+
+                return (
+                  <div
+                    className="admin-staff-row"
+                    key={staffObj.id || idx}
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: '1.4fr 1.1fr auto',
+                      gap: '10px',
+                      alignItems: 'center',
+                      background: 'var(--bg-cream)',
+                      border: '1px solid var(--gold-border)',
+                      borderRadius: '6px',
+                      padding: '10px 12px'
+                    }}
+                  >
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 800, color: '#1A0709', marginBottom: '3px' }}>
+                        STAFF #{idx + 1} NAME &amp; DESIGNATION
+                      </label>
+                      <input
+                        type="text"
+                        value={sName}
+                        onChange={(e) => {
+                          const updated = [...tempStaff];
+                          updated[idx] = {
+                            id: staffObj.id || `STAFF-${idx + 1}`,
+                            name: e.target.value,
+                            phone: sPhone
+                          };
+                          setTempStaff(updated);
+                        }}
+                        placeholder="e.g. Ramesh Kumar (Sales Lead)"
+                        required
+                        style={{
+                          width: '100%',
+                          padding: '8px 10px',
+                          fontSize: '0.86rem',
+                          borderRadius: '4px',
+                          border: '1px solid var(--gold-border)',
+                          background: '#FFFDF8',
+                          color: '#1A0709',
+                          boxSizing: 'border-box'
+                        }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 800, color: '#1A0709', marginBottom: '3px' }}>
+                        WHATSAPP NUMBER
+                      </label>
+                      <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                        <span style={{ position: 'absolute', left: '8px', fontSize: '0.75rem', fontWeight: 800, color: '#25D366' }}>
+                          +91
+                        </span>
+                        <input
+                          type="tel"
+                          value={sPhone}
+                          onChange={(e) => {
+                            const updated = [...tempStaff];
+                            updated[idx] = {
+                              id: staffObj.id || `STAFF-${idx + 1}`,
+                              name: sName,
+                              phone: e.target.value
+                            };
+                            setTempStaff(updated);
+                          }}
+                          placeholder="93635 99754"
+                          required
+                          style={{
+                            width: '100%',
+                            padding: '8px 10px 8px 36px',
+                            fontSize: '0.86rem',
+                            borderRadius: '4px',
+                            border: '1px solid var(--gold-border)',
+                            background: '#FFFDF8',
+                            color: '#1A0709',
+                            boxSizing: 'border-box'
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ paddingTop: '16px' }}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (tempStaff.length <= 1) {
+                            alert('You must have at least one staff member in the roster.');
+                            return;
+                          }
+                          setTempStaff(tempStaff.filter((_, i) => i !== idx));
+                        }}
+                        className="admin-icon-btn"
+                        title={`Remove ${sName || 'Staff Member'}`}
+                        style={{ background: '#D9534F', border: '1.5px solid #D9534F', color: '#FFF' }}
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Add new staff member button */}
+            <div style={{ marginTop: '14px' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setTempStaff([
+                    ...tempStaff,
+                    {
+                      id: `STAFF-${Date.now()}`,
+                      name: '',
+                      phone: '9363599754'
+                    }
+                  ]);
+                }}
+                style={{
+                  fontSize: '0.80rem',
+                  padding: '9px 16px',
+                  fontWeight: 800,
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  background: '#1A0709',
+                  color: '#F3E5AB',
+                  border: '1.5px solid #C6A15B',
+                  boxShadow: '0 2px 8px rgba(26, 7, 9, 0.2)'
+                }}
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                ADD STAFF MEMBER
+              </button>
+            </div>
+
+            <div style={{ marginTop: '22px', display: 'flex', gap: '12px', justifyContent: 'flex-end', borderTop: '1px solid var(--gold-border)', paddingTop: '16px' }}>
               <button
                 onClick={() => setStaffModalOpen(false)}
-                className="btn btn-outline-gold"
-                style={{ fontSize: '0.78rem', padding: '7px 14px', cursor: 'pointer' }}
+                style={{
+                  fontSize: '0.80rem',
+                  padding: '9px 18px',
+                  fontWeight: 700,
+                  borderRadius: '6px',
+                  border: '1.5px solid #718096',
+                  background: '#FFFFFF',
+                  color: '#1A0709',
+                  cursor: 'pointer'
+                }}
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveStaffRoster}
-                className="btn btn-gold"
-                style={{ fontSize: '0.78rem', padding: '7px 18px', fontWeight: 800, cursor: 'pointer' }}
+                style={{
+                  fontSize: '0.80rem',
+                  padding: '9px 22px',
+                  fontWeight: 800,
+                  borderRadius: '6px',
+                  border: '1.5px solid #047857',
+                  background: '#065F46',
+                  color: '#FFFFFF',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(6, 95, 70, 0.25)'
+                }}
               >
-                SAVE STAFF ROSTER &check;
+                SAVE STAFF ROSTER
               </button>
             </div>
           </div>
@@ -1890,8 +2637,8 @@ export default function AdminPage() {
 
       {/* ADD / EDIT CUSTOMER RECORD MODAL */}
       {customerModalOpen && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(4px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div style={{ background: 'var(--bg-ivory)', border: '1.5px solid var(--gold-border)', borderRadius: 'var(--radius-md)', maxWidth: '540px', width: '100%', padding: '24px 28px', boxShadow: '0 20px 50px rgba(0,0,0,0.4)', position: 'relative', maxHeight: '90vh', overflowY: 'auto' }}>
+        <div className="admin-modal-overlay" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(4px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div className="admin-modal-card admin-customer-modal-card" style={{ background: 'var(--bg-ivory)', border: '1.5px solid var(--gold-border)', borderRadius: 'var(--radius-md)', maxWidth: '540px', width: '100%', padding: '24px 28px', boxShadow: '0 20px 50px rgba(0,0,0,0.4)', position: 'relative', maxHeight: '90vh', overflowY: 'auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid var(--gold-border)', paddingBottom: '10px' }}>
               <div>
                 <span className="architectural-tag" style={{ fontSize: '0.65rem' }}>ADMIN CRM ENTRY</span>
@@ -1963,36 +2710,24 @@ export default function AdminPage() {
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <div>
-                  <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1A0709', display: 'block', marginBottom: '4px' }}>
-                    ASSIGNED STAFF / AGENT
-                  </label>
-                  <select
-                    value={custForm.assignedStaff}
-                    onChange={(e) => setCustForm({ ...custForm, assignedStaff: e.target.value })}
-                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#1A0709', fontWeight: 600, boxSizing: 'border-box', cursor: 'pointer' }}
-                  >
-                    {staffRoster.map((s) => (
-                      <option key={s} value={s}>{s}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1A0709', display: 'block', marginBottom: '4px' }}>
-                    CONVERSION STAGE / STATUS
-                  </label>
-                  <select
-                    value={custForm.stage}
-                    onChange={(e) => setCustForm({ ...custForm, stage: e.target.value })}
-                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#1A0709', fontWeight: 600, boxSizing: 'border-box', cursor: 'pointer' }}
-                  >
-                    <option value="INQUIRY">INQUIRY (Initial Stage)</option>
-                    <option value="TOKEN_PAID">TOKEN PAID (Advance Paid)</option>
-                    <option value="BOUGHT">BOUGHT (Registered &amp; Closed)</option>
-                    <option value="REJECTED">REJECTED (Not Interested / Cancelled)</option>
-                  </select>
-                </div>
+              <div>
+                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1A0709', display: 'block', marginBottom: '4px' }}>
+                  ASSIGNED STAFF / AGENT
+                </label>
+                <select
+                  value={custForm.assignedStaff}
+                  onChange={(e) => setCustForm({ ...custForm, assignedStaff: e.target.value })}
+                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#1A0709', fontWeight: 600, boxSizing: 'border-box', cursor: 'pointer' }}
+                >
+                  {staffRoster.map((s) => {
+                    const sName = typeof s === 'string' ? s : s.name;
+                    return (
+                      <option key={sName} value={sName}>
+                        {sName}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
 
               <div>

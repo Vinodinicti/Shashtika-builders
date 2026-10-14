@@ -8,10 +8,10 @@ export default function Footer() {
     <>
       <footer className="bg-[#1A0709] text-cream pt-16 pb-8 border-t border-gold-primary/70 shadow-[0_-8px_30px_rgba(26,7,9,0.35)] relative z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+          <div className="footer-main-grid grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14 mb-12">
             
             {/* Col 1: Brand & Identity */}
-            <div>
+            <div className="footer-col-brand">
               <div className="flex items-center gap-3 mb-2">
                 <img
                   src="/Images/Shashtika_Emblem.png"
@@ -23,21 +23,21 @@ export default function Footer() {
                 </span>
               </div>
               <span className="font-mono text-[10px] tracking-[2px] text-gold-antique uppercase block mb-3">
-                PLOT DEVELOPERS & BUILDERS • EST. 2004
+                PLOT DEVELOPERS &amp; BUILDERS • EST. 2004
               </span>
               <p className="font-body text-xs text-biscuit-200/80 leading-relaxed mb-4">
-                Pioneering premium DTCP & RERA approved plot enclaves, farm residency layouts, and custom building construction across Coimbatore & Pollachi.
+                Pioneering premium DTCP &amp; RERA approved plot enclaves, farm residency layouts, and custom building construction across Coimbatore &amp; Pollachi.
               </p>
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded bg-[#2A0F13] border border-gold-border/40 text-[10px] font-mono font-bold text-gold-light tracking-wider uppercase">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.5">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 </svg>
-                <span>100% LEGAL & DTCP APPROVED</span>
+                <span>100% LEGAL &amp; DTCP APPROVED</span>
               </div>
             </div>
 
             {/* Col 2: Navigation Links */}
-            <div className="footer-col">
+            <div className="footer-col footer-col-links">
               <h4 className="font-mono text-xs font-bold tracking-widest text-gold-light uppercase mb-4">
                 QUICK LINKS
               </h4>
@@ -50,51 +50,17 @@ export default function Footer() {
               </ul>
             </div>
 
-            {/* Col 3: Regional Offices */}
-            <div className="footer-col">
-              <h4 className="font-mono text-xs font-bold tracking-widest text-gold-light uppercase mb-4">
-                REGIONAL OFFICES
-              </h4>
-              <div className="footer-offices-wrap space-y-4">
-                <div className="footer-office-card">
-                  <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-cream mb-0.5">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.2">
-                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                      <circle cx="12" cy="10" r="3" />
-                    </svg>
-                    <span>COIMBATORE</span>
-                  </div>
-                  <p className="font-body text-xs text-biscuit-200/70">
-                    Peelamedu & Hope College Main Road Highway Corridor
-                  </p>
-                </div>
-
-                <div className="footer-office-card">
-                  <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-cream mb-0.5">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.2">
-                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                      <circle cx="12" cy="10" r="3" />
-                    </svg>
-                    <span>POLLACHI</span>
-                  </div>
-                  <p className="font-body text-xs text-biscuit-200/70">
-                    Mahalingapuram Main Road & Green Vistas Corridor
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Col 4: Direct Contact & Socials */}
-            <div>
+            {/* Col 3: Direct Contact & Socials */}
+            <div className="footer-col footer-col-contact">
               <h4 className="font-mono text-xs font-bold tracking-widest text-gold-light uppercase mb-4">
                 DIRECT CONTACT
               </h4>
-              <p className="font-body text-xs text-biscuit-200/80 leading-relaxed mb-4">
+              <p className="font-body text-xs text-biscuit-200/80 leading-relaxed mb-4 footer-contact-desc">
                 Connect with our advisors instantly via phone, WhatsApp, or follow our developments on social media.
               </p>
               
               {/* Sleek Luxury Icon Row */}
-              <div className="flex items-center gap-3 flex-wrap">
+              <div className="footer-contact-icons flex items-center gap-3 flex-wrap">
                 {/* Phone Call */}
                 <a
                   href="tel:+919363599754"
@@ -166,7 +132,7 @@ export default function Footer() {
               </div>
 
               {/* Quick Contact Info */}
-              <div className="mt-4 pt-3 border-t border-gold-border/20 font-mono text-[11px] text-biscuit-200/70">
+              <div className="mt-4 pt-3 border-t border-gold-border/20 font-mono text-[11px] text-biscuit-200/70 footer-helpline-box">
                 <span>Helpline: </span>
                 <a href="tel:+919363599754" className="text-gold-light font-bold hover:underline">
                   +91 93635 99754

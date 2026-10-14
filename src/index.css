@@ -214,6 +214,23 @@ body {
   pointer-events: none;
 }
 
+@media (max-width: 991px) {
+  .hero-text-blend-overlay {
+    width: 100%;
+    background: 
+      linear-gradient(180deg, 
+        rgba(26, 7, 9, 0.90) 0%, 
+        rgba(26, 7, 9, 0.72) 35%, 
+        rgba(26, 7, 9, 0.78) 70%, 
+        rgba(26, 7, 9, 0.92) 100%
+      ),
+      linear-gradient(90deg, 
+        rgba(26, 7, 9, 0.88) 0%, 
+        rgba(26, 7, 9, 0.45) 100%
+      );
+  }
+}
+
 .hero-fit-content {
   position: relative;
   z-index: 3;
@@ -3234,15 +3251,22 @@ body {
 @media (max-width: 991px) {
   .gallery-hero-bg-img {
     width: 100%;
-    opacity: 0.55;
+    opacity: 1;
+    filter: brightness(0.92);
   }
   .gallery-hero-fade {
     width: 100%;
-    background: linear-gradient(180deg, 
-      rgba(26, 7, 9, 0.96) 0%, 
-      rgba(26, 7, 9, 0.88) 60%, 
-      rgba(26, 7, 9, 0.35) 100%
-    );
+    background: 
+      linear-gradient(180deg, 
+        rgba(26, 7, 9, 0.90) 0%, 
+        rgba(26, 7, 9, 0.72) 35%, 
+        rgba(26, 7, 9, 0.78) 70%, 
+        rgba(26, 7, 9, 0.92) 100%
+      ),
+      linear-gradient(90deg, 
+        rgba(26, 7, 9, 0.88) 0%, 
+        rgba(26, 7, 9, 0.45) 100%
+      );
   }
 }
 
@@ -4011,14 +4035,20 @@ body {
   pointer-events: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 991px) {
   .contact-hero-fade {
     width: 100%;
-    background: linear-gradient(180deg, 
-      rgba(26, 7, 9, 0.92) 0%, 
-      rgba(26, 7, 9, 0.82) 60%, 
-      rgba(26, 7, 9, 0.5) 100%
-    );
+    background: 
+      linear-gradient(180deg, 
+        rgba(26, 7, 9, 0.90) 0%, 
+        rgba(26, 7, 9, 0.72) 35%, 
+        rgba(26, 7, 9, 0.78) 70%, 
+        rgba(26, 7, 9, 0.92) 100%
+      ),
+      linear-gradient(90deg, 
+        rgba(26, 7, 9, 0.88) 0%, 
+        rgba(26, 7, 9, 0.45) 100%
+      );
   }
 }
 
