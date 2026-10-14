@@ -190,7 +190,8 @@ export default function AdminPage() {
     const saved = localStorage.getItem('shashtika_admin_leads');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
       } catch (e) {}
     }
     return DEFAULT_AI_LEADS;
@@ -204,7 +205,8 @@ export default function AdminPage() {
     const saved = localStorage.getItem('shashtika_plots_inventory');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
       } catch (e) {}
     }
     return PLOTS_DATA;
@@ -220,7 +222,8 @@ export default function AdminPage() {
     const saved = localStorage.getItem('shashtika_customers_registry') || localStorage.getItem('vels_manual_customers');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
       } catch (e) {}
     }
     return DEFAULT_CUSTOMERS;
@@ -271,7 +274,7 @@ export default function AdminPage() {
         const res = await fetch('/api/enquiries');
         if (res.ok) {
           const json = await res.json();
-          if (json.success && Array.isArray(json.data)) {
+          if (json && json.success && Array.isArray(json.data)) {
             backendList = json.data;
           }
         }
@@ -280,81 +283,93 @@ export default function AdminPage() {
           const res2 = await fetch('http://localhost:5000/api/enquiries');
           if (res2.ok) {
             const json2 = await res2.json();
-            if (json2.success && Array.isArray(json2.data)) {
+            if (json2 && json2.success && Array.isArray(json2.data)) {
               backendList = json2.data;
             }
           }
         } catch (e2) {}
       }
 
-      const localEnquiries = JSON.parse(localStorage.getItem('shashtika_enquiries') || '[]');
+      let localEnquiries = [];
+      try {
+        const parsed = JSON.parse(localStorage.getItem('shashtika_enquiries') || '[]');
+        if (Array.isArray(parsed)) localEnquiries = parsed;
+      } catch (e) {}
       
-      // Combine unique enquiries
+      // Combine unique enquiries safely
       const allRaw = [...backendList];
       localEnquiries.forEach((item) => {
-        const cleanP = (item.phone || '').replace(/\D/g, '').slice(-10);
-        if (!allRaw.some((b) => b.id === item.id || (cleanP && (b.phone || '').replace(/\D/g, '').slice(-10) === cleanP))) {
+        if (!item) return;
+        const cleanP = String(item.phone || '').replace(/\D/g, '').slice(-10);
+        const itemId = String(item.id || '');
+        if (!allRaw.some((b) => b && (String(b.id || '') === itemId || (cleanP && String(b.phone || '').replace(/\D/g, '').slice(-10) === cleanP)))) {
           allRaw.push(item);
         }
       });
 
       if (allRaw.length > 0) {
-        // Map to leads format
+        // Map to leads format with strict type guards
         const convertedLeads = allRaw.map((item) => {
-          const score = item.aiScore || 85;
+          if (!item) return null;
+          const score = Number(item.aiScore) || 85;
           const cat = score >= 80 ? 'HOT' : score >= 60 ? 'WARM' : 'COLD';
-          const plot = item.plotNumber || item.targetPlot || 'General Layout';
+          const plotRaw = String(item.plotNumber || item.targetPlot || 'General Layout');
           const dt = item.createdAt 
             ? new Date(item.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
-            : (item.date || 'Today');
+            : String(item.date || 'Today');
 
           return {
-            id: item.id || `LEAD-${Date.now()}`,
-            name: item.customerName || item.name || 'Direct Enquirer',
-            phone: item.phone || '',
-            email: item.email || 'N/A',
-            location: item.project || item.location || 'Coimbatore & Pollachi Corridors',
-            purpose: item.purpose || 'Residential Construction',
-            budget: item.budget || '₹ 25.00 - 40.00 Lakhs',
-            timeline: item.timeline || 'Immediate',
-            targetPlot: plot.startsWith('Plot') ? plot : `Plot #${plot}`,
+            id: String(item.id || `LEAD-${Date.now()}`),
+            name: String(item.customerName || item.name || 'Direct Enquirer'),
+            phone: String(item.phone || ''),
+            email: String(item.email || 'N/A'),
+            location: String(item.project || item.location || 'Coimbatore & Pollachi Corridors'),
+            purpose: String(item.purpose || 'Residential Construction'),
+            budget: String(item.budget || '₹ 25.00 - 40.00 Lakhs'),
+            timeline: String(item.timeline || 'Immediate'),
+            targetPlot: plotRaw.toLowerCase().startsWith('plot') ? plotRaw : `Plot #${plotRaw}`,
             score: score,
             category: cat,
-            assignedStaff: item.assignedStaff || DEFAULT_STAFF_ROSTER[0],
-            recommendation: item.aiSummary || item.recommendedAction || item.recommendation || 'Direct call from Senior Project Engineer within 30 minutes',
+            assignedStaff: String(item.assignedStaff || DEFAULT_STAFF_ROSTER[0]),
+            recommendation: String(item.aiSummary || item.recommendedAction || item.recommendation || 'Direct call from Senior Project Engineer within 30 minutes'),
             date: dt,
-            notes: item.message || item.notes || 'Website Enquiry via Contact Page'
+            notes: String(item.message || item.notes || 'Website Enquiry via Contact Page')
           };
-        });
+        }).filter(Boolean);
 
         setLeads((prev) => {
-          const existingIds = new Set(prev.map((l) => l.id));
-          const toAdd = convertedLeads.filter((nl) => !existingIds.has(nl.id));
-          if (toAdd.length === 0) return prev;
-          return [...toAdd, ...prev];
+          const list = Array.isArray(prev) ? prev : [];
+          const existingIds = new Set(list.map((l) => l && l.id));
+          const toAdd = convertedLeads.filter((nl) => nl && !existingIds.has(nl.id));
+          if (toAdd.length === 0) return list;
+          return [...toAdd, ...list];
         });
 
-        // Also ensure customer registry has them
+        // Also ensure customer registry has them safely
         setCustomers((prev) => {
-          const updated = [...prev];
+          const list = Array.isArray(prev) ? prev : [];
+          const updated = [...list];
           allRaw.forEach((item) => {
-            const cPhone = (item.phone || '').replace(/\D/g, '').slice(-10);
-            const exists = updated.some((c) => (c.phone || '').replace(/\D/g, '').slice(-10) === cPhone);
+            if (!item) return;
+            const cPhone = String(item.phone || '').replace(/\D/g, '').slice(-10);
+            const exists = updated.some((c) => c && String(c.phone || '').replace(/\D/g, '').slice(-10) === cPhone);
             if (!exists && cPhone) {
               const dt = item.createdAt 
                 ? new Date(item.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
-                : (item.date || 'Today');
+                : String(item.date || 'Today');
+              const rawId = String(item.id || '');
+              const cleanNum = rawId.replace(/[^0-9]/g, '').slice(-5) || Math.floor(10000 + Math.random() * 90000);
               updated.unshift({
-                id: `CUST-WEB-${item.id ? item.id.replace(/[^0-9]/g, '').slice(-5) : Math.floor(10000 + Math.random() * 90000)}`,
-                name: item.customerName || item.name || 'Website Client',
-                phone: item.phone || '',
-                email: item.email || 'N/A',
-                requirement: `${item.plotNumber || 'General Layout'} (${item.project || 'Pollachi'})`,
+                id: `CUST-WEB-${cleanNum}`,
+                name: String(item.customerName || item.name || 'Website Client'),
+                phone: String(item.phone || ''),
+                email: String(item.email || 'N/A'),
+                requirement: `${String(item.plotNumber || 'General Layout')} (${String(item.project || 'Pollachi')})`,
                 assignedStaff: DEFAULT_STAFF_ROSTER[0],
                 stage: 'INQUIRY',
                 source: 'WEB ENQUIRY',
                 date: dt,
-                notes: item.message || 'Website Enquiry via Contact Page'
+                notes: String(item.message || 'Website Enquiry via Contact Page')
               });
             }
           });
@@ -585,39 +600,50 @@ export default function AdminPage() {
     );
   };
 
-  // Filtered Leads
+  // Filtered Leads (Safe against null/undefined)
   const filteredLeads = useMemo(() => {
-    return leads.filter((lead) => {
+    const list = Array.isArray(leads) ? leads : [];
+    return list.filter((lead) => {
+      if (!lead) return false;
       const matchCat = leadCategoryFilter === 'ALL' || lead.category === leadCategoryFilter;
-      const q = leadSearchQuery.toLowerCase().trim();
+      const q = (leadSearchQuery || '').toLowerCase().trim();
+      if (!q) return matchCat;
+      const name = String(lead.name || '').toLowerCase();
+      const phone = String(lead.phone || '');
+      const targetPlot = String(lead.targetPlot || '').toLowerCase();
+      const staff = String(lead.assignedStaff || '').toLowerCase();
+      const email = String(lead.email || '').toLowerCase();
       const matchSearch =
-        !q ||
-        lead.name.toLowerCase().includes(q) ||
-        lead.phone.includes(q) ||
-        lead.targetPlot.toLowerCase().includes(q) ||
-        lead.assignedStaff.toLowerCase().includes(q) ||
-        lead.email.toLowerCase().includes(q);
+        name.includes(q) ||
+        phone.includes(q) ||
+        targetPlot.includes(q) ||
+        staff.includes(q) ||
+        email.includes(q);
       return matchCat && matchSearch;
     });
   }, [leads, leadCategoryFilter, leadSearchQuery]);
 
   // Lead Counts
-  const hotLeadsCount = leads.filter((l) => l.category === 'HOT').length;
-  const warmLeadsCount = leads.filter((l) => l.category === 'WARM').length;
-  const coldLeadsCount = leads.filter((l) => l.category === 'COLD').length;
-  const topScore = leads.length > 0 ? Math.max(...leads.map((l) => l.score)) : 98;
+  const hotLeadsCount = (Array.isArray(leads) ? leads : []).filter((l) => l && l.category === 'HOT').length;
+  const warmLeadsCount = (Array.isArray(leads) ? leads : []).filter((l) => l && l.category === 'WARM').length;
+  const coldLeadsCount = (Array.isArray(leads) ? leads : []).filter((l) => l && l.category === 'COLD').length;
+  const topScore = Array.isArray(leads) && leads.length > 0 
+    ? Math.max(...leads.map((l) => Number(l && l.score) || 0)) 
+    : 98;
 
-  // Filtered Plots
+  // Filtered Plots (Safe against null/undefined)
   const filteredPlots = useMemo(() => {
-    const q = plotSearchQuery.toLowerCase().trim().replace(/^(plot|plot\s*#?)\s*/i, '');
-    return plots.filter((plot) => {
+    const list = Array.isArray(plots) ? plots : [];
+    const q = (plotSearchQuery || '').toLowerCase().trim().replace(/^(plot|plot\s*#?)\s*/i, '');
+    return list.filter((plot) => {
+      if (!plot) return false;
       const matchStatus = plotStatusFilter === 'ALL' || plot.status === plotStatusFilter;
-      const numStr = String(plot.number).toLowerCase();
-      const facingStr = plot.facing.toLowerCase();
-      const roadStr = plot.road.toLowerCase();
-      const sqftStr = String(plot.sqft);
+      if (!q) return matchStatus;
+      const numStr = String(plot.number || '').toLowerCase();
+      const facingStr = String(plot.facing || '').toLowerCase();
+      const roadStr = String(plot.road || '').toLowerCase();
+      const sqftStr = String(plot.sqft || '');
       const matchSearch =
-        !q ||
         numStr === q ||
         numStr.includes(q) ||
         facingStr.includes(q) ||
@@ -635,28 +661,35 @@ export default function AdminPage() {
   const plotEndIndex = Math.min(plotStartIndex + plotPageSize, totalPlotRecords);
   const paginatedPlots = filteredPlots.slice(plotStartIndex, plotEndIndex);
 
-  // Filtered Customers
+  // Filtered Customers (Safe against null/undefined)
   const filteredCustomers = useMemo(() => {
-    const q = customerSearchQuery.toLowerCase().trim();
-    return customers.filter((cust) => {
+    const list = Array.isArray(customers) ? customers : [];
+    const q = (customerSearchQuery || '').toLowerCase().trim();
+    return list.filter((cust) => {
+      if (!cust) return false;
       const matchStage = customerFilter === 'ALL' || cust.stage === customerFilter;
+      if (!q) return matchStage;
+      const name = String(cust.name || '').toLowerCase();
+      const phone = String(cust.phone || '');
+      const req = String(cust.requirement || '').toLowerCase();
+      const notes = String(cust.notes || '').toLowerCase();
+      const staff = String(cust.assignedStaff || '').toLowerCase();
       const matchSearch =
-        !q ||
-        cust.name.toLowerCase().includes(q) ||
-        cust.phone.includes(q) ||
-        cust.requirement.toLowerCase().includes(q) ||
-        cust.notes.toLowerCase().includes(q) ||
-        cust.assignedStaff.toLowerCase().includes(q);
+        name.includes(q) ||
+        phone.includes(q) ||
+        req.includes(q) ||
+        notes.includes(q) ||
+        staff.includes(q);
       return matchStage && matchSearch;
     });
   }, [customers, customerFilter, customerSearchQuery]);
 
   // Customer Counts
-  const custCountAll = customers.length;
-  const custCountInquiry = customers.filter((c) => c.stage === 'INQUIRY').length;
-  const custCountToken = customers.filter((c) => c.stage === 'TOKEN_PAID').length;
-  const custCountBought = customers.filter((c) => c.stage === 'BOUGHT').length;
-  const custCountRejected = customers.filter((c) => c.stage === 'REJECTED').length;
+  const custCountAll = (Array.isArray(customers) ? customers : []).length;
+  const custCountInquiry = (Array.isArray(customers) ? customers : []).filter((c) => c && c.stage === 'INQUIRY').length;
+  const custCountToken = (Array.isArray(customers) ? customers : []).filter((c) => c && c.stage === 'TOKEN_PAID').length;
+  const custCountBought = (Array.isArray(customers) ? customers : []).filter((c) => c && c.stage === 'BOUGHT').length;
+  const custCountRejected = (Array.isArray(customers) ? customers : []).filter((c) => c && c.stage === 'REJECTED').length;
 
   // 1. RENDER LOGIN GATEWAY IF NOT AUTHENTICATED (MATCHING USER SCREENSHOT)
   if (!isAuthenticated) {
