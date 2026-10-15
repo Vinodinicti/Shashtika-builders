@@ -1732,6 +1732,10 @@
     border-radius: 4px !important;
   }
 
+  .project-spec-item:nth-child(5):last-child {
+    grid-column: span 2 !important;
+  }
+
   .project-spec-label {
     font-size: 0.48rem !important;
     letter-spacing: 0.6px !important;
