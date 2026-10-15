@@ -381,8 +381,8 @@ body {
 .stat-card {
   width: 100%;
   height: 56px;
-  background: linear-gradient(135deg, #F8E7BE 0%, #E9CC8C 20%, #D4AF37 50%, #C49B2E 80%, #AA8122 100%);
-  border: 1.5px solid #8A641A;
+  background: linear-gradient(135deg, #FBF4E2 0%, #EEDBB3 30%, #D8BE82 70%, #C6A15B 100%);
+  border: 1.5px solid var(--gold-primary);
   border-radius: 6px;
   padding: 5px 8px;
   text-align: center;
@@ -393,10 +393,10 @@ body {
   position: relative;
   overflow: hidden;
   box-shadow: 
-    0 8px 24px rgba(26, 7, 9, 0.45),
-    inset 0 1px 1px rgba(255, 255, 255, 0.85),
-    inset 0 -1px 2px rgba(100, 70, 15, 0.45),
-    0 0 14px rgba(212, 175, 55, 0.35);
+    0 8px 22px rgba(10, 19, 37, 0.28),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.9),
+    inset 0 -1px 2px rgba(169, 130, 58, 0.35),
+    0 0 14px rgba(198, 161, 91, 0.3);
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -408,7 +408,7 @@ body {
   left: 0;
   width: 100%;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #FFFFFF, #FFF2D1, #FFFFFF, transparent);
+  background: linear-gradient(90deg, transparent, #FFFFFF, #FFF7E6, #FFFFFF, transparent);
   transition: all 0.35s ease;
 }
 
@@ -434,12 +434,12 @@ body {
 
 .stat-card:hover {
   transform: translateY(-3px) scale(1.025);
-  background: linear-gradient(135deg, #FFF0CB 0%, #F0D597 20%, #DFBA47 50%, #CEA538 80%, #B58C2B 100%);
-  border-color: #6D4D10;
+  background: linear-gradient(135deg, #FFFDF6 0%, #FAF0D8 25%, #EED59B 60%, #D4AF5F 100%);
+  border-color: var(--gold-antique);
   box-shadow: 
-    0 12px 28px rgba(26, 7, 9, 0.55),
+    0 12px 28px rgba(10, 19, 37, 0.35),
     inset 0 1px 1.5px rgba(255, 255, 255, 1),
-    0 0 22px rgba(212, 175, 55, 0.6);
+    0 0 20px rgba(198, 161, 91, 0.55);
 }
 
 .stat-card:hover::before {
@@ -451,18 +451,18 @@ body {
   font-family: var(--font-heading);
   font-size: clamp(1.24rem, 1.6vw, 1.48rem);
   font-weight: 800;
-  color: #1A0709;
+  color: #0A1325;
   display: block;
   line-height: 1;
   margin-bottom: 2px;
   transition: transform 0.3s ease, color 0.3s ease;
-  text-shadow: 0 1px 1px rgba(255, 248, 220, 0.75);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.5px;
 }
 
 .stat-card:hover .stat-number {
-  color: #000000;
+  color: #050B17;
   transform: scale(1.06);
 }
 
@@ -470,18 +470,18 @@ body {
   font-family: var(--font-mono);
   font-size: 0.62rem;
   letter-spacing: 1px;
-  color: #2D0E12;
+  color: #0A1325;
   text-transform: uppercase;
   font-weight: 800;
   display: block;
   text-align: center;
   line-height: 1.15;
   transition: color 0.3s ease;
-  text-shadow: 0 0.5px 0.5px rgba(255, 248, 220, 0.6);
+  text-shadow: 0 0.5px 0.5px rgba(255, 255, 255, 0.5);
 }
 
 .stat-card:hover .stat-label {
-  color: #000000;
+  color: #050B17;
 }
 
 @media (max-width: 991px) {

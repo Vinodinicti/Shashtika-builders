@@ -45,35 +45,37 @@
 @media (max-width: 768px) {
   /* Header Bar */
   header {
-    padding-top: max(8px, env(safe-area-inset-top, 8px)) !important;
-    padding-bottom: 8px !important;
+    padding-top: max(6px, env(safe-area-inset-top, 6px)) !important;
+    padding-bottom: 6px !important;
   }
 
+  header .h-\[44px\],
   header .h-\[56px\] {
-    height: 48px !important;
+    height: 38px !important;
   }
 
   /* Brand Logo & Typography in Header */
   header .logo-title {
-    font-size: 1.18rem !important;
-    letter-spacing: 1.5px !important;
+    font-size: 1.05rem !important;
+    letter-spacing: 1.2px !important;
     line-height: 1.1 !important;
   }
 
+  header .font-mono.tracking-\[1\.5px\],
   header .font-mono.tracking-\[2px\] {
-    font-size: 0.52rem !important;
-    letter-spacing: 1.2px !important;
+    font-size: 0.48rem !important;
+    letter-spacing: 1px !important;
   }
 
   header img {
-    height: 32px !important;
+    height: 26px !important;
   }
 
   /* Hamburger Menu Button */
   header button[aria-label="Open Navigation Menu"] {
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
   }
 
   /* Navigation Drawer Panel - Opens Half Page */
@@ -99,17 +101,18 @@
 
 @media (max-width: 420px) {
   header .logo-title {
-    font-size: 1.08rem !important;
-    letter-spacing: 1px !important;
-  }
-
-  header .font-mono.tracking-\[2px\] {
-    font-size: 0.48rem !important;
+    font-size: 0.98rem !important;
     letter-spacing: 0.8px !important;
   }
 
+  header .font-mono.tracking-\[1\.5px\],
+  header .font-mono.tracking-\[2px\] {
+    font-size: 0.44rem !important;
+    letter-spacing: 0.6px !important;
+  }
+
   header img {
-    height: 28px !important;
+    height: 24px !important;
   }
 }
 
@@ -409,14 +412,14 @@
     width: 100% !important;
     height: 54px !important;
     padding: 4px 6px !important;
-    background: linear-gradient(135deg, #F8E7BE 0%, #E9CC8C 20%, #D4AF37 50%, #C49B2E 80%, #AA8122 100%) !important;
-    border: 1.5px solid #8A641A !important;
+    background: linear-gradient(135deg, #FBF4E2 0%, #EEDBB3 30%, #D8BE82 70%, #C6A15B 100%) !important;
+    border: 1.5px solid var(--gold-primary) !important;
     border-radius: 6px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    box-shadow: 0 6px 18px rgba(26, 7, 9, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.85), inset 0 -1px 2px rgba(100, 70, 15, 0.45) !important;
+    box-shadow: 0 6px 18px rgba(10, 19, 37, 0.28), inset 0 1px 1.5px rgba(255, 255, 255, 0.9), inset 0 -1px 2px rgba(169, 130, 58, 0.35) !important;
     position: relative !important;
     overflow: hidden !important;
   }
@@ -424,11 +427,11 @@
   .hero-stats-banner .stat-number {
     font-size: 1.22rem !important;
     line-height: 1 !important;
-    color: #1A0709 !important;
+    color: #0A1325 !important;
     font-weight: 800 !important;
     font-family: var(--font-heading) !important;
     margin-bottom: 2px !important;
-    text-shadow: 0 1px 1px rgba(255, 248, 220, 0.75) !important;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6) !important;
     font-variant-numeric: tabular-nums !important;
     letter-spacing: 0.5px !important;
   }
@@ -437,13 +440,13 @@
     font-size: 0.58rem !important;
     letter-spacing: 0.8px !important;
     text-transform: uppercase !important;
-    color: #2D0E12 !important;
+    color: #0A1325 !important;
     font-family: var(--font-mono) !important;
     font-weight: 800 !important;
     text-align: center !important;
     line-height: 1.1 !important;
     white-space: nowrap !important;
-    text-shadow: 0 0.5px 0.5px rgba(255, 248, 220, 0.6) !important;
+    text-shadow: 0 0.5px 0.5px rgba(255, 255, 255, 0.5) !important;
   }
 
   /* Gallery Hero Stats Banner on Mobile (4 cards in 2x2 grid) */
