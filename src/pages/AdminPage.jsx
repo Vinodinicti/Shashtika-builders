@@ -1032,25 +1032,38 @@ _Please contact this client immediately and arrange site inspection / discussion
         <div className="admin-login-card">
           {/* Top Logo & Title */}
           <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-            <img
-              src="/Images/Shashtika_Emblem.png"
-              alt="SHASHTIKA Logo"
-              style={{
-                height: '52px',
-                width: 'auto',
-                margin: '0 auto 12px',
-                display: 'block',
-                borderRadius: '6px'
-              }}
-            />
+            <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '14px' }}>
+              <img
+                src="/Images/Shashtika_Emblem.png"
+                alt="SHASHTIKA Emblem"
+                style={{
+                  height: '46px',
+                  width: 'auto',
+                  display: 'block',
+                  borderRadius: '6px',
+                  border: '1.2px solid rgba(198, 161, 91, 0.6)',
+                  boxShadow: '0 4px 12px rgba(10, 19, 37, 0.35)'
+                }}
+              />
+              <div style={{ textAlign: 'left', display: 'flex', flexDirection: 'column' }}>
+                <span className="logo-title gold-glow-letters" style={{ fontSize: '1.45rem', lineHeight: 1 }}>
+                  SHASHTIKA
+                </span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.52rem', letterSpacing: '1.5px', color: '#A9823A', textTransform: 'uppercase', marginTop: '3px', fontWeight: 700 }}>
+                  PLOT DEVELOPERS &amp; BUILDERS
+                </span>
+              </div>
+            </div>
+
             <span
               className="architectural-tag"
               style={{
                 display: 'flex',
                 justifyContent: 'center',
-                marginBottom: '6px',
-                fontSize: '0.68rem',
-                letterSpacing: '2px'
+                marginBottom: '8px',
+                fontSize: '0.66rem',
+                letterSpacing: '2px',
+                color: '#C6A15B'
               }}
             >
               RESTRICTED ACCESS PORTAL
@@ -1059,8 +1072,8 @@ _Please contact this client immediately and arrange site inspection / discussion
               style={{
                 fontFamily: 'var(--font-heading)',
                 color: '#0A1325',
-                fontSize: '1.6rem',
-                fontWeight: 800,
+                fontSize: '1.65rem',
+                fontWeight: 900,
                 letterSpacing: '1px'
               }}
             >
@@ -1069,7 +1082,7 @@ _Please contact this client immediately and arrange site inspection / discussion
             <p
               style={{
                 fontSize: '0.86rem',
-                color: 'rgba(26, 7, 9, 0.75)',
+                color: 'rgba(10, 19, 37, 0.75)',
                 marginTop: '6px',
                 lineHeight: 1.5
               }}
@@ -1104,11 +1117,11 @@ _Please contact this client immediately and arrange site inspection / discussion
                 autoComplete="username"
                 style={{
                   width: '100%',
-                  padding: '11px 14px',
-                  borderRadius: '4px',
-                  border: '1px solid #E5D2A6',
-                  background: '#FFFDF9',
-                  fontSize: '0.92rem',
+                  padding: '12px 14px',
+                  borderRadius: '6px',
+                  border: '1.5px solid #CCD8E8',
+                  background: '#F0F5FA',
+                  fontSize: '0.94rem',
                   color: '#0A1325',
                   outline: 'none',
                   boxSizing: 'border-box'
@@ -1140,11 +1153,11 @@ _Please contact this client immediately and arrange site inspection / discussion
                 autoComplete="current-password"
                 style={{
                   width: '100%',
-                  padding: '11px 14px',
-                  borderRadius: '4px',
-                  border: '1px solid #E5D2A6',
-                  background: '#FFFDF9',
-                  fontSize: '0.92rem',
+                  padding: '12px 14px',
+                  borderRadius: '6px',
+                  border: '1.5px solid #CCD8E8',
+                  background: '#F0F5FA',
+                  fontSize: '0.94rem',
                   color: '#0A1325',
                   outline: 'none',
                   boxSizing: 'border-box'
@@ -1173,12 +1186,12 @@ _Please contact this client immediately and arrange site inspection / discussion
               type="submit"
               style={{
                 width: '100%',
-                padding: '13px 18px',
+                padding: '14px 18px',
                 marginTop: '6px',
-                background: '#0A1325',
+                background: 'linear-gradient(135deg, #0A1325 0%, #0E1D3B 50%, #070D1A 100%)',
                 color: '#E5D2A6',
                 border: '1.5px solid #C6A15B',
-                borderRadius: '4px',
+                borderRadius: '6px',
                 fontFamily: 'var(--font-heading)',
                 fontSize: '0.85rem',
                 fontWeight: 800,
@@ -1189,7 +1202,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                boxShadow: '0 4px 16px rgba(10, 19, 37, 0.35)',
+                boxShadow: '0 6px 20px rgba(10, 19, 37, 0.45), 0 0 15px rgba(198, 161, 91, 0.25)',
                 transition: 'all 0.25s ease'
               }}
               onMouseEnter={(e) => {
@@ -1204,14 +1217,18 @@ _Please contact this client immediately and arrange site inspection / discussion
               AUTHENTICATE &amp; ENTER DASHBOARD &rarr;
             </button>
 
-            <div style={{ textAlign: 'center', marginTop: '4px' }}>
+            <div style={{ textAlign: 'center', marginTop: '6px' }}>
               <a
-                href="#"
+                href="#plots"
                 style={{
-                  fontSize: '0.8rem',
+                  fontSize: '0.82rem',
                   fontFamily: 'var(--font-mono)',
-                  color: '#A9823A',
-                  textDecoration: 'none'
+                  color: '#0A1325',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px'
                 }}
               >
                 &larr; Return to Public Website
@@ -1225,7 +1242,19 @@ _Please contact this client immediately and arrange site inspection / discussion
 
   // 2. RENDER FULL ADMIN DASHBOARD (MATCHING SAKTHIVEL-GROUPS.VERCEL.APP/ADMIN.HTML)
   return (
-    <div className="admin-portal-page" style={{ backgroundColor: '#F8F3EA', minHeight: '100vh' }}>
+    <div
+      className="admin-portal-page"
+      style={{
+        backgroundColor: '#070D1A',
+        backgroundImage: `
+          radial-gradient(circle at 50% 15%, rgba(20, 42, 82, 0.35) 0%, transparent 60%),
+          linear-gradient(rgba(198, 161, 91, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(198, 161, 91, 0.05) 1px, transparent 1px)
+        `,
+        backgroundSize: '100% 100%, 36px 36px, 36px 36px',
+        minHeight: '100vh'
+      }}
+    >
       {/* HOMEPAGE-ALIGNED HERO SECTION FOR ADMIN PORTAL */}
       <section className="admin-hero-section">
         <div className="admin-hero-bg-img" />
@@ -1258,7 +1287,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                 className="btn btn-outline-gold"
                 style={{ fontSize: '0.75rem', padding: '8px 16px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
               >
-                &larr; PREVIEW LIVE PLOTS MAP
+                PREVIEW LIVE PLOTS MAP
               </a>
               <button
                 onClick={handleAdminLogout}
@@ -1387,7 +1416,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                         }}
                       >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
-                        CUSTOMER DETAILS &rarr;
+                        CUSTOMER DETAILS
                       </button>
 
                       <button
@@ -1555,7 +1584,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   {/* Scored Leads Table */}
                   <div className="admin-table-container" style={{ overflowX: 'auto', borderRadius: '4px', border: '1.5px solid var(--gold-border)' }}>
                     <div className="mobile-table-scroll-hint">
-                      <span>&harr; Swipe horizontally to view full lead details &amp; contact actions</span>
+                      <span>Swipe horizontally to view full lead details &amp; contact actions</span>
                     </div>
                     <table className="admin-table" style={{ width: '100%', minWidth: '1060px' }}>
                       <thead>
@@ -1572,7 +1601,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                       <tbody>
                         {filteredLeads.length === 0 ? (
                           <tr>
-                            <td colSpan="7" style={{ textAlign: 'center', padding: '30px', color: 'rgba(26,7,9,0.6)', fontWeight: 600 }}>
+                            <td colSpan="7" style={{ textAlign: 'center', padding: '30px', color: 'rgba(10,19,37,0.6)', fontWeight: 600 }}>
                               No lead records found matching current criteria.
                             </td>
                           </tr>
@@ -1687,7 +1716,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                   <div style={{ fontSize: '0.82rem', color: '#0A1325', fontWeight: 700, marginBottom: '2px' }}>
                                     <a href={`tel:${lead.phone}`} style={{ color: '#0A1325', textDecoration: 'none' }}>{lead.phone}</a>
                                   </div>
-                                  <div style={{ fontSize: '0.78rem', color: 'rgba(26,7,9,0.65)' }}>{lead.email}</div>
+                                  <div style={{ fontSize: '0.78rem', color: 'rgba(10,19,37,0.65)' }}>{lead.email}</div>
                                   <div style={{ fontSize: '0.70rem', color: '#A9823A', fontFamily: 'var(--font-mono)', marginTop: '4px' }}>
                                     {lead.date} &bull; {lead.id}
                                   </div>
@@ -1697,15 +1726,15 @@ _Please contact this client immediately and arrange site inspection / discussion
                                   <div style={{ fontWeight: 700, color: '#0A1325', fontSize: '0.86rem', marginBottom: '4px' }}>
                                     {lead.budget}
                                   </div>
-                                  <div style={{ fontSize: '0.80rem', color: 'rgba(26,7,9,0.75)' }}>{lead.purpose}</div>
-                                  <div style={{ fontSize: '0.74rem', color: 'rgba(26,7,9,0.6)', marginTop: '2px' }}>{lead.location}</div>
+                                  <div style={{ fontSize: '0.80rem', color: 'rgba(10,19,37,0.75)' }}>{lead.purpose}</div>
+                                  <div style={{ fontSize: '0.74rem', color: 'rgba(10,19,37,0.6)', marginTop: '2px' }}>{lead.location}</div>
                                 </td>
 
                                 <td style={{ verticalAlign: 'top' }}>
                                   <div style={{ fontWeight: 700, color: '#0A1325', fontSize: '0.86rem', marginBottom: '4px' }}>
                                     {lead.targetPlot}
                                   </div>
-                                  <div style={{ fontSize: '0.80rem', color: 'rgba(26,7,9,0.75)' }}>
+                                  <div style={{ fontSize: '0.80rem', color: 'rgba(10,19,37,0.75)' }}>
                                     Timeline: <strong style={{ color: isHot ? '#C53030' : '#0A1325' }}>{lead.timeline}</strong>
                                   </div>
                                 </td>
@@ -1778,7 +1807,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                         currentAction === 'SITE VISIT SCHEDULED' ? 'rgba(40, 167, 69, 0.2)' :
                                         currentAction === 'TOKEN PAID' ? 'rgba(169, 130, 58, 0.28)' :
                                         currentAction === 'REJECTED' ? 'rgba(217, 83, 79, 0.2)' :
-                                        'rgba(26, 7, 9, 0.08)',
+                                        'rgba(10, 19, 37, 0.08)',
                                       color:
                                         currentAction === 'CONTACTED' ? '#8C6B28' :
                                         currentAction === 'IN PROGRESS' ? '#2C4A6F' :
@@ -1851,7 +1880,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                       <h3 style={{ fontSize: '1.4rem', color: '#0A1325', marginTop: '4px', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
                         Plot Management Table
                       </h3>
-                      <p style={{ fontSize: '0.88rem', color: 'rgba(26, 7, 9, 0.75)', marginTop: '4px' }}>
+                      <p style={{ fontSize: '0.88rem', color: 'rgba(10, 19, 37, 0.75)', marginTop: '4px' }}>
                         Changes update client-side localStorage state and live SVG layout map instantly.
                       </p>
                     </div>
@@ -1860,7 +1889,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                       className="btn btn-outline-gold"
                       style={{ fontSize: '0.75rem', padding: '8px 16px', textDecoration: 'none' }}
                     >
-                      PREVIEW PLOTS MAP &rarr;
+                      PREVIEW PLOTS MAP
                     </a>
                   </div>
 
@@ -1888,7 +1917,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                             boxSizing: 'border-box'
                           }}
                         />
-                        <svg style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', fill: 'rgba(26,7,9,0.5)' }} viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" /></svg>
+                        <svg style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', fill: 'rgba(10,19,37,0.5)' }} viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" /></svg>
                       </div>
 
                       <select
@@ -1923,7 +1952,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   {/* Plots Table */}
                   <div className="admin-table-container" style={{ overflowX: 'auto', borderRadius: '4px', border: '1.5px solid var(--gold-border)' }}>
                     <div className="mobile-table-scroll-hint">
-                      <span>&harr; Swipe horizontally to view all plot specifications &amp; status</span>
+                      <span>Swipe horizontally to view all plot specifications &amp; status</span>
                     </div>
                     <table className="admin-table" style={{ width: '100%', minWidth: '880px' }}>
                       <thead>
@@ -1939,7 +1968,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                       <tbody>
                         {paginatedPlots.length === 0 ? (
                           <tr>
-                            <td colSpan="6" style={{ textAlign: 'center', padding: '24px', color: 'rgba(26,7,9,0.6)', fontWeight: 600 }}>
+                            <td colSpan="6" style={{ textAlign: 'center', padding: '24px', color: 'rgba(10,19,37,0.6)', fontWeight: 600 }}>
                               No plots found matching current search or filter criteria.
                             </td>
                           </tr>
@@ -1962,9 +1991,9 @@ _Please contact this client immediately and arrange site inspection / discussion
                                 <td style={{ padding: '14px 12px', color: '#0A1325', fontWeight: 600, fontSize: '0.88rem', whiteSpace: 'nowrap' }}>
                                   {plot.facing}
                                 </td>
-                                <td style={{ padding: '14px 12px', color: 'rgba(26,7,9,0.85)', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
+                                <td style={{ padding: '14px 12px', color: 'rgba(10,19,37,0.85)', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
                                   <div style={{ fontWeight: 700 }}>{plot.dim}</div>
-                                  <div style={{ fontSize: '0.74rem', color: 'rgba(26,7,9,0.6)' }}>{plot.road}</div>
+                                  <div style={{ fontSize: '0.74rem', color: 'rgba(10,19,37,0.6)' }}>{plot.road}</div>
                                 </td>
                                 <td style={{ padding: '14px 12px', textAlign: 'center', whiteSpace: 'nowrap' }}>
                                   <span className={`badge-status ${badgeClass}`}>{plot.status}</span>
@@ -2000,7 +2029,7 @@ _Please contact this client immediately and arrange site inspection / discussion
 
                   {/* Pagination Bar with Arrow Format */}
                   <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginTop: '24px', paddingTop: '16px', borderTop: '1px solid var(--gold-border)' }}>
-                    <div style={{ fontSize: '0.88rem', color: 'rgba(26,7,9,0.7)', fontWeight: 600 }}>
+                    <div style={{ fontSize: '0.88rem', color: 'rgba(10,19,37,0.7)', fontWeight: 600 }}>
                       Showing {totalPlotRecords === 0 ? 0 : plotStartIndex + 1} &ndash; {plotEndIndex} of {totalPlotRecords} plots
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -2010,7 +2039,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                         disabled={safePlotPage <= 1}
                         onClick={() => setPlotCurrentPage(safePlotPage - 1)}
                       >
-                        &larr; Prev
+                        Prev
                       </button>
 
                       <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#0A1325', padding: '0 10px' }}>
@@ -2023,7 +2052,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                         disabled={safePlotPage >= totalPlotPages}
                         onClick={() => setPlotCurrentPage(safePlotPage + 1)}
                       >
-                        Next &rarr;
+                        Next
                       </button>
                     </div>
                   </div>
@@ -2039,13 +2068,13 @@ _Please contact this client immediately and arrange site inspection / discussion
                       <h3 style={{ fontSize: '1.4rem', color: '#0A1325', marginTop: '4px', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
                         Customer Details
                       </h3>
-                      <p style={{ fontSize: '0.88rem', color: 'rgba(26, 7, 9, 0.75)', marginTop: '4px' }}>
+                      <p style={{ fontSize: '0.88rem', color: 'rgba(10, 19, 37, 0.75)', marginTop: '4px' }}>
                         Complete directory of web enquiries and walk-in clients with requirements, contact information, and assigned staff.
                       </p>
                     </div>
                     <div className="admin-action-toolbar" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
                       <button
-                        onClick={() => setActiveTab('ai-scoring')}
+                        onClick={() => setActiveTab('ai-leads')}
                         style={{
                           fontSize: '0.80rem',
                           padding: '10px 18px',
@@ -2057,14 +2086,14 @@ _Please contact this client immediately and arrange site inspection / discussion
                           background: '#0A1325',
                           color: '#F3E5AB',
                           border: '1.5px solid #C6A15B',
-                          boxShadow: '0 4px 14px rgba(26, 7, 9, 0.25)',
+                          boxShadow: '0 4px 14px rgba(10, 19, 37, 0.25)',
                           cursor: 'pointer',
                           letterSpacing: '0.4px',
                           transition: 'all 0.2s ease'
                         }}
                       >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.5"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>
-                        &larr; AI LEADS PORTAL
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z" /><circle cx="12" cy="10" r="3" /></svg>
+                        AI LEADS PORTAL
                       </button>
 
                       <button
@@ -2110,7 +2139,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                         }}
                       >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A1325" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                        + ADD NEW CUSTOMER RECORD
+                        ADD NEW CUSTOMER RECORD
                       </button>
                     </div>
                   </div>
@@ -2163,7 +2192,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   {/* Customer Registry Table */}
                   <div className="admin-table-container" style={{ overflowX: 'auto', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--gold-border)' }}>
                     <div className="mobile-table-scroll-hint">
-                      <span>&harr; Swipe horizontally to view full customer records &amp; pipeline</span>
+                      <span>Swipe horizontally to view full customer records &amp; pipeline</span>
                     </div>
                     <table className="admin-table" style={{ width: '100%', minWidth: '1060px' }}>
                       <thead>
@@ -2180,7 +2209,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                       <tbody>
                         {filteredCustomers.length === 0 ? (
                           <tr>
-                            <td colSpan="7" style={{ textAlign: 'center', padding: '30px', color: 'rgba(26,7,9,0.6)', fontWeight: 600 }}>
+                            <td colSpan="7" style={{ textAlign: 'center', padding: '30px', color: 'rgba(10,19,37,0.6)', fontWeight: 600 }}>
                               No customer records found matching current criteria.
                             </td>
                           </tr>
@@ -2278,7 +2307,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                       <a href={`tel:${cust.phone}`} style={{ color: '#0A1325', textDecoration: 'none' }}>{cust.phone}</a>
                                     </div>
                                     {cust.email && cust.email !== 'N/A' && (
-                                      <div style={{ color: 'rgba(26,7,9,0.7)', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                      <div style={{ color: 'rgba(10,19,37,0.7)', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
                                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#718096" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
                                         <span>{cust.email}</span>
                                       </div>
@@ -2291,7 +2320,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                     {cust.requirement}
                                   </div>
                                   {cust.notes && (
-                                    <div style={{ fontSize: '0.78rem', color: 'rgba(26,7,9,0.75)', lineHeight: 1.45, fontStyle: 'italic', background: 'rgba(0,0,0,0.03)', padding: '6px 10px', borderRadius: '4px', borderLeft: '3px solid var(--gold-primary)', marginTop: '4px' }}>
+                                    <div style={{ fontSize: '0.78rem', color: 'rgba(10,19,37,0.75)', lineHeight: 1.45, fontStyle: 'italic', background: 'rgba(0,0,0,0.03)', padding: '6px 10px', borderRadius: '4px', borderLeft: '3px solid var(--gold-primary)', marginTop: '4px' }}>
                                       &ldquo;{cust.notes}&rdquo;
                                     </div>
                                   )}
@@ -2355,7 +2384,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                         (cust.actionTaken || 'NEW LEAD') === 'SITE VISIT SCHEDULED' ? 'rgba(40, 167, 69, 0.2)' :
                                         (cust.actionTaken || 'NEW LEAD') === 'TOKEN PAID' ? 'rgba(169, 130, 58, 0.28)' :
                                         (cust.actionTaken || 'NEW LEAD') === 'REJECTED' ? 'rgba(217, 83, 79, 0.2)' :
-                                        'rgba(26, 7, 9, 0.08)',
+                                        'rgba(10, 19, 37, 0.08)',
                                       color:
                                         (cust.actionTaken || 'NEW LEAD') === 'CONTACTED' ? '#8C6B28' :
                                         (cust.actionTaken || 'NEW LEAD') === 'IN PROGRESS' ? '#2C4A6F' :
@@ -2600,7 +2629,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   background: '#0A1325',
                   color: '#F3E5AB',
                   border: '1.5px solid #C6A15B',
-                  boxShadow: '0 2px 8px rgba(26, 7, 9, 0.2)'
+                  boxShadow: '0 2px 8px rgba(10, 19, 37, 0.2)'
                 }}
               >
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
@@ -2767,7 +2796,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   className="btn btn-gold"
                   style={{ fontSize: '0.78rem', padding: '8px 20px', fontWeight: 800, cursor: 'pointer' }}
                 >
-                  SAVE RECORD &check;
+                  SAVE RECORD
                 </button>
               </div>
             </form>

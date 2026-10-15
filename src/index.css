@@ -4170,15 +4170,16 @@ body {
    ADMIN PORTAL COMPLETE SUITE (MATCHING OLD PROJECT WITH BURGUNDY NOIR & GOLD)
    ========================================================================== */
 
-/* Login Overlay & Card */
+/* Login Overlay & Card in Signature Royal Blue Theme */
 .admin-login-overlay {
   position: fixed;
   inset: 0;
-  background-color: #1A0709;
+  background-color: #0A1325;
   background-image: 
+    radial-gradient(circle at 50% 35%, rgba(20, 42, 82, 0.7) 0%, rgba(10, 19, 37, 0.98) 75%),
     linear-gradient(rgba(198, 161, 91, 0.08) 1px, transparent 1px),
     linear-gradient(90deg, rgba(198, 161, 91, 0.08) 1px, transparent 1px);
-  background-size: 40px 40px;
+  background-size: 100% 100%, 36px 36px, 36px 36px;
   z-index: 9999;
   display: flex;
   align-items: center;
@@ -4188,14 +4189,28 @@ body {
 
 .admin-login-card {
   background: #FFFDF9;
-  border: 1.5px solid rgba(198, 161, 91, 0.4);
+  border: 1.5px solid var(--gold-primary);
   border-radius: var(--radius-md);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(198, 161, 91, 0.25);
+  box-shadow: 
+    0 25px 70px rgba(5, 11, 22, 0.75),
+    0 0 35px rgba(198, 161, 91, 0.25),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.9);
   width: 100%;
   max-width: 460px;
-  padding: 40px 36px;
+  padding: 42px 36px;
   position: relative;
+  overflow: hidden;
   animation: adminCardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.admin-login-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #A9823A, #C6A15B, #E5D2A6, #C6A15B, #A9823A);
 }
 
 @keyframes adminCardEnter {
