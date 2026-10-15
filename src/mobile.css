@@ -52,8 +52,8 @@
   /* Scrolled Header with Visible Royal Blue Theme on Mobile */
   header.bg-\[\#0A1325\]\/95,
   header[class*="bg-\[#0A1325\]"] {
-    background: linear-gradient(180deg, rgba(22, 48, 98, 0.97) 0%, rgba(14, 32, 68, 0.97) 100%) !important;
-    box-shadow: 0 4px 20px rgba(14, 32, 68, 0.7) !important;
+    background: linear-gradient(180deg, rgba(16, 33, 68, 0.97) 0%, rgba(10, 21, 44, 0.97) 100%) !important;
+    box-shadow: 0 4px 20px rgba(10, 21, 44, 0.7) !important;
     border-bottom: 1px solid rgba(198, 161, 91, 0.6) !important;
   }
 
@@ -95,9 +95,9 @@
     max-width: 240px !important;
     padding: 16px 12px !important;
     padding-bottom: max(20px, env(safe-area-inset-bottom, 20px)) !important;
-    background: linear-gradient(180deg, #183A74 0%, #10244E 100%) !important;
+    background: linear-gradient(180deg, #12254C 0%, #0C1733 100%) !important;
     border-left: 1.5px solid rgba(198, 161, 91, 0.5) !important;
-    box-shadow: -15px 0 45px rgba(14, 32, 68, 0.9) !important;
+    box-shadow: -15px 0 45px rgba(10, 21, 44, 0.9) !important;
   }
 
   .nav-drawer-panel nav a {
@@ -1890,9 +1890,9 @@
    17. ADMIN PAGE — MOBILE VIEW MANAGEMENT (AdminPage.jsx)
    ========================================================================== */
 @media (max-width: 991px) {
-  /* Admin Page Backgrounds on Mobile — Rich Visible Royal Blue */
+  /* Admin Page Backgrounds on Mobile — Deep Regal Midnight Blue */
   .admin-login-overlay {
-    background: radial-gradient(circle at center, #1C407C 0%, #122852 65%, #0B1936 100%) !important;
+    background: radial-gradient(circle at center, #142852 0%, #0D1C3C 65%, #081226 100%) !important;
   }
 
   .admin-login-card {
@@ -1900,9 +1900,9 @@
     padding: 24px 18px !important;
     margin: 0 auto !important;
     border-radius: 14px !important;
-    background: linear-gradient(145deg, #18366A 0%, #102348 100%) !important;
+    background: linear-gradient(145deg, #112246 0%, #0A1732 100%) !important;
     border: 1.5px solid rgba(198, 161, 91, 0.45) !important;
-    box-shadow: 0 16px 40px rgba(10, 24, 52, 0.7), 0 0 20px rgba(198, 161, 91, 0.25) !important;
+    box-shadow: 0 16px 40px rgba(8, 18, 38, 0.75), 0 0 20px rgba(198, 161, 91, 0.25) !important;
   }
 
   .admin-login-card h2 {
@@ -1924,7 +1924,7 @@
     min-height: 48px !important;
     border-radius: 8px !important;
     padding: 12px 14px !important;
-    background: #0E1F42 !important;
+    background: #081328 !important;
     border: 1.5px solid rgba(198, 161, 91, 0.4) !important;
     color: #FFFDF8 !important;
   }
@@ -1934,22 +1934,22 @@
     font-size: 0.82rem !important;
     letter-spacing: 1.2px !important;
     padding: 14px 18px !important;
-    background: linear-gradient(135deg, #1C4282 0%, #122954 100%) !important;
+    background: linear-gradient(135deg, #142C56 0%, #0D1B38 100%) !important;
     border-color: #C6A15B !important;
     color: #F8E7C4 !important;
   }
 
   /* Admin Dashboard Main Page on Mobile */
   .admin-portal-page {
-    background-color: #10244C !important;
+    background-color: #0A1730 !important;
     background-image: 
-      radial-gradient(circle at 50% 15%, rgba(32, 72, 144, 0.45) 0%, transparent 70%),
+      radial-gradient(circle at 50% 15%, rgba(22, 48, 100, 0.45) 0%, transparent 70%),
       linear-gradient(rgba(198, 161, 91, 0.04) 1px, transparent 1px),
       linear-gradient(90deg, rgba(198, 161, 91, 0.04) 1px, transparent 1px) !important;
   }
 
   .admin-header-bar {
-    background: linear-gradient(180deg, #183A70 0%, #122850 100%) !important;
+    background: linear-gradient(180deg, #12254C 0%, #0C1935 100%) !important;
     border-bottom: 1.5px solid rgba(198, 161, 91, 0.5) !important;
   }
 
@@ -2282,7 +2282,7 @@
   footer {
     padding-top: 24px !important;
     padding-bottom: 20px !important;
-    background: linear-gradient(180deg, #16366C 0%, #0F2348 100%) !important;
+    background: linear-gradient(180deg, #112347 0%, #0B172E 100%) !important;
     border-top-color: rgba(198, 161, 91, 0.6) !important;
   }
 
@@ -2323,7 +2323,7 @@
     padding: 3px 8px !important;
     font-size: 8.5px !important;
     letter-spacing: 0.5px !important;
-    background: #1B3E7A !important;
+    background: #142A54 !important;
     border-color: rgba(198, 161, 91, 0.45) !important;
   }
 
@@ -2368,7 +2368,7 @@
     height: 34px !important;
     min-width: 34px !important;
     min-height: 34px !important;
-    background: #1B3E7A !important;
+    background: #142A54 !important;
     border-color: rgba(198, 161, 91, 0.45) !important;
   }
 
@@ -2416,10 +2416,10 @@
     height: 36px !important;
     min-width: 36px !important;
     min-height: 36px !important;
-    background: linear-gradient(135deg, #1C4282 0%, #122954 100%) !important;
+    background: linear-gradient(135deg, #142C56 0%, #0D1C38 100%) !important;
     border: 1.5px solid #DEBA70 !important;
     color: #FFFDF8 !important;
-    box-shadow: 0 4px 14px rgba(18, 43, 92, 0.65), 0 0 10px rgba(198, 161, 91, 0.35) !important;
+    box-shadow: 0 4px 14px rgba(10, 22, 46, 0.7), 0 0 10px rgba(198, 161, 91, 0.3) !important;
   }
 
   .floating-action-btn svg {
@@ -2428,7 +2428,7 @@
   }
 
   .floating-tooltip {
-    background: #142E5C !important;
+    background: #0E1E3C !important;
     border-color: rgba(198, 161, 91, 0.5) !important;
   }
 }
@@ -2439,14 +2439,15 @@
 @media (max-width: 768px) {
   .fixed.inset-0.z-50[style*="#0A1325"],
   div[style*="backgroundColor: rgb(10, 19, 37)"] {
-    background-color: #122752 !important;
+    background-color: #0E1D3B !important;
     background-image: 
       radial-gradient(circle at center, rgba(198, 161, 91, 0.18) 0%, transparent 65%),
       linear-gradient(rgba(198, 161, 91, 0.07) 1px, transparent 1px),
       linear-gradient(90deg, rgba(198, 161, 91, 0.07) 1px, transparent 1px),
-      radial-gradient(circle at center, #1C3E78 0%, #132854 55%, #0B1938 100%) !important;
+      radial-gradient(circle at center, #152C58 0%, #0E1D3B 55%, #070F20 100%) !important;
   }
 }
+
 
 
 

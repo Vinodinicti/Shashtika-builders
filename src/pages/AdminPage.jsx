@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { PLOTS_DATA, PROJECT_METADATA } from '../data/plotsKambalapattiData';
+import { UPCOMING_PROJECTS } from '../data/homeData';
 
 // Default Staff Roster with Names and WhatsApp Mobile Numbers
 const DEFAULT_STAFF_ROSTER = [
@@ -272,6 +273,225 @@ export default function AdminPage() {
     stage: 'INQUIRY',
     notes: ''
   });
+
+  // Upcoming Projects Showcase State
+  const [upcomingProjects, setUpcomingProjects] = useState(() => {
+    const saved = localStorage.getItem('shashtika_upcoming_projects');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {}
+    }
+    return UPCOMING_PROJECTS;
+  });
+
+  const [previewActiveIdx, setPreviewActiveIdx] = useState(0);
+  const [isCarouselAutoRotating, setIsCarouselAutoRotating] = useState(true);
+  const [projectModalOpen, setProjectModalOpen] = useState(false);
+  const [editingProjectIdx, setEditingProjectIdx] = useState(null);
+  const [projectSearchQuery, setProjectSearchQuery] = useState('');
+
+  const [projectForm, setProjectForm] = useState({
+    title: '',
+    city: 'Pollachi',
+    tag: 'Residential',
+    badge: 'Ready to Launch',
+    area: '5.9 ACRES',
+    road: '40 FT ROADS',
+    image: '/Images/Upcoming_Green_Valley.jpg',
+    desc: '',
+    approval: 'DTCP & RERA Approved Layout',
+    location: '',
+    features: ''
+  });
+
+  useEffect(() => {
+    localStorage.setItem('shashtika_upcoming_projects', JSON.stringify(upcomingProjects));
+    window.dispatchEvent(new Event('shashtika_upcoming_projects_updated'));
+  }, [upcomingProjects]);
+
+  useEffect(() => {
+    if (!isCarouselAutoRotating || upcomingProjects.length <= 1) return;
+    const timer = setInterval(() => {
+      setPreviewActiveIdx((prev) => (prev + 1) % upcomingProjects.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [upcomingProjects.length, isCarouselAutoRotating]);
+
+  const filteredUpcomingProjects = useMemo(() => {
+    if (!projectSearchQuery.trim()) return upcomingProjects;
+    const q = projectSearchQuery.toLowerCase();
+    return upcomingProjects.filter(
+      (p) =>
+        (p.title && p.title.toLowerCase().includes(q)) ||
+        (p.city && p.city.toLowerCase().includes(q)) ||
+        (p.tag && p.tag.toLowerCase().includes(q)) ||
+        (p.location && p.location.toLowerCase().includes(q))
+    );
+  }, [upcomingProjects, projectSearchQuery]);
+
+  const handleOpenAddProjectModal = () => {
+    setEditingProjectIdx(null);
+    setProjectForm({
+      title: '',
+      city: 'Pollachi',
+      tag: 'Residential',
+      badge: 'Ready to Launch',
+      area: '5.0 ACRES',
+      road: '40 FT ROADS',
+      image: '/Images/Upcoming_Green_Valley.jpg',
+      desc: 'Prime residential enclave with wide internal roads, 24/7 water supply, DTCP & RERA certification, and rapid capital appreciation.',
+      approval: 'DTCP & RERA Approved Layout',
+      location: 'Pollachi Highway Corridor',
+      features: 'DTCP & RERA Approved Layout\n40 ft Wide Internal Tar Roads\n24/7 Gated Security & Perimeter Wall\nSolar Powered Street Lighting\nIndividual Water Connection & Storage Tank'
+    });
+    setProjectModalOpen(true);
+  };
+
+  const handleOpenEditProjectModal = (proj, idx) => {
+    setEditingProjectIdx(idx);
+    setProjectForm({
+      title: proj.title || '',
+      city: proj.city || 'Pollachi',
+      tag: proj.tag || 'Residential',
+      badge: proj.badge || 'Ready to Launch',
+      area: proj.area || '',
+      road: proj.road || '',
+      image: proj.image || '/Images/Upcoming_Green_Valley.jpg',
+      desc: proj.desc || '',
+      approval: proj.approval || 'DTCP & RERA Approved Layout',
+      location: proj.location || '',
+      features: Array.isArray(proj.features) ? proj.features.join('\n') : (proj.features || '')
+    });
+    setProjectModalOpen(true);
+  };
+
+  const handleDeleteProject = (idx) => {
+    const target = upcomingProjects[idx];
+    if (!target) return;
+    const confirmed = window.confirm(`Remove "${target.title}" from Upcoming Projects? This will immediately remove it from the public homepage.`);
+    if (confirmed) {
+      const updated = upcomingProjects.filter((_, i) => i !== idx);
+      setUpcomingProjects(updated);
+      if (previewActiveIdx >= updated.length) {
+        setPreviewActiveIdx(Math.max(0, updated.length - 1));
+      }
+    }
+  };
+
+  const handleSaveProject = (e) => {
+    e.preventDefault();
+    if (!projectForm.title.trim()) {
+      alert('Please provide a Project Title.');
+      return;
+    }
+    if (!projectForm.image.trim()) {
+      alert('Please provide or upload a Project Image.');
+      return;
+    }
+
+    const featuresArray = projectForm.features
+      .split('\n')
+      .map((f) => f.trim())
+      .filter(Boolean);
+
+    const newProjectData = {
+      title: projectForm.title.trim(),
+      city: projectForm.city.trim(),
+      tag: projectForm.tag.trim(),
+      badge: projectForm.badge.trim(),
+      area: projectForm.area.trim(),
+      road: projectForm.road.trim(),
+      image: projectForm.image.trim(),
+      desc: projectForm.desc.trim(),
+      approval: projectForm.approval.trim(),
+      location: projectForm.location.trim(),
+      features: featuresArray.length > 0 ? featuresArray : [
+        'DTCP & RERA Approved Layout',
+        'Wide Internal Tar Roads',
+        '24/7 Gated Security'
+      ]
+    };
+
+    if (editingProjectIdx !== null) {
+      const updated = [...upcomingProjects];
+      updated[editingProjectIdx] = newProjectData;
+      setUpcomingProjects(updated);
+    } else {
+      setUpcomingProjects([newProjectData, ...upcomingProjects]);
+      setPreviewActiveIdx(0);
+    }
+
+    setProjectModalOpen(false);
+  };
+
+  const handleImageFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Please select an image smaller than 5MB.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProjectForm((prev) => ({ ...prev, image: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleResetDefaultProjects = () => {
+    const confirmed = window.confirm('Restore default upcoming projects list? This will replace your customized showcase with the original project blueprints.');
+    if (confirmed) {
+      setUpcomingProjects(UPCOMING_PROJECTS);
+      setPreviewActiveIdx(0);
+    }
+  };
+
+  const getAdminCarouselCardStyle = (idx) => {
+    const total = upcomingProjects.length;
+    if (total === 0) return {};
+    if (total === 1) {
+      return {
+        transform: 'translateX(0px) scale(1)',
+        opacity: 1,
+        zIndex: 100,
+        visibility: 'visible',
+        pointerEvents: 'auto'
+      };
+    }
+    let diff = (idx - previewActiveIdx) % total;
+    if (diff < 0) diff += total;
+
+    const angle = diff * (360 / total) * (Math.PI / 180);
+    const radiusX = 260;
+    const radiusZ = 130;
+
+    const x = Math.sin(angle) * radiusX;
+    const z = Math.cos(angle) * radiusZ;
+    const normalizedZ = (z + radiusZ) / (2 * radiusZ);
+
+    if (normalizedZ < 0.30) {
+      return {
+        opacity: 0,
+        visibility: 'hidden',
+        pointerEvents: 'none',
+        transform: `translateX(${x.toFixed(1)}px) scale(0.72)`
+      };
+    }
+
+    const scale = 0.82 + (normalizedZ - 0.30) * 0.28;
+    const zIndex = Math.round(normalizedZ * 100);
+
+    return {
+      transform: `translateX(${x.toFixed(1)}px) scale(${scale.toFixed(2)})`,
+      opacity: 1,
+      zIndex,
+      visibility: 'visible',
+      pointerEvents: 'auto'
+    };
+  };
 
   // Persist State to localStorage
   useEffect(() => {

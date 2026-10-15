@@ -3,16 +3,52 @@ import { createPortal } from 'react-dom';
 import { UPCOMING_PROJECTS } from '../data/homeData';
 
 export default function UpcomingProjectsSection() {
+  const [projects, setProjects] = useState(() => {
+    try {
+      const saved = localStorage.getItem('shashtika_upcoming_projects');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return UPCOMING_PROJECTS;
+  });
+
   const [activeIdx, setActiveIdx] = useState(0);
   const [selectedProject, setSelectedProject] = useState(null);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
-  const totalCards = UPCOMING_PROJECTS.length;
+  const totalCards = projects.length;
+
+  // Synchronize with admin changes across tabs or windows
+  useEffect(() => {
+    const handleStorageChange = () => {
+      try {
+        const saved = localStorage.getItem('shashtika_upcoming_projects');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setProjects(parsed);
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('shashtika_upcoming_projects_updated', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('shashtika_upcoming_projects_updated', handleStorageChange);
+    };
+  }, []);
 
   // Auto-rotation every 4 seconds (paused when modal or card is selected)
   useEffect(() => {
-    if (selectedProject) return;
+    if (selectedProject || totalCards <= 1) return;
     const timer = setInterval(() => {
       setActiveIdx((prev) => (prev + 1) % totalCards);
     }, 4000);
@@ -53,6 +89,16 @@ export default function UpcomingProjectsSection() {
 
   // Card transform calculation for 3D Flat Orbit
   const getCardStyle = (idx) => {
+    if (totalCards === 0) return {};
+    if (totalCards === 1) {
+      return {
+        transform: 'translateX(0px) scale(1)',
+        opacity: 1,
+        zIndex: 100,
+        visibility: 'visible',
+        pointerEvents: 'auto'
+      };
+    }
     let diff = (idx - activeIdx) % totalCards;
     if (diff < 0) diff += totalCards;
 
@@ -117,7 +163,7 @@ export default function UpcomingProjectsSection() {
           onTouchEnd={handleTouchEnd}
         >
           <div className="upcoming-3d-inner">
-            {UPCOMING_PROJECTS.map((proj, idx) => {
+            {projects.map((proj, idx) => {
               const style = getCardStyle(idx);
               const isFront = (idx - activeIdx + totalCards) % totalCards === 0;
 
@@ -270,7 +316,7 @@ export default function UpcomingProjectsSection() {
 
         {/* Manual Indicator Dots */}
         <div className="flex justify-center items-center gap-2 mt-4">
-          {UPCOMING_PROJECTS.map((_, idx) => (
+          {projects.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setActiveIdx(idx)}
