@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { HERO_STATS } from '../data/homeData';
 
-export default function HeroSection() {
+export default function HeroSection({ isLoaded = true, homeNavCount = 0 }) {
   const [activeSlide, setActiveSlide] = useState(0);
   const [counts, setCounts] = useState(HERO_STATS.map(() => 0));
+  const animFrameRef = useRef(null);
+  const bannerRef = useRef(null);
 
   // Dual slide auto-timer (6 seconds cycle)
   useEffect(() => {
@@ -14,39 +16,95 @@ export default function HeroSection() {
   }, []);
 
   // Running number counter animation with smooth cubic ease-out & stagger
-  useEffect(() => {
-    const startCounters = () => {
-      const startTime = performance.now();
+  const startCounters = useCallback(() => {
+    if (animFrameRef.current) {
+      cancelAnimationFrame(animFrameRef.current);
+    }
 
-      const update = (now) => {
-        const elapsed = now - startTime;
-        let allCompleted = true;
+    // Reset to zero immediately so user clearly sees the odometer running motion
+    setCounts(HERO_STATS.map(() => 0));
 
-        const nextCounts = HERO_STATS.map((stat, idx) => {
-          const duration = 1600 + idx * 150; // Wave stagger
-          const progress = Math.min(elapsed / duration, 1);
-          if (progress < 1) allCompleted = false;
+    const startTime = performance.now();
+    // Wave stagger: 20 yrs (1300ms), 8+ layouts (1500ms), 4 ongoing (1200ms), 150+ houses (1700ms), 850+ customers (1900ms)
+    const durations = [1300, 1500, 1200, 1700, 1900];
 
-          const easeProgress = 1 - Math.pow(1 - progress, 3);
-          return Math.floor(easeProgress * stat.target);
-        });
+    const update = (now) => {
+      const elapsed = now - startTime;
+      let allCompleted = true;
 
-        setCounts(nextCounts);
+      const nextCounts = HERO_STATS.map((stat, idx) => {
+        const duration = durations[idx] || 1500;
+        const progress = Math.min(elapsed / duration, 1);
+        if (progress < 1) allCompleted = false;
 
-        if (!allCompleted) {
-          requestAnimationFrame(update);
-        } else {
-          setCounts(HERO_STATS.map((s) => s.target));
-        }
-      };
+        // Smooth cubic ease-out deceleration
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        return Math.floor(easeProgress * stat.target);
+      });
 
-      requestAnimationFrame(update);
+      setCounts(nextCounts);
+
+      if (!allCompleted) {
+        animFrameRef.current = requestAnimationFrame(update);
+      } else {
+        setCounts(HERO_STATS.map((s) => s.target));
+      }
     };
 
-    // Trigger after a tiny initial delay for frame-1 visibility
-    const timeout = setTimeout(startCounters, 100);
-    return () => clearTimeout(timeout);
+    animFrameRef.current = requestAnimationFrame(update);
   }, []);
+
+  // Trigger running motion when LoadingScreen finishes (isLoaded=true) or on home navigation
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    // Small 180ms delay for visual clarity as the curtain lifts
+    const timeout = setTimeout(() => {
+      startCounters();
+    }, 180);
+
+    return () => {
+      clearTimeout(timeout);
+      if (animFrameRef.current) {
+        cancelAnimationFrame(animFrameRef.current);
+      }
+    };
+  }, [isLoaded, homeNavCount, startCounters]);
+
+  // Re-run animation if user clicks "Home" directly in drawer/header via hash
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash.toLowerCase();
+      if (!hash || hash === '#' || hash === '#home') {
+        startCounters();
+      }
+    };
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, [startCounters]);
+
+  // IntersectionObserver: If user scrolls away and scrolls back into Hero stats, re-run smoothly
+  useEffect(() => {
+    if (!bannerRef.current || !window.IntersectionObserver) return;
+
+    let hasBeenVisible = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasBeenVisible) {
+            hasBeenVisible = true;
+            startCounters();
+          } else if (!entry.isIntersecting) {
+            hasBeenVisible = false;
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(bannerRef.current);
+    return () => observer.disconnect();
+  }, [startCounters]);
 
   return (
     <section className="hero-100vh-section hero-section">
@@ -124,7 +182,7 @@ export default function HeroSection() {
         </div>
 
         {/* FULL 100% WIDTH ANIMATED EDITORIAL STATISTICS BANNER */}
-        <div className="hero-stats-banner">
+        <div ref={bannerRef} className="hero-stats-banner">
           {HERO_STATS.map((stat, idx) => (
             <div key={idx} className="stat-card" style={{ animationDelay: `${(idx + 1) * 0.1}s` }}>
               <span className="stat-number">

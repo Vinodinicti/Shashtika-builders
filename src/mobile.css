@@ -6,6 +6,11 @@
    RULE: Absolute parity of elegance between Desktop and Mobile.
    ========================================================================== */
 
+/* Base hidden state for mobile-specific helpers */
+.mobile-table-scroll-hint {
+  display: none;
+}
+
 /* --------------------------------------------------------------------------
    01. GLOBAL MOBILE ARCHITECTURE & RESETS (Screens <= 991px & <= 768px)
    -------------------------------------------------------------------------- */
@@ -71,22 +76,24 @@
     min-width: 40px !important;
   }
 
-  /* Navigation Drawer Panel */
-  .bg-blueprint-dark {
-    width: 88vw !important;
-    max-width: 340px !important;
-    padding: 20px 18px !important;
-    padding-bottom: max(24px, env(safe-area-inset-bottom, 24px)) !important;
+  /* Navigation Drawer Panel - Opens Half Page */
+  .nav-drawer-panel {
+    width: 52vw !important;
+    min-width: 195px !important;
+    max-width: 240px !important;
+    padding: 16px 12px !important;
+    padding-bottom: max(20px, env(safe-area-inset-bottom, 20px)) !important;
   }
 
-  .bg-blueprint-dark nav a {
-    font-size: 1.05rem !important;
-    padding: 12px 14px !important;
+  .nav-drawer-panel nav a {
+    font-size: 0.88rem !important;
+    padding: 8px 10px !important;
+    letter-spacing: 0.8px !important;
   }
 
-  .bg-blueprint-dark nav a span:first-child {
-    font-size: 0.75rem !important;
-    margin-right: 10px !important;
+  .nav-drawer-panel nav a span:first-child {
+    font-size: 0.70rem !important;
+    margin-right: 6px !important;
   }
 }
 
@@ -201,8 +208,9 @@
     width: 100% !important;
     height: 100% !important;
     background-size: cover !important;
-    background-position: center 25% !important;
+    background-position: 70% center !important;
     opacity: 0;
+    filter: brightness(1.05) contrast(1.04) !important;
     transition: opacity 1.8s ease-in-out, transform 1.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
     transform: scale(1.02) !important;
   }
@@ -213,28 +221,30 @@
   }
 
   .plots-full-image {
-    background-position: center center !important;
-    filter: brightness(0.95) !important;
+    background-position: 65% center !important;
+    filter: brightness(1.05) contrast(1.04) !important;
+    opacity: 1 !important;
   }
 
   .gallery-hero-bg-img {
-    background-position: center center !important;
-    filter: brightness(0.92) !important;
+    background-position: 70% center !important;
+    filter: brightness(1.05) contrast(1.04) !important;
     opacity: 1 !important;
   }
 
   .contact-hero-bg-img {
-    background-position: center center !important;
-    filter: brightness(0.92) !important;
+    background-position: 65% center !important;
+    filter: brightness(1.05) contrast(1.04) !important;
     opacity: 1 !important;
   }
 
   .admin-hero-bg-img {
     background-position: center center !important;
+    filter: brightness(1.05) contrast(1.04) !important;
     opacity: 1 !important;
   }
 
-  /* 4.3 High-Contrast Translucent Dark Luxury Vignette Overlay (Full 100% Screen Coverage) */
+  /* 4.3 High-Contrast Dark Luxury Gradient Confined ONLY to Left Fonts Area */
   .hero-text-blend-overlay,
   .plots-hero-overlay,
   .gallery-hero-fade,
@@ -247,22 +257,17 @@
     z-index: 2 !important;
     pointer-events: none !important;
     display: block !important;
-    background: 
-      linear-gradient(180deg, 
-        rgba(26, 7, 9, 0.90) 0%, 
-        rgba(26, 7, 9, 0.72) 35%, 
-        rgba(26, 7, 9, 0.78) 70%, 
-        rgba(26, 7, 9, 0.92) 100%
-      ),
-      linear-gradient(90deg, 
-        rgba(26, 7, 9, 0.88) 0%, 
-        rgba(26, 7, 9, 0.45) 100%
-      ) !important;
+    background: linear-gradient(90deg, 
+      rgba(10, 19, 37, 0.68) 0%, 
+      rgba(10, 19, 37, 0.48) 38%, 
+      rgba(10, 19, 37, 0.18) 62%, 
+      rgba(10, 19, 37, 0.0) 84%
+    ) !important;
   }
 
   /* 4.4 Details Container & Architectural Alignment (Strict Left-Aligned Hierarchy like Desktop) */
   .hero-fit-content {
-    max-width: 100% !important;
+    max-width: 84% !important;
     margin-top: auto !important;
     margin-bottom: auto !important;
     text-align: left !important;
@@ -402,41 +407,43 @@
 
   .hero-stats-banner .stat-card {
     width: 100% !important;
-    height: 52px !important;
+    height: 54px !important;
     padding: 4px 6px !important;
-    background: rgba(26, 7, 9, 0.88) !important;
-    backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
-    border: 1.2px solid rgba(198, 161, 91, 0.55) !important;
-    border-radius: 4px !important;
+    background: linear-gradient(135deg, #F8E7BE 0%, #E9CC8C 20%, #D4AF37 50%, #C49B2E 80%, #AA8122 100%) !important;
+    border: 1.5px solid #8A641A !important;
+    border-radius: 6px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+    box-shadow: 0 6px 18px rgba(26, 7, 9, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.85), inset 0 -1px 2px rgba(100, 70, 15, 0.45) !important;
     position: relative !important;
     overflow: hidden !important;
   }
 
   .hero-stats-banner .stat-number {
-    font-size: 1.15rem !important;
+    font-size: 1.22rem !important;
     line-height: 1 !important;
-    color: #E5D2A6 !important;
+    color: #1A0709 !important;
     font-weight: 800 !important;
     font-family: var(--font-heading) !important;
     margin-bottom: 2px !important;
+    text-shadow: 0 1px 1px rgba(255, 248, 220, 0.75) !important;
+    font-variant-numeric: tabular-nums !important;
+    letter-spacing: 0.5px !important;
   }
 
   .hero-stats-banner .stat-label {
     font-size: 0.58rem !important;
-    letter-spacing: 0.6px !important;
+    letter-spacing: 0.8px !important;
     text-transform: uppercase !important;
-    color: #D8C5A7 !important;
+    color: #2D0E12 !important;
     font-family: var(--font-mono) !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
     text-align: center !important;
     line-height: 1.1 !important;
     white-space: nowrap !important;
+    text-shadow: 0 0.5px 0.5px rgba(255, 248, 220, 0.6) !important;
   }
 
   /* Gallery Hero Stats Banner on Mobile (4 cards in 2x2 grid) */
@@ -531,45 +538,120 @@
     white-space: nowrap !important;
   }
 
-  /* Location Cards Grid */
+  /* Location Cards Grid: 2x2 Layout on Mobile */
   .location-cards-grid {
-    grid-template-columns: 1fr !important;
-    gap: 16px !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
   }
 
   .location-card {
-    border-radius: 14px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  .location-card-blob {
+    width: 130px !important;
+    height: 130px !important;
   }
 
   .location-card-img-wrap {
-    height: 180px !important;
-    min-height: 180px !important;
+    height: 105px !important;
+    min-height: 105px !important;
+    max-height: 110px !important;
+    border-radius: 11px 11px 0 0 !important;
+  }
+
+  .location-card-tag {
+    top: 6px !important;
+    left: 6px !important;
+    font-size: 0.50rem !important;
+    padding: 2px 5px !important;
+    letter-spacing: 0.4px !important;
+    border-radius: 3px !important;
+  }
+
+  .location-approval-badge {
+    top: 6px !important;
+    right: 6px !important;
+    font-size: 0.48rem !important;
+    padding: 2px 5px !important;
+    letter-spacing: 0.4px !important;
+    border-radius: 3px !important;
   }
 
   .location-card-body {
-    padding: 18px 16px !important;
+    padding: 8px 8px 10px 8px !important;
+    border-radius: 0 0 11px 11px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  .location-card-body .architectural-tag {
+    font-size: 0.50rem !important;
+    margin-bottom: 2px !important;
+    letter-spacing: 0.5px !important;
   }
 
   .location-card-title {
-    font-size: 1.22rem !important;
+    font-size: 0.82rem !important;
+    line-height: 1.22 !important;
+    margin-top: 1px !important;
+    font-weight: 800 !important;
   }
 
-  /* Masterplan Spec Badges */
-  .location-specs-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;
+  /* Minimal Details: Hide lengthy paragraph description on mobile front card */
+  .location-card-desc {
+    display: none !important;
   }
 
-  .location-spec-pill {
-    padding: 8px 10px !important;
+  /* Minimal Specs Row on front card */
+  .location-card-specs-row {
+    margin-top: 6px !important;
+    padding: 4px 6px !important;
+    background-color: #FAF4EB !important;
+    border: 1px solid rgba(198, 161, 91, 0.25) !important;
+    border-radius: 4px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
   }
 
-  .location-spec-val {
-    font-size: 0.85rem !important;
+  .location-spec-col-road {
+    display: none !important; /* Road details shown in full popup inspector */
+  }
+
+  .location-spec-col-price {
+    display: flex !important;
+    align-items: baseline !important;
+    justify-content: space-between !important;
+    width: 100% !important;
   }
 
   .location-spec-lbl {
-    font-size: 0.62rem !important;
+    font-size: 0.50rem !important;
+    letter-spacing: 0.4px !important;
+  }
+
+  .location-spec-val {
+    font-size: 0.74rem !important;
+    font-weight: 800 !important;
+  }
+
+  /* Compact Action Button */
+  .location-card-btn {
+    margin-top: 6px !important;
+    width: 100% !important;
+    font-size: 0.60rem !important;
+    padding: 5px 6px !important;
+    min-height: 28px !important;
+    text-align: center !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 6px !important;
+    letter-spacing: 0.3px !important;
+    white-space: nowrap !important;
   }
 }
 
@@ -749,9 +831,9 @@
   footer {
     padding-top: 36px !important;
     padding-bottom: max(84px, calc(env(safe-area-inset-bottom, 0px) + 64px)) !important;
-    background: #1A0709 !important;
+    background: #070D1A !important;
     border-top: 1.5px solid rgba(198, 161, 91, 0.7) !important;
-    box-shadow: 0 -12px 35px rgba(26, 7, 9, 0.6) !important;
+    box-shadow: 0 -12px 35px rgba(7, 13, 26, 0.7) !important;
   }
 
   footer .max-w-7xl {
@@ -882,7 +964,7 @@
     width: 38px !important;
     height: 38px !important;
     border-radius: 50% !important;
-    background: #2A0F13 !important;
+    background: #0F1C36 !important;
     border: 1px solid rgba(198, 161, 91, 0.45) !important;
     display: flex !important;
     align-items: center !important;
@@ -1076,17 +1158,50 @@
     padding: 6px 12px !important;
   }
 
-  /* Dual Table Container: Stacks into full-width responsive tables */
-  .layout-summary-table-card .grid.grid-cols-1.lg\:grid-cols-2 {
-    grid-template-columns: 1fr !important;
-    gap: 16px !important;
-    padding: 4px !important;
+  /* 4-Table 2x2 Responsive Mobile Grid (2 tables on top, 2 tables below) */
+  .layout-summary-table-card .plots-tables-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    padding: 2px !important;
   }
 
-  .layout-summary-table-card table th,
-  .layout-summary-table-card table td {
-    padding: 8px 6px !important;
-    font-size: 0.72rem !important;
+  .plots-single-table-card {
+    min-width: 0 !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(198, 161, 91, 0.45) !important;
+  }
+
+  .plots-single-table-card table {
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+  }
+
+  .plots-single-table-card table th,
+  .plots-single-table-card table td {
+    padding: 3.5px 1.5px !important;
+    line-height: 1.15 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .plots-single-table-card table th {
+    font-size: 0.56rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.2px !important;
+  }
+
+  .plots-single-table-card table td {
+    font-size: 0.62rem !important;
+  }
+
+  .plots-single-table-card table td span {
+    font-size: 0.52rem !important;
+    padding: 1.5px 2px !important;
+    letter-spacing: -0.2px !important;
   }
 
   /* Plot Inspector Modal — Elegant Native Mobile Bottom-Sheet Behavior */
@@ -1202,6 +1317,15 @@
 
   #our-story-section img {
     height: 220px !important;
+    border-radius: 10px !important;
+  }
+
+  .story-heritage-badge {
+    position: relative !important;
+    inset: auto !important;
+    margin-top: 10px !important;
+    width: 100% !important;
+    box-shadow: 0 4px 14px rgba(10, 19, 37, 0.25) !important;
   }
 
   /* 5-Stage Flip Cards Grid on Mobile */
@@ -1617,29 +1741,93 @@
     border-radius: 8px !important;
   }
 
-  /* Tables Container: Touch Scrolling & Sizing */
+  /* Tables Container: Touch Scrolling & Clean Horizontal Layout */
   .admin-table-container {
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch !important;
     border-radius: 8px !important;
     position: relative !important;
     margin-bottom: 16px !important;
-  }
-
-  .admin-table-container table {
-    min-width: 950px !important;
     width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--gold-primary) rgba(26, 7, 9, 0.08) !important;
   }
 
-  .admin-table-container th {
-    padding: 10px 8px !important;
-    font-size: 0.72rem !important;
+  .admin-table-container::-webkit-scrollbar {
+    height: 6px !important;
+    display: block !important;
+  }
+
+  .admin-table-container::-webkit-scrollbar-track {
+    background: rgba(26, 7, 9, 0.06) !important;
+    border-radius: 3px !important;
+  }
+
+  .admin-table-container::-webkit-scrollbar-thumb {
+    background: var(--gold-primary) !important;
+    border-radius: 3px !important;
+  }
+
+  /* Scroll Hint Banner on Mobile */
+  .mobile-table-scroll-hint {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 8px 12px !important;
+    background: linear-gradient(90deg, rgba(198, 161, 91, 0.14), rgba(26, 7, 9, 0.05)) !important;
+    border-bottom: 1px dashed var(--gold-border) !important;
+    font-size: 0.70rem !important;
+    font-weight: 700 !important;
+    color: #8C6D2D !important;
+    letter-spacing: 0.4px !important;
+    text-transform: uppercase !important;
+    user-select: none !important;
     white-space: nowrap !important;
   }
 
-  .admin-table-container td {
-    padding: 10px 8px !important;
-    font-size: 0.76rem !important;
+  .admin-table-container table,
+  table.admin-table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Prevent vertical text wrapping and squished columns */
+  .admin-table-container th,
+  .admin-table th {
+    padding: 12px 14px !important;
+    font-size: 0.74rem !important;
+    white-space: nowrap !important;
+    letter-spacing: 0.6px !important;
+    line-height: 1.3 !important;
+    vertical-align: middle !important;
+  }
+
+  .admin-table-container td,
+  .admin-table td {
+    padding: 12px 14px !important;
+    font-size: 0.82rem !important;
+    line-height: 1.45 !important;
+    vertical-align: middle !important;
+  }
+
+  /* Ensure plot numbers, sizes, badges, dates, dimensions stay cleanly horizontal */
+  .admin-table-container td strong,
+  .admin-table td strong {
+    font-size: 0.88rem !important;
+  }
+
+  .admin-table-container .badge-status,
+  .admin-table .badge-status {
+    white-space: nowrap !important;
+    padding: 5px 12px !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.5px !important;
+    font-weight: 800 !important;
+    display: inline-block !important;
   }
 
   /* Quick Action Toolbar (Customer Details, CSV Export, Manage Staff) */
@@ -1664,16 +1852,21 @@
   }
 
   /* Quick Toggle Dropdowns & Action Buttons in Table */
-  .admin-table-container select {
+  .admin-table-container select,
+  .admin-table select {
     min-height: 38px !important;
-    font-size: 0.76rem !important;
-    padding: 6px 8px !important;
+    font-size: 0.78rem !important;
+    padding: 6px 10px !important;
     border-radius: 6px !important;
+    white-space: nowrap !important;
+    background-color: var(--bg-cream) !important;
+    font-weight: 700 !important;
   }
 
-  .admin-table-container .admin-icon-btn {
-    min-width: 34px !important;
-    min-height: 34px !important;
+  .admin-table-container .admin-icon-btn,
+  .admin-table .admin-icon-btn {
+    min-width: 36px !important;
+    min-height: 36px !important;
     border-radius: 6px !important;
   }
 

@@ -62,13 +62,21 @@ export default function PlotsPage() {
     });
   }, [plotsData, tableFilter, searchQuery]);
 
-  // Plots split into two columns matching the blueprint layout (1-31 and 32-64)
-  const col1Plots = useMemo(() => {
-    return filteredPlots.filter((p) => p.number <= 31);
+  // Plots split into 4 tables (16 plots each: 1-16, 17-32, 33-48, 49-64) for 2x2 grid layout
+  const table1Plots = useMemo(() => {
+    return filteredPlots.filter((p) => p.number >= 1 && p.number <= 16);
   }, [filteredPlots]);
 
-  const col2Plots = useMemo(() => {
-    return filteredPlots.filter((p) => p.number >= 32);
+  const table2Plots = useMemo(() => {
+    return filteredPlots.filter((p) => p.number >= 17 && p.number <= 32);
+  }, [filteredPlots]);
+
+  const table3Plots = useMemo(() => {
+    return filteredPlots.filter((p) => p.number >= 33 && p.number <= 48);
+  }, [filteredPlots]);
+
+  const table4Plots = useMemo(() => {
+    return filteredPlots.filter((p) => p.number >= 49 && p.number <= 64);
   }, [filteredPlots]);
 
   // WhatsApp enquiry handler (Strictly no price details)
@@ -148,27 +156,27 @@ export default function PlotsPage() {
     switch (status) {
       case 'AVAILABLE':
         return {
-          fill: '#172719',
-          hoverFill: '#233B26',
+          fill: '#1D4D27',
+          hoverFill: '#266434',
           stroke: '#C6A15B',
-          text: '#F5EFEB',
-          badgeClass: 'bg-espresso-900 text-gold-light border border-gold-primary'
+          text: '#FFFFFF',
+          badgeClass: 'bg-[#1D4D27] text-white border border-[#163D1F] font-bold'
         };
       case 'PRE-BOOKED':
         return {
-          fill: '#C6A15B',
-          hoverFill: '#D9B46E',
+          fill: '#C99E5B',
+          hoverFill: '#DBB06C',
           stroke: '#8C6F34',
           text: '#1A0709',
-          badgeClass: 'bg-gold-primary text-espresso-950 font-bold'
+          badgeClass: 'bg-[#C99E5B] text-[#1A0709] border border-[#B38743] font-bold'
         };
       case 'SOLD':
         return {
-          fill: '#9E3824',
-          hoverFill: '#BA462E',
+          fill: '#A63826',
+          hoverFill: '#BF432F',
           stroke: '#6E2012',
           text: '#FFFFFF',
-          badgeClass: 'bg-terracotta text-white'
+          badgeClass: 'bg-[#A63826] text-white border border-[#852718] font-bold'
         };
       default:
         return {
@@ -179,6 +187,106 @@ export default function PlotsPage() {
           badgeClass: 'bg-espresso-800 text-white'
         };
     }
+  };
+
+  const renderPlotTable = (title, plots, rangeSubtitle) => {
+    return (
+      <div className="plots-single-table-card border border-gold-border/40 rounded-lg bg-white shadow-xs flex flex-col overflow-hidden">
+        {/* Compact Table Section Header */}
+        <div className="bg-espresso-950 text-gold-light py-1.5 px-2 border-b border-gold-border/40 flex items-center justify-between">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-gold-primary flex-shrink-0"></span>
+            <span className="font-heading font-bold text-[10px] sm:text-xs tracking-wider text-gold-light uppercase truncate">
+              {title}
+            </span>
+          </div>
+          <span className="text-[8px] sm:text-[9px] font-sans font-semibold text-gold-antique bg-espresso-900 px-1 py-0.2 rounded border border-gold-border/30 flex-shrink-0">
+            {plots.length} {plots.length === 1 ? 'Plot' : 'Plots'}
+          </span>
+        </div>
+
+        {/* Table Content - Single Header & Guaranteed 100% Fit */}
+        <div className="w-full overflow-hidden">
+          <table className="w-full text-left border-collapse table-fixed font-sans">
+            <colgroup>
+              <col style={{ width: '18%' }} />
+              <col style={{ width: '26%' }} />
+              <col style={{ width: '15%' }} />
+              <col style={{ width: '17%' }} />
+              <col style={{ width: '24%' }} />
+            </colgroup>
+            <thead className="bg-espresso-900 text-gold-light tracking-tight uppercase">
+              <tr className="border-b border-espresso-800">
+                <th className="py-1 px-0.5 text-center text-[8.5px] sm:text-[11px] font-bold border-r border-espresso-800">
+                  PLOT
+                </th>
+                <th className="py-1 px-1 text-right text-[8.5px] sm:text-[11px] font-bold border-r border-espresso-800">
+                  SQ.FT
+                </th>
+                <th className="py-1 px-0.5 text-center text-[8.5px] sm:text-[11px] font-bold border-r border-espresso-800">
+                  CENT
+                </th>
+                <th className="py-1 px-0.5 text-center text-[8.5px] sm:text-[11px] font-bold border-r border-espresso-800">
+                  EXT
+                </th>
+                <th className="py-1 px-0.5 text-center text-[8.5px] sm:text-[11px] font-bold">
+                  STATUS
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gold-border/20 text-espresso-900">
+              {plots.map((plot) => {
+                const badge = getStatusColor(plot.status);
+                const isSelected = selectedPlot?.number === plot.number;
+                return (
+                  <tr
+                    key={plot.number}
+                    onClick={() => setSelectedPlot(plot)}
+                    className={`transition-colors cursor-pointer hover:bg-gold-primary/15 ${
+                      isSelected ? 'bg-gold-primary/25 font-bold' : ''
+                    }`}
+                  >
+                    <td className="py-1 px-0.5 font-bold text-[9.5px] sm:text-xs text-espresso-950 border-r border-gold-border/20 text-center truncate">
+                      <span className="inline-flex items-center gap-1 justify-center">
+                        <span
+                          className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                          style={{ backgroundColor: badge.fill }}
+                        />
+                        #{plot.number}
+                      </span>
+                    </td>
+                    <td className="py-1 px-1 font-semibold text-[9px] sm:text-xs text-espresso-900 text-right border-r border-gold-border/20 truncate">
+                      {plot.sqft.toLocaleString()}
+                    </td>
+                    <td className="py-1 px-0.5 font-medium text-[9px] sm:text-xs text-espresso-800 text-center border-r border-gold-border/20 truncate">
+                      {plot.cent}
+                    </td>
+                    <td className="py-1 px-0.5 font-medium text-[8.5px] sm:text-xs text-espresso-700 text-center border-r border-gold-border/20 truncate">
+                      {plot.remSqft}
+                    </td>
+                    <td className="py-1 px-0.5 text-center">
+                      <span className={`inline-block w-full text-center py-0.5 rounded text-[7.5px] sm:text-[10px] font-bold tracking-tight uppercase leading-none truncate ${badge.badgeClass}`}>
+                        <span className="hidden sm:inline">{plot.status}</span>
+                        <span className="sm:hidden">
+                          {plot.status === 'AVAILABLE' ? 'AVAIL' : plot.status === 'PRE-BOOKED' ? 'BOOK' : 'SOLD'}
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+              {plots.length === 0 && (
+                <tr>
+                  <td colSpan="5" className="py-4 text-center text-espresso-600 text-[9px] font-sans">
+                    No plots found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -247,8 +355,8 @@ export default function PlotsPage() {
             onClick={() => setSelectedFilter('AVAILABLE')}
             className={`filter-chip chip-available ${selectedFilter === 'AVAILABLE' ? 'active' : ''}`}
           >
-            <span className="status-dot dot-available bg-espresso-900 border border-gold-primary" />
-            <span>AVAILABLE: <strong className="text-gold-antique">{stats.available}</strong></span>
+            <span className="status-dot dot-available bg-[#1D4D27] border border-[#276735]" />
+            <span>AVAILABLE: <strong className="text-[#1D4D27]">{stats.available}</strong></span>
           </button>
 
           <button
@@ -256,8 +364,8 @@ export default function PlotsPage() {
             onClick={() => setSelectedFilter('PRE-BOOKED')}
             className={`filter-chip chip-prebooked ${selectedFilter === 'PRE-BOOKED' ? 'active' : ''}`}
           >
-            <span className="status-dot dot-prebooked bg-gold-primary" />
-            <span>PRE-BOOKED: <strong>{stats.prebooked}</strong></span>
+            <span className="status-dot dot-prebooked bg-[#C99E5B] border border-[#B38743]" />
+            <span>PRE-BOOKED: <strong className="text-[#9C7230]">{stats.prebooked}</strong></span>
           </button>
 
           <button
@@ -265,8 +373,8 @@ export default function PlotsPage() {
             onClick={() => setSelectedFilter('SOLD')}
             className={`filter-chip chip-sold ${selectedFilter === 'SOLD' ? 'active' : ''}`}
           >
-            <span className="status-dot dot-sold bg-terracotta" />
-            <span>SOLD: <strong>{stats.sold}</strong></span>
+            <span className="status-dot dot-sold bg-[#A63826] border border-[#852718]" />
+            <span>SOLD: <strong className="text-[#A63826]">{stats.sold}</strong></span>
           </button>
         </div>
 
@@ -872,44 +980,62 @@ export default function PlotsPage() {
         </div>
 
         {/* 4. PLOT STATUS COLOR CODE LEGEND NOTE */}
-        <div className="plot-legend-banner mt-8 bg-biscuit-50 border border-gold-border rounded-xl p-5 sm:p-6 shadow-sm">
+        <div className="plot-legend-banner mt-8 bg-[#FAF7F2] border border-gold-border/60 rounded-xl p-4 sm:p-6 shadow-sm">
           <div className="legend-title flex items-center gap-2 font-mono text-xs font-bold text-gold-antique uppercase tracking-widest mb-4">
             <span className="w-4 h-0.5 bg-gold-primary" />
             PLOT AVAILABILITY COLOR CODE NOTE
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="flex items-start gap-3 bg-cream p-3 rounded-lg border border-gold-border/30">
-              <span className="w-5 h-5 rounded bg-espresso-900 border border-gold-primary flex-shrink-0 mt-0.5" />
-              <div>
-                <strong className="block font-mono text-xs text-espresso-950 font-bold">
-                  AVAILABLE (ESPRESSO / FOREST)
-                </strong>
-                <p className="font-body text-xs text-espresso-700 mt-0.5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+            {/* AVAILABLE (GREEN) */}
+            <div className="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-emerald-700/25 shadow-xs hover:border-emerald-600/50 transition-all">
+              <span className="w-5 h-5 rounded-md bg-[#1D4D27] border border-[#276735] flex-shrink-0 mt-0.5 shadow-xs" />
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <strong className="font-heading text-sm text-[#1D4D27] font-bold tracking-wide">
+                    AVAILABLE (GREEN)
+                  </strong>
+                  <span className="inline-block px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-[#1D4D27]/10 text-[#1D4D27] border border-[#1D4D27]/25">
+                    {stats.available} Plots
+                  </span>
+                </div>
+                <p className="font-body text-xs text-espresso-700 leading-relaxed">
                   100% DTCP Approved plot ready for immediate booking, registration &amp; construction.
                 </p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 bg-cream p-3 rounded-lg border border-gold-border/30">
-              <span className="w-5 h-5 rounded bg-gold-primary border border-gold-dark flex-shrink-0 mt-0.5" />
-              <div>
-                <strong className="block font-mono text-xs text-gold-dark font-bold">
-                  PRE-BOOKED / RESERVED (GOLD)
-                </strong>
-                <p className="font-body text-xs text-espresso-700 mt-0.5">
+            {/* PRE-BOOKED (SANDAL) */}
+            <div className="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-amber-600/25 shadow-xs hover:border-amber-500/50 transition-all">
+              <span className="w-5 h-5 rounded-md bg-[#C99E5B] border border-[#B38743] flex-shrink-0 mt-0.5 shadow-xs" />
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <strong className="font-heading text-sm text-[#9C7230] font-bold tracking-wide">
+                    PRE-BOOKED (SANDAL)
+                  </strong>
+                  <span className="inline-block px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-[#C99E5B]/15 text-[#8A6324] border border-[#C99E5B]/30">
+                    {stats.prebooked} Plots
+                  </span>
+                </div>
+                <p className="font-body text-xs text-espresso-700 leading-relaxed">
                   Initial token advance received. Document verification &amp; bank loan in progress.
                 </p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 bg-cream p-3 rounded-lg border border-gold-border/30">
-              <span className="w-5 h-5 rounded bg-terracotta border border-red-900 flex-shrink-0 mt-0.5" />
-              <div>
-                <strong className="block font-mono text-xs text-terracotta font-bold">
-                  SOLD / HANDED OVER (TERRACOTTA)
-                </strong>
-                <p className="font-body text-xs text-espresso-700 mt-0.5">
+            {/* SOLD (RED) */}
+            <div className="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-red-700/25 shadow-xs hover:border-red-600/50 transition-all">
+              <span className="w-5 h-5 rounded-md bg-[#A63826] border border-[#852718] flex-shrink-0 mt-0.5 shadow-xs" />
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <strong className="font-heading text-sm text-[#A63826] font-bold tracking-wide">
+                    SOLD (RED)
+                  </strong>
+                  <span className="inline-block px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-[#A63826]/10 text-[#A63826] border border-[#A63826]/25">
+                    {stats.sold} Plots
+                  </span>
+                </div>
+                <p className="font-body text-xs text-espresso-700 leading-relaxed">
                   Sale deed registered &amp; clear parent title transferred to plot owner.
                 </p>
               </div>
@@ -931,20 +1057,25 @@ export default function PlotsPage() {
               </p>
             </div>
 
-            {/* Filter Chips */}
+            {/* Filter Chips with exact color coordination */}
             <div className="flex flex-wrap gap-2">
-              {['ALL', 'AVAILABLE', 'PRE-BOOKED', 'SOLD'].map((st) => (
+              {[
+                { id: 'ALL', label: 'ALL', count: stats.total, activeClass: 'bg-espresso-900 text-gold-light border-gold-primary' },
+                { id: 'AVAILABLE', label: 'AVAILABLE', count: stats.available, activeClass: 'bg-[#1D4D27] text-white border-[#163D1F]' },
+                { id: 'PRE-BOOKED', label: 'PRE-BOOKED', count: stats.prebooked, activeClass: 'bg-[#C99E5B] text-[#1A0709] border-[#B38743]' },
+                { id: 'SOLD', label: 'SOLD', count: stats.sold, activeClass: 'bg-[#A63826] text-white border-[#852718]' }
+              ].map((btn) => (
                 <button
-                  key={st}
+                  key={btn.id}
                   type="button"
-                  onClick={() => setTableFilter(st)}
+                  onClick={() => setTableFilter(btn.id)}
                   className={`px-3 py-1.5 rounded text-xs font-mono font-bold border transition-colors cursor-pointer ${
-                    tableFilter === st
-                      ? 'bg-espresso-900 text-gold-light border-gold-primary'
+                    tableFilter === btn.id
+                      ? btn.activeClass
                       : 'bg-biscuit-100 text-espresso-800 border-gold-border hover:bg-gold-primary/20'
                   }`}
                 >
-                  {st} ({st === 'ALL' ? stats.total : stats[st.toLowerCase().replace('-', '')] || 0})
+                  {btn.label} ({btn.count})
                 </button>
               ))}
             </div>
@@ -979,131 +1110,12 @@ export default function PlotsPage() {
             </span>
           </div>
 
-          {/* Dual-Column Blueprint Extent Table (Replicating exact layout of the blueprint) */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 border border-gold-border/40 rounded-lg p-2 bg-[#FAF7F2]">
-            
-            {/* Column 1: Plots 1 to 31 */}
-            <div className="overflow-x-auto border border-gold-border/40 rounded-lg bg-white shadow-xs">
-              <table className="w-full text-left">
-                <thead className="bg-espresso-900 text-gold-light font-mono tracking-wider uppercase">
-                  <tr>
-                    <th className="py-3 px-3.5 border-r border-espresso-800 text-xs sm:text-sm font-bold">Plot.No</th>
-                    <th className="py-3 px-3.5 border-r border-espresso-800 text-right text-xs sm:text-sm font-bold">Sq.Ft</th>
-                    <th colSpan="2" className="py-3 px-3 border-r border-espresso-800 text-center text-xs sm:text-sm font-bold">Cent Extent</th>
-                    <th className="py-3 px-3 text-center text-xs sm:text-sm font-bold">Status</th>
-                  </tr>
-                  <tr className="bg-espresso-950 text-gold-antique text-xs border-t border-gold-border/20">
-                    <th className="py-1.5 px-3.5 border-r border-espresso-800 font-semibold">#</th>
-                    <th className="py-1.5 px-3.5 border-r border-espresso-800 text-right font-semibold">Area</th>
-                    <th className="py-1.5 px-3 border-r border-espresso-800 text-center font-semibold">Cent</th>
-                    <th className="py-1.5 px-3 border-r border-espresso-800 text-center font-semibold">Sq.Ft</th>
-                    <th className="py-1.5 px-3 text-center font-semibold">Availability</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gold-border/20">
-                  {col1Plots.map((plot) => {
-                    const badge = getStatusColor(plot.status);
-                    const isSelected = selectedPlot?.number === plot.number;
-                    return (
-                      <tr
-                        key={plot.number}
-                        onClick={() => setSelectedPlot(plot)}
-                        className={`transition-colors cursor-pointer hover:bg-gold-primary/15 ${
-                          isSelected ? 'bg-gold-primary/25 font-bold' : ''
-                        }`}
-                      >
-                        <td className="py-3 px-3.5 font-mono font-bold text-sm sm:text-base text-espresso-950 border-r border-gold-border/20">
-                          #{plot.number}
-                        </td>
-                        <td className="py-3 px-3.5 font-mono font-bold text-sm sm:text-base text-espresso-950 text-right border-r border-gold-border/20">
-                          {plot.sqft.toLocaleString()}
-                        </td>
-                        <td className="py-3 px-3 font-mono font-bold text-sm sm:text-base text-espresso-900 text-center border-r border-gold-border/20">
-                          {plot.cent}
-                        </td>
-                        <td className="py-3 px-3 font-mono font-semibold text-sm sm:text-base text-espresso-800 text-center border-r border-gold-border/20">
-                          {plot.remSqft}
-                        </td>
-                        <td className="py-3 px-3 text-center">
-                          <span className={`inline-block px-2.5 py-1 rounded text-xs font-mono font-bold tracking-wider ${badge.badgeClass}`}>
-                            {plot.status}
-                          </span>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                  {col1Plots.length === 0 && (
-                    <tr>
-                      <td colSpan="5" className="py-8 text-center text-espresso-600 font-mono text-sm">
-                        No matching plots found in this section
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Column 2: Plots 32 to 64 */}
-            <div className="overflow-x-auto border border-gold-border/40 rounded-lg bg-white shadow-xs">
-              <table className="w-full text-left">
-                <thead className="bg-espresso-900 text-gold-light font-mono tracking-wider uppercase">
-                  <tr>
-                    <th className="py-3 px-3.5 border-r border-espresso-800 text-xs sm:text-sm font-bold">Plot.No</th>
-                    <th className="py-3 px-3.5 border-r border-espresso-800 text-right text-xs sm:text-sm font-bold">Sq.Ft</th>
-                    <th colSpan="2" className="py-3 px-3 border-r border-espresso-800 text-center text-xs sm:text-sm font-bold">Cent Extent</th>
-                    <th className="py-3 px-3 text-center text-xs sm:text-sm font-bold">Status</th>
-                  </tr>
-                  <tr className="bg-espresso-950 text-gold-antique text-xs border-t border-gold-border/20">
-                    <th className="py-1.5 px-3.5 border-r border-espresso-800 font-semibold">#</th>
-                    <th className="py-1.5 px-3.5 border-r border-espresso-800 text-right font-semibold">Area</th>
-                    <th className="py-1.5 px-3 border-r border-espresso-800 text-center font-semibold">Cent</th>
-                    <th className="py-1.5 px-3 border-r border-espresso-800 text-center font-semibold">Sq.Ft</th>
-                    <th className="py-1.5 px-3 text-center font-semibold">Availability</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gold-border/20">
-                  {col2Plots.map((plot) => {
-                    const badge = getStatusColor(plot.status);
-                    const isSelected = selectedPlot?.number === plot.number;
-                    return (
-                      <tr
-                        key={plot.number}
-                        onClick={() => setSelectedPlot(plot)}
-                        className={`transition-colors cursor-pointer hover:bg-gold-primary/15 ${
-                          isSelected ? 'bg-gold-primary/25 font-bold' : ''
-                        }`}
-                      >
-                        <td className="py-3 px-3.5 font-mono font-bold text-sm sm:text-base text-espresso-950 border-r border-gold-border/20">
-                          #{plot.number}
-                        </td>
-                        <td className="py-3 px-3.5 font-mono font-bold text-sm sm:text-base text-espresso-950 text-right border-r border-gold-border/20">
-                          {plot.sqft.toLocaleString()}
-                        </td>
-                        <td className="py-3 px-3 font-mono font-bold text-sm sm:text-base text-espresso-900 text-center border-r border-gold-border/20">
-                          {plot.cent}
-                        </td>
-                        <td className="py-3 px-3 font-mono font-semibold text-sm sm:text-base text-espresso-800 text-center border-r border-gold-border/20">
-                          {plot.remSqft}
-                        </td>
-                        <td className="py-3 px-3 text-center">
-                          <span className={`inline-block px-2.5 py-1 rounded text-xs font-mono font-bold tracking-wider ${badge.badgeClass}`}>
-                            {plot.status}
-                          </span>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                  {col2Plots.length === 0 && (
-                    <tr>
-                      <td colSpan="5" className="py-8 text-center text-espresso-600 font-mono text-sm">
-                        No matching plots found in this section
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-
+          {/* 4-Table 2x2 Grid (2 on screen and below 2 tables on mobile, 4-col on desktop) */}
+          <div className="plots-tables-grid grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 border border-gold-border/40 rounded-lg p-1.5 sm:p-2 bg-[#FAF7F2]">
+            {renderPlotTable('PLOTS 01 – 16', table1Plots, '01-16')}
+            {renderPlotTable('PLOTS 17 – 32', table2Plots, '17-32')}
+            {renderPlotTable('PLOTS 33 – 48', table3Plots, '33-48')}
+            {renderPlotTable('PLOTS 49 – 64', table4Plots, '49-64')}
           </div>
 
           {/* Masterplan Summary Footnote */}

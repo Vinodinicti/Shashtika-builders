@@ -8,7 +8,6 @@ import LocationMasterplansSection from './components/LocationMasterplansSection'
 import UpcomingProjectsSection from './components/UpcomingProjectsSection';
 import ConstructionSection from './components/ConstructionSection';
 import WhyChooseSection from './components/WhyChooseSection';
-import CoreValuesSection from './components/CoreValuesSection';
 import ReviewsSection from './components/ReviewsSection';
 import QuickEnquirySection from './components/QuickEnquirySection';
 import Footer from './components/Footer';
@@ -32,6 +31,7 @@ export default function App() {
     if (hash.includes('admin')) return 'admin';
     return 'home';
   });
+  const [homeNavCount, setHomeNavCount] = useState(0);
 
   // Listen to hash changes for smooth client-side routing
   useEffect(() => {
@@ -54,6 +54,7 @@ export default function App() {
         window.scrollTo(0, 0);
       } else {
         setCurrentRoute('home');
+        setHomeNavCount((prev) => prev + 1);
       }
     };
     window.addEventListener('hashchange', handleHashChange);
@@ -102,7 +103,7 @@ export default function App() {
         /* Main Home Content Area */
         <main className="creamy-smoky-sandal-canvas">
           {/* 100% Viewport Screen Fit Hero Section */}
-          <HeroSection />
+          <HeroSection isLoaded={loaded} homeNavCount={homeNavCount} />
 
           {/* Unified Non-Hero Sections */}
           <div className="relative">
@@ -121,9 +122,6 @@ export default function App() {
             {/* Why Choose SHASHTIKA Section */}
             <WhyChooseSection />
 
-            {/* Our Core Values (3 Luxury Cards with Realistic Diagrammatic Icons & 3D Animation) */}
-            <CoreValuesSection />
-
             {/* Real Customer Reviews & Testimonials Slider */}
             <ReviewsSection />
 
@@ -133,11 +131,11 @@ export default function App() {
         </main>
       )}
 
-      {/* Footer */}
-      <Footer />
+      {/* Footer (Excluded on Admin Portal) */}
+      {currentRoute !== 'admin' && <Footer />}
 
-      {/* Floating Action Stack (Call + WhatsApp) */}
-      <FloatingActionStack />
+      {/* Floating Action Stack (Excluded on Admin Portal) */}
+      {currentRoute !== 'admin' && <FloatingActionStack />}
     </div>
   );
 }

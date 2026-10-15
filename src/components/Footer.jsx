@@ -6,7 +6,7 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="bg-[#1A0709] text-cream pt-16 pb-8 border-t border-gold-primary/70 shadow-[0_-8px_30px_rgba(26,7,9,0.35)] relative z-20">
+      <footer className="bg-[#070D1A] text-cream pt-16 pb-8 border-t border-gold-primary/70 shadow-[0_-8px_30px_rgba(7,13,26,0.6)] relative z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="footer-main-grid grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14 mb-12">
             
@@ -16,7 +16,7 @@ export default function Footer() {
                 <img
                   src="/Images/Shashtika_Emblem.png"
                   alt="SHASHTIKA Emblem"
-                  className="h-[34px] w-auto object-contain rounded border border-gold-primary/50 shadow-[0_2px_8px_rgba(204,3,4,0.3)]"
+                  className="h-[34px] w-auto object-contain rounded border border-gold-primary/50 shadow-[0_2px_8px_rgba(10,19,37,0.5)]"
                 />
                 <span className="font-heading font-extrabold text-2xl tracking-wider gold-glow-letters">
                   SHASHTIKA
@@ -28,7 +28,7 @@ export default function Footer() {
               <p className="font-body text-xs text-biscuit-200/80 leading-relaxed mb-4">
                 Pioneering premium DTCP &amp; RERA approved plot enclaves, farm residency layouts, and custom building construction across Coimbatore &amp; Pollachi.
               </p>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded bg-[#2A0F13] border border-gold-border/40 text-[10px] font-mono font-bold text-gold-light tracking-wider uppercase">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded bg-[#0F1C36] border border-gold-border/40 text-[10px] font-mono font-bold text-gold-light tracking-wider uppercase">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.5">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 </svg>
@@ -64,7 +64,7 @@ export default function Footer() {
                 {/* Phone Call */}
                 <a
                   href="tel:+919363599754"
-                  className="w-10 h-10 rounded-full bg-[#2A0F13] border border-gold-border/40 text-gold-light hover:bg-gold-primary hover:text-espresso-950 hover:border-gold-primary flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105"
+                  className="w-10 h-10 rounded-full bg-[#0F1C36] border border-gold-border/40 text-gold-light hover:bg-gold-primary hover:text-[#0A1325] hover:border-gold-primary flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105"
                   title="Call Helpline (+91 93635 99754)"
                   aria-label="Call Helpline"
                 >
@@ -78,7 +78,7 @@ export default function Footer() {
                   href="https://wa.me/919363599754?text=Hello%20SHASHTIKA,%20I%20want%20to%20enquire%20about%20plots"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[#2A0F13] border border-gold-border/40 text-gold-light hover:bg-emerald-600 hover:text-white hover:border-emerald-500 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105"
+                  className="w-10 h-10 rounded-full bg-[#0F1C36] border border-gold-border/40 text-gold-light hover:bg-emerald-600 hover:text-white hover:border-emerald-500 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105"
                   title="Chat on WhatsApp (+91 93635 99754)"
                   aria-label="Chat on WhatsApp"
                 >
@@ -92,7 +92,7 @@ export default function Footer() {
                   href="https://instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[#2A0F13] border border-gold-border/40 text-gold-light hover:bg-[#E1306C] hover:text-white hover:border-[#E1306C] flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105"
+                  className="w-10 h-10 rounded-full bg-[#0F1C36] border border-gold-border/40 text-gold-light hover:bg-[#E1306C] hover:text-white hover:border-[#E1306C] flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105"
                   title="Follow on Instagram"
                   aria-label="Follow on Instagram"
                 >
@@ -108,7 +108,7 @@ export default function Footer() {
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[#2A0F13] border border-gold-border/40 text-gold-light hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105"
+                  className="w-10 h-10 rounded-full bg-[#0F1C36] border border-gold-border/40 text-gold-light hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105"
                   title="Follow on Facebook"
                   aria-label="Follow on Facebook"
                 >
@@ -120,7 +120,7 @@ export default function Footer() {
                 {/* Email */}
                 <a
                   href="mailto:contact@shashtika.com"
-                  className="w-10 h-10 rounded-full bg-[#2A0F13] border border-gold-border/40 text-gold-light hover:bg-gold-primary hover:text-espresso-950 hover:border-gold-primary flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105"
+                  className="w-10 h-10 rounded-full bg-[#0F1C36] border border-gold-border/40 text-gold-light hover:bg-gold-primary hover:text-[#0A1325] hover:border-gold-primary flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105"
                   title="Send Email"
                   aria-label="Send Email"
                 >

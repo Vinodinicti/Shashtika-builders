@@ -69,9 +69,9 @@ export default function QuickEnquirySection() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Simple & Clean Enquiry Card */}
-        <div className="bg-espresso-950 border border-gold-primary/80 rounded-2xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+        <div className="bg-gradient-to-br from-[#0A1325] via-[#0E1A33] to-[#070D1A] border border-gold-primary/80 rounded-2xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
           {/* Subtle Ambient Radial Glow */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[radial-gradient(circle,rgba(198,161,91,0.12)_0%,transparent_70%)] pointer-events-none" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[radial-gradient(circle,rgba(198,161,91,0.15)_0%,transparent_70%)] pointer-events-none" />
 
           {/* Header */}
           <div className="text-center max-w-xl mx-auto mb-8">
@@ -87,7 +87,7 @@ export default function QuickEnquirySection() {
           </div>
 
           {submittedLead ? (
-            <div className="max-w-xl mx-auto p-6 rounded-xl bg-espresso-900 border border-gold-primary shadow-gold text-center animate-fadeIn">
+            <div className="max-w-xl mx-auto p-6 rounded-xl bg-gradient-to-br from-[#0A1325] to-[#070D1A] border border-gold-primary shadow-gold text-center animate-fadeIn">
               <div className="w-12 h-12 rounded-full bg-gold-primary/20 text-gold-light text-2xl font-bold flex items-center justify-center mx-auto mb-3">
                 ✓
               </div>
@@ -98,7 +98,7 @@ export default function QuickEnquirySection() {
                 Lead ID: {submittedLead.id} • Status: {submittedLead.aiPriority}
               </p>
               
-              <div className="p-3.5 rounded bg-espresso-950/80 border border-gold-border/30 text-xs text-cream/90 font-mono space-y-1 mb-5 text-left">
+              <div className="p-3.5 rounded bg-[#070D1A]/90 border border-gold-border/30 text-xs text-cream/90 font-mono space-y-1 mb-5 text-left">
                 <p>AI Score: <strong className="text-gold-light">{submittedLead.aiScore}/100</strong></p>
                 <p>Action: {submittedLead.recommendedAction}</p>
               </div>
@@ -127,7 +127,7 @@ export default function QuickEnquirySection() {
                     placeholder="e.g. Ramesh Kumar"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 rounded bg-espresso-900 border border-gold-border/50 text-cream text-sm placeholder-espresso-400 focus:outline-none focus:border-gold-primary transition-colors"
+                    className="w-full px-4 py-3 rounded bg-[#070D1A]/85 border border-gold-border/50 text-cream text-sm placeholder-slate-400 focus:outline-none focus:border-gold-primary focus:bg-[#0A1325] transition-colors"
                   />
                 </div>
 
@@ -141,7 +141,7 @@ export default function QuickEnquirySection() {
                     placeholder="e.g. 98422 10542"
                     value={formData.mobile}
                     onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
-                    className="w-full px-4 py-3 rounded bg-espresso-900 border border-gold-border/50 text-cream text-sm placeholder-espresso-400 focus:outline-none focus:border-gold-primary transition-colors"
+                    className="w-full px-4 py-3 rounded bg-[#070D1A]/85 border border-gold-border/50 text-cream text-sm placeholder-slate-400 focus:outline-none focus:border-gold-primary focus:bg-[#0A1325] transition-colors"
                   />
                 </div>
               </div>
@@ -156,7 +156,7 @@ export default function QuickEnquirySection() {
                   placeholder="e.g. Pollachi, Coimbatore, Kovaipudur"
                   value={formData.area}
                   onChange={(e) => setFormData({ ...formData, area: e.target.value })}
-                  className="w-full px-4 py-3 rounded bg-espresso-900 border border-gold-border/50 text-cream text-sm placeholder-espresso-400 focus:outline-none focus:border-gold-primary transition-colors"
+                  className="w-full px-4 py-3 rounded bg-[#070D1A]/85 border border-gold-border/50 text-cream text-sm placeholder-slate-400 focus:outline-none focus:border-gold-primary focus:bg-[#0A1325] transition-colors"
                 />
               </div>
 

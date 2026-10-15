@@ -82,13 +82,13 @@ export default function LocationMasterplansSection() {
                   <div>
                     {/* Specs Row */}
                     <div className="location-card-specs-row">
-                      <div>
+                      <div className="location-spec-col-road">
                         <span className="location-spec-lbl">ROAD WIDTHS</span>
                         <strong className="location-spec-val">
                           {item.roadWidths}
                         </strong>
                       </div>
-                      <div>
+                      <div className="location-spec-col-price">
                         <span className="location-spec-lbl">STARTING PRICE</span>
                         <strong className="location-spec-val text-gold">
                           {item.startingPrice}
@@ -100,7 +100,8 @@ export default function LocationMasterplansSection() {
                       type="button"
                       className="btn btn-outline-olive btn-sm location-card-btn"
                     >
-                      VIEW OVERALL LAYOUT &amp; SUMMARY →
+                      <span className="hidden sm:inline">VIEW OVERALL LAYOUT &amp; SUMMARY →</span>
+                      <span className="inline sm:hidden">VIEW PLAN →</span>
                     </button>
                   </div>
                 </div>

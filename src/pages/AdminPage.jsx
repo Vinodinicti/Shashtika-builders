@@ -1058,7 +1058,7 @@ _Please contact this client immediately and arrange site inspection / discussion
             <h2
               style={{
                 fontFamily: 'var(--font-heading)',
-                color: '#1A0709',
+                color: '#0A1325',
                 fontSize: '1.6rem',
                 fontWeight: 800,
                 letterSpacing: '1px'
@@ -1087,7 +1087,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.74rem',
                   fontWeight: 700,
-                  color: '#1A0709',
+                  color: '#0A1325',
                   letterSpacing: '1px',
                   marginBottom: '6px',
                   textTransform: 'uppercase'
@@ -1109,7 +1109,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   border: '1px solid #E5D2A6',
                   background: '#FFFDF9',
                   fontSize: '0.92rem',
-                  color: '#1A0709',
+                  color: '#0A1325',
                   outline: 'none',
                   boxSizing: 'border-box'
                 }}
@@ -1123,7 +1123,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.74rem',
                   fontWeight: 700,
-                  color: '#1A0709',
+                  color: '#0A1325',
                   letterSpacing: '1px',
                   marginBottom: '6px',
                   textTransform: 'uppercase'
@@ -1145,7 +1145,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   border: '1px solid #E5D2A6',
                   background: '#FFFDF9',
                   fontSize: '0.92rem',
-                  color: '#1A0709',
+                  color: '#0A1325',
                   outline: 'none',
                   boxSizing: 'border-box'
                 }}
@@ -1175,7 +1175,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                 width: '100%',
                 padding: '13px 18px',
                 marginTop: '6px',
-                background: '#1A0709',
+                background: '#0A1325',
                 color: '#E5D2A6',
                 border: '1.5px solid #C6A15B',
                 borderRadius: '4px',
@@ -1189,15 +1189,15 @@ _Please contact this client immediately and arrange site inspection / discussion
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                boxShadow: '0 4px 16px rgba(26, 7, 9, 0.3)',
+                boxShadow: '0 4px 16px rgba(10, 19, 37, 0.35)',
                 transition: 'all 0.25s ease'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#2D0E12';
+                e.currentTarget.style.backgroundColor = '#0F1C36';
                 e.currentTarget.style.color = '#FFFDF7';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = '#1A0709';
+                e.currentTarget.style.backgroundColor = '#0A1325';
                 e.currentTarget.style.color = '#E5D2A6';
               }}
             >
@@ -1358,10 +1358,10 @@ _Please contact this client immediately and arrange site inspection / discussion
                       <div className="architectural-tag" style={{ marginBottom: '8px', color: 'var(--gold-antique)', fontWeight: 700 }}>
                         AI ASSISTANT LEAD SCORING ENGINE
                       </div>
-                      <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.4rem, 2.5vw, 2.0rem)', color: '#1A0709', fontWeight: 800, letterSpacing: '0.5px', marginBottom: '8px' }}>
+                      <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.4rem, 2.5vw, 2.0rem)', color: '#0A1325', fontWeight: 800, letterSpacing: '0.5px', marginBottom: '8px' }}>
                         AI Lead Intelligence &amp; Action Priority
                       </h3>
-                      <p style={{ fontSize: '0.92rem', color: 'rgba(26, 7, 9, 0.75)', lineHeight: 1.6, fontWeight: 500 }}>
+                      <p style={{ fontSize: '0.92rem', color: 'rgba(10, 19, 37, 0.75)', lineHeight: 1.6, fontWeight: 500 }}>
                         Automated 0–100 AI Lead Scoring model evaluates budget, timeline, purpose, plot interest, and activity signals to recommend high-priority buyers to call first.
                       </p>
                     </div>
@@ -1377,10 +1377,10 @@ _Please contact this client immediately and arrange site inspection / discussion
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '8px',
-                          background: '#1A0709',
+                          background: '#0A1325',
                           color: '#F3E5AB',
                           border: '1.5px solid #C6A15B',
-                          boxShadow: '0 4px 14px rgba(26, 7, 9, 0.25)',
+                          boxShadow: '0 4px 14px rgba(10, 19, 37, 0.35)',
                           cursor: 'pointer',
                           letterSpacing: '0.4px',
                           transition: 'all 0.2s ease'
@@ -1543,7 +1543,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                           border: '1px solid var(--gold-border)',
                           background: 'var(--bg-cream)',
                           fontSize: '0.88rem',
-                          color: '#1A0709',
+                          color: '#0A1325',
                           outline: 'none',
                           boxSizing: 'border-box'
                         }}
@@ -1554,16 +1554,19 @@ _Please contact this client immediately and arrange site inspection / discussion
 
                   {/* Scored Leads Table */}
                   <div className="admin-table-container" style={{ overflowX: 'auto', borderRadius: '4px', border: '1.5px solid var(--gold-border)' }}>
+                    <div className="mobile-table-scroll-hint">
+                      <span>&harr; Swipe horizontally to view full lead details &amp; contact actions</span>
+                    </div>
                     <table className="admin-table" style={{ width: '100%', minWidth: '1060px' }}>
                       <thead>
                         <tr>
-                          <th style={{ width: '9%', textAlign: 'center' }}>AI SCORE</th>
-                          <th style={{ width: '18%' }}>CLIENT &amp; CONTACT</th>
-                          <th style={{ width: '15%' }}>REQUIREMENTS &amp; BUDGET</th>
-                          <th style={{ width: '14%' }}>TIMELINE &amp; TARGET PLOT</th>
-                          <th style={{ width: '15%', minWidth: '160px' }}>ASSIGNED STAFF</th>
-                          <th style={{ width: '16%', minWidth: '165px' }}>ACTIONS TAKEN</th>
-                          <th style={{ width: '13%', minWidth: '130px', textAlign: 'center' }}>CONTACT</th>
+                          <th style={{ width: '9%', minWidth: '85px', textAlign: 'center', whiteSpace: 'nowrap' }}>AI SCORE</th>
+                          <th style={{ width: '18%', minWidth: '180px', whiteSpace: 'nowrap' }}>CLIENT &amp; CONTACT</th>
+                          <th style={{ width: '15%', minWidth: '160px', whiteSpace: 'nowrap' }}>REQUIREMENTS &amp; BUDGET</th>
+                          <th style={{ width: '14%', minWidth: '150px', whiteSpace: 'nowrap' }}>TIMELINE &amp; TARGET PLOT</th>
+                          <th style={{ width: '15%', minWidth: '160px', whiteSpace: 'nowrap' }}>ASSIGNED STAFF</th>
+                          <th style={{ width: '16%', minWidth: '165px', whiteSpace: 'nowrap' }}>ACTIONS TAKEN</th>
+                          <th style={{ width: '13%', minWidth: '130px', textAlign: 'center', whiteSpace: 'nowrap' }}>CONTACT</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -1678,11 +1681,11 @@ _Please contact this client immediately and arrange site inspection / discussion
                                       </button>
                                     </div>
                                   )}
-                                  <div style={{ fontWeight: 800, color: '#1A0709', fontSize: '0.95rem', marginBottom: '4px' }}>
+                                  <div style={{ fontWeight: 800, color: '#0A1325', fontSize: '0.95rem', marginBottom: '4px' }}>
                                     {lead.name}
                                   </div>
-                                  <div style={{ fontSize: '0.82rem', color: '#1A0709', fontWeight: 700, marginBottom: '2px' }}>
-                                    <a href={`tel:${lead.phone}`} style={{ color: '#1A0709', textDecoration: 'none' }}>{lead.phone}</a>
+                                  <div style={{ fontSize: '0.82rem', color: '#0A1325', fontWeight: 700, marginBottom: '2px' }}>
+                                    <a href={`tel:${lead.phone}`} style={{ color: '#0A1325', textDecoration: 'none' }}>{lead.phone}</a>
                                   </div>
                                   <div style={{ fontSize: '0.78rem', color: 'rgba(26,7,9,0.65)' }}>{lead.email}</div>
                                   <div style={{ fontSize: '0.70rem', color: '#A9823A', fontFamily: 'var(--font-mono)', marginTop: '4px' }}>
@@ -1691,7 +1694,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                 </td>
 
                                 <td style={{ verticalAlign: 'top' }}>
-                                  <div style={{ fontWeight: 700, color: '#1A0709', fontSize: '0.86rem', marginBottom: '4px' }}>
+                                  <div style={{ fontWeight: 700, color: '#0A1325', fontSize: '0.86rem', marginBottom: '4px' }}>
                                     {lead.budget}
                                   </div>
                                   <div style={{ fontSize: '0.80rem', color: 'rgba(26,7,9,0.75)' }}>{lead.purpose}</div>
@@ -1699,11 +1702,11 @@ _Please contact this client immediately and arrange site inspection / discussion
                                 </td>
 
                                 <td style={{ verticalAlign: 'top' }}>
-                                  <div style={{ fontWeight: 700, color: '#1A0709', fontSize: '0.86rem', marginBottom: '4px' }}>
+                                  <div style={{ fontWeight: 700, color: '#0A1325', fontSize: '0.86rem', marginBottom: '4px' }}>
                                     {lead.targetPlot}
                                   </div>
                                   <div style={{ fontSize: '0.80rem', color: 'rgba(26,7,9,0.75)' }}>
-                                    Timeline: <strong style={{ color: isHot ? '#C53030' : '#1A0709' }}>{lead.timeline}</strong>
+                                    Timeline: <strong style={{ color: isHot ? '#C53030' : '#0A1325' }}>{lead.timeline}</strong>
                                   </div>
                                 </td>
 
@@ -1720,7 +1723,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                         fontSize: '0.82rem',
                                         fontWeight: 700,
                                         background: 'var(--bg-cream)',
-                                        color: '#1A0709',
+                                        color: '#0A1325',
                                         cursor: 'pointer'
                                       }}
                                     >
@@ -1782,7 +1785,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                         currentAction === 'SITE VISIT SCHEDULED' ? '#1e7e34' :
                                         currentAction === 'TOKEN PAID' ? '#8C6B28' :
                                         currentAction === 'REJECTED' ? '#C53030' :
-                                        '#1A0709'
+                                        '#0A1325'
                                     }}
                                   >
                                     <option value="NEW LEAD">NEW LEAD</option>
@@ -1801,7 +1804,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                       href={`tel:${lead.phone}`}
                                       className="admin-icon-btn"
                                       title={`Call ${lead.name} (${lead.phone})`}
-                                      style={{ background: '#1A0709', border: '1.5px solid var(--gold-primary)', color: '#FFFDF8' }}
+                                      style={{ background: '#0A1325', border: '1.5px solid var(--gold-primary)', color: '#FFFDF8' }}
                                     >
                                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
                                     </a>
@@ -1845,7 +1848,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '20px' }}>
                     <div>
                       <span className="architectural-tag">LIVE LAYOUT INVENTORY CONTROL</span>
-                      <h3 style={{ fontSize: '1.4rem', color: '#1A0709', marginTop: '4px', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
+                      <h3 style={{ fontSize: '1.4rem', color: '#0A1325', marginTop: '4px', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
                         Plot Management Table
                       </h3>
                       <p style={{ fontSize: '0.88rem', color: 'rgba(26, 7, 9, 0.75)', marginTop: '4px' }}>
@@ -1880,7 +1883,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                             border: '1px solid var(--gold-border)',
                             background: 'var(--bg-cream)',
                             fontSize: '0.9rem',
-                            color: '#1A0709',
+                            color: '#0A1325',
                             outline: 'none',
                             boxSizing: 'border-box'
                           }}
@@ -1900,7 +1903,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                           border: '1px solid var(--gold-border)',
                           background: 'var(--bg-cream)',
                           fontSize: '0.88rem',
-                          color: '#1A0709',
+                          color: '#0A1325',
                           fontWeight: 700,
                           cursor: 'pointer'
                         }}
@@ -1912,22 +1915,25 @@ _Please contact this client immediately and arrange site inspection / discussion
                       </select>
                     </div>
 
-                    <div style={{ fontSize: '0.82rem', fontWeight: 800, background: 'var(--gold-primary)', color: '#1A0709', padding: '5px 14px', borderRadius: '12px' }}>
+                    <div style={{ fontSize: '0.82rem', fontWeight: 800, background: 'var(--gold-primary)', color: '#0A1325', padding: '5px 14px', borderRadius: '12px' }}>
                       {plotPageSize} / page
                     </div>
                   </div>
 
                   {/* Plots Table */}
-                  <div style={{ overflowX: 'auto', borderRadius: '4px', border: '1.5px solid var(--gold-border)' }}>
-                    <table className="admin-table">
+                  <div className="admin-table-container" style={{ overflowX: 'auto', borderRadius: '4px', border: '1.5px solid var(--gold-border)' }}>
+                    <div className="mobile-table-scroll-hint">
+                      <span>&harr; Swipe horizontally to view all plot specifications &amp; status</span>
+                    </div>
+                    <table className="admin-table" style={{ width: '100%', minWidth: '880px' }}>
                       <thead>
                         <tr>
-                          <th style={{ width: '12%', textAlign: 'center' }}>PLOT NO</th>
-                          <th style={{ width: '18%' }}>SIZE</th>
-                          <th style={{ width: '18%' }}>FACING</th>
-                          <th style={{ width: '22%' }}>DIMENSION / ROAD</th>
-                          <th style={{ width: '15%', textAlign: 'center' }}>STATUS BADGE</th>
-                          <th style={{ width: '15%', textAlign: 'center' }}>CHANGE STATUS</th>
+                          <th style={{ width: '12%', minWidth: '95px', textAlign: 'center', whiteSpace: 'nowrap' }}>PLOT NO</th>
+                          <th style={{ width: '22%', minWidth: '190px', whiteSpace: 'nowrap' }}>SIZE</th>
+                          <th style={{ width: '16%', minWidth: '150px', whiteSpace: 'nowrap' }}>FACING</th>
+                          <th style={{ width: '22%', minWidth: '190px', whiteSpace: 'nowrap' }}>DIMENSION / ROAD</th>
+                          <th style={{ width: '14%', minWidth: '125px', textAlign: 'center', whiteSpace: 'nowrap' }}>STATUS BADGE</th>
+                          <th style={{ width: '14%', minWidth: '135px', textAlign: 'center', whiteSpace: 'nowrap' }}>CHANGE STATUS</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -1945,25 +1951,25 @@ _Please contact this client immediately and arrange site inspection / discussion
 
                             return (
                               <tr key={plot.number} style={{ borderBottom: '1px solid rgba(198, 161, 91, 0.2)' }}>
-                                <td style={{ padding: '14px 12px', textAlign: 'center' }}>
-                                  <strong style={{ fontSize: '0.95rem', fontWeight: 800, color: '#1A0709', fontFamily: 'var(--font-mono)' }}>
+                                <td style={{ padding: '14px 12px', textAlign: 'center', whiteSpace: 'nowrap' }}>
+                                  <strong style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0A1325', fontFamily: 'var(--font-mono)' }}>
                                     PLOT {plot.number}
                                   </strong>
                                 </td>
-                                <td style={{ padding: '14px 12px', color: '#1A0709', fontWeight: 600, fontSize: '0.88rem' }}>
+                                <td style={{ padding: '14px 12px', color: '#0A1325', fontWeight: 600, fontSize: '0.88rem', whiteSpace: 'nowrap' }}>
                                   <strong>{plot.sqft} Sq.Ft</strong> ({plot.cent} Cents {plot.remSqft > 0 ? `${plot.remSqft} Sq.Ft` : ''})
                                 </td>
-                                <td style={{ padding: '14px 10px', color: '#1A0709', fontWeight: 600, fontSize: '0.88rem' }}>
+                                <td style={{ padding: '14px 12px', color: '#0A1325', fontWeight: 600, fontSize: '0.88rem', whiteSpace: 'nowrap' }}>
                                   {plot.facing}
                                 </td>
-                                <td style={{ padding: '14px 12px', color: 'rgba(26,7,9,0.85)', fontSize: '0.85rem' }}>
+                                <td style={{ padding: '14px 12px', color: 'rgba(26,7,9,0.85)', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
                                   <div style={{ fontWeight: 700 }}>{plot.dim}</div>
                                   <div style={{ fontSize: '0.74rem', color: 'rgba(26,7,9,0.6)' }}>{plot.road}</div>
                                 </td>
-                                <td style={{ padding: '14px 10px', textAlign: 'center' }}>
+                                <td style={{ padding: '14px 12px', textAlign: 'center', whiteSpace: 'nowrap' }}>
                                   <span className={`badge-status ${badgeClass}`}>{plot.status}</span>
                                 </td>
-                                <td style={{ padding: '14px 10px', textAlign: 'center' }}>
+                                <td style={{ padding: '14px 12px', textAlign: 'center', whiteSpace: 'nowrap' }}>
                                   <select
                                     value={plot.status}
                                     onChange={(e) => handlePlotStatusChange(plot.number, e.target.value)}
@@ -1974,8 +1980,9 @@ _Please contact this client immediately and arrange site inspection / discussion
                                       fontSize: '0.82rem',
                                       fontWeight: 700,
                                       background: 'var(--bg-cream)',
-                                      color: '#1A0709',
-                                      cursor: 'pointer'
+                                      color: '#0A1325',
+                                      cursor: 'pointer',
+                                      whiteSpace: 'nowrap'
                                     }}
                                   >
                                     <option value="AVAILABLE">AVAILABLE</option>
@@ -2006,7 +2013,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                         &larr; Prev
                       </button>
 
-                      <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#1A0709', padding: '0 10px' }}>
+                      <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#0A1325', padding: '0 10px' }}>
                         Page {safePlotPage} of {totalPlotPages}
                       </span>
 
@@ -2029,7 +2036,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1.5px solid var(--gold-border)' }}>
                     <div>
                       <span className="architectural-tag">CENTRALIZED CLIENT REGISTRY</span>
-                      <h3 style={{ fontSize: '1.4rem', color: '#1A0709', marginTop: '4px', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
+                      <h3 style={{ fontSize: '1.4rem', color: '#0A1325', marginTop: '4px', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
                         Customer Details
                       </h3>
                       <p style={{ fontSize: '0.88rem', color: 'rgba(26, 7, 9, 0.75)', marginTop: '4px' }}>
@@ -2047,7 +2054,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '8px',
-                          background: '#1A0709',
+                          background: '#0A1325',
                           color: '#F3E5AB',
                           border: '1.5px solid #C6A15B',
                           boxShadow: '0 4px 14px rgba(26, 7, 9, 0.25)',
@@ -2094,7 +2101,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                           alignItems: 'center',
                           gap: '8px',
                           background: 'linear-gradient(135deg, #C6A15B 0%, #AA7C11 100%)',
-                          color: '#1A0709',
+                          color: '#0A1325',
                           border: '1.5px solid #8C6B28',
                           boxShadow: '0 4px 14px rgba(198, 161, 91, 0.35)',
                           cursor: 'pointer',
@@ -2102,7 +2109,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                           transition: 'all 0.2s ease'
                         }}
                       >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A0709" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A1325" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                         + ADD NEW CUSTOMER RECORD
                       </button>
                     </div>
@@ -2144,7 +2151,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                           border: '1px solid var(--gold-border)',
                           background: 'var(--bg-cream)',
                           fontSize: '0.88rem',
-                          color: '#1A0709',
+                          color: '#0A1325',
                           outline: 'none',
                           boxSizing: 'border-box'
                         }}
@@ -2155,16 +2162,19 @@ _Please contact this client immediately and arrange site inspection / discussion
 
                   {/* Customer Registry Table */}
                   <div className="admin-table-container" style={{ overflowX: 'auto', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--gold-border)' }}>
+                    <div className="mobile-table-scroll-hint">
+                      <span>&harr; Swipe horizontally to view full customer records &amp; pipeline</span>
+                    </div>
                     <table className="admin-table" style={{ width: '100%', minWidth: '1060px' }}>
                       <thead>
                         <tr>
-                          <th style={{ width: '11%' }}>DATE &amp; ID</th>
-                          <th style={{ width: '20%' }}>CUSTOMER DETAILS</th>
-                          <th style={{ width: '21%' }}>REQUIREMENT &amp; NOTES</th>
-                          <th style={{ width: '15%', minWidth: '160px' }}>ASSIGNED STAFF</th>
-                          <th style={{ width: '15%', minWidth: '165px' }}>ACTIONS TAKEN</th>
-                          <th style={{ width: '8%', textAlign: 'center' }}>SOURCE</th>
-                          <th style={{ width: '10%', minWidth: '110px', textAlign: 'center' }}>CONTACT</th>
+                          <th style={{ width: '11%', minWidth: '110px', whiteSpace: 'nowrap' }}>DATE &amp; ID</th>
+                          <th style={{ width: '20%', minWidth: '180px', whiteSpace: 'nowrap' }}>CUSTOMER DETAILS</th>
+                          <th style={{ width: '21%', minWidth: '190px', whiteSpace: 'nowrap' }}>REQUIREMENT &amp; NOTES</th>
+                          <th style={{ width: '15%', minWidth: '160px', whiteSpace: 'nowrap' }}>ASSIGNED STAFF</th>
+                          <th style={{ width: '15%', minWidth: '165px', whiteSpace: 'nowrap' }}>ACTIONS TAKEN</th>
+                          <th style={{ width: '8%', minWidth: '85px', textAlign: 'center', whiteSpace: 'nowrap' }}>SOURCE</th>
+                          <th style={{ width: '10%', minWidth: '110px', textAlign: 'center', whiteSpace: 'nowrap' }}>CONTACT</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -2249,7 +2259,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                       </button>
                                     </div>
                                   )}
-                                  <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#1A0709', marginBottom: '4px' }}>
+                                  <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
                                     {cust.date}
                                   </div>
                                   <span style={{ fontSize: '0.7rem', fontWeight: 700, fontFamily: 'var(--font-mono)', padding: '2px 7px', background: 'rgba(198, 161, 91, 0.15)', border: '1px solid var(--gold-border)', color: '#8C6B28', borderRadius: '4px', display: 'inline-block' }}>
@@ -2258,14 +2268,14 @@ _Please contact this client immediately and arrange site inspection / discussion
                                 </td>
 
                                 <td style={{ verticalAlign: 'top' }}>
-                                  <div style={{ fontWeight: 800, color: '#1A0709', fontSize: '0.95rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                  <div style={{ fontWeight: 800, color: '#0A1325', fontSize: '0.95rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
                                     <span>{cust.name}</span>
                                   </div>
                                   <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', fontSize: '0.82rem' }}>
-                                    <div style={{ color: '#1A0709', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                    <div style={{ color: '#0A1325', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
                                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
-                                      <a href={`tel:${cust.phone}`} style={{ color: '#1A0709', textDecoration: 'none' }}>{cust.phone}</a>
+                                      <a href={`tel:${cust.phone}`} style={{ color: '#0A1325', textDecoration: 'none' }}>{cust.phone}</a>
                                     </div>
                                     {cust.email && cust.email !== 'N/A' && (
                                       <div style={{ color: 'rgba(26,7,9,0.7)', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -2277,7 +2287,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                 </td>
 
                                 <td style={{ verticalAlign: 'top' }}>
-                                  <div style={{ fontWeight: 700, color: '#1A0709', fontSize: '0.86rem', marginBottom: '6px', display: 'inline-block', padding: '4px 10px', background: 'rgba(198, 161, 91, 0.15)', border: '1px solid #C6A15B', borderRadius: '4px' }}>
+                                  <div style={{ fontWeight: 700, color: '#0A1325', fontSize: '0.86rem', marginBottom: '6px', display: 'inline-block', padding: '4px 10px', background: 'rgba(198, 161, 91, 0.15)', border: '1px solid #C6A15B', borderRadius: '4px' }}>
                                     {cust.requirement}
                                   </div>
                                   {cust.notes && (
@@ -2292,7 +2302,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                     <select
                                       value={cust.assignedStaff || defaultStaffName}
                                       onChange={(e) => handleUpdateCustomerStaff(cust.id, e.target.value)}
-                                      style={{ padding: '8px 10px', borderRadius: '4px', border: '1.5px solid var(--gold-border)', fontSize: '0.8rem', fontWeight: 700, background: 'var(--bg-cream)', color: '#1A0709', flex: 1, cursor: 'pointer' }}
+                                      style={{ padding: '8px 10px', borderRadius: '4px', border: '1.5px solid var(--gold-border)', fontSize: '0.8rem', fontWeight: 700, background: 'var(--bg-cream)', color: '#0A1325', flex: 1, cursor: 'pointer' }}
                                     >
                                       {staffRoster.map((s) => {
                                         const sName = typeof s === 'string' ? s : s.name;
@@ -2352,7 +2362,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                         (cust.actionTaken || 'NEW LEAD') === 'SITE VISIT SCHEDULED' ? '#1e7e34' :
                                         (cust.actionTaken || 'NEW LEAD') === 'TOKEN PAID' ? '#8C6B28' :
                                         (cust.actionTaken || 'NEW LEAD') === 'REJECTED' ? '#C53030' :
-                                        '#1A0709'
+                                        '#0A1325'
                                     }}
                                   >
                                     <option value="NEW LEAD">NEW LEAD</option>
@@ -2377,7 +2387,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                       href={`tel:${cust.phone}`}
                                       className="admin-icon-btn"
                                       title={`Call ${cust.name} (${cust.phone})`}
-                                      style={{ background: '#1A0709', border: '1.5px solid var(--gold-primary)', color: '#FFFDF8' }}
+                                      style={{ background: '#0A1325', border: '1.5px solid var(--gold-primary)', color: '#FFFDF8' }}
                                     >
                                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
                                     </a>
@@ -2399,9 +2409,9 @@ _Please contact this client immediately and arrange site inspection / discussion
                                       onClick={() => handleOpenAddCustomerModal(cust.id)}
                                       className="admin-icon-btn"
                                       title={`Edit ${cust.name}`}
-                                      style={{ background: 'var(--gold-primary)', border: '1.5px solid var(--gold-primary)', color: '#1A0709' }}
+                                      style={{ background: 'var(--gold-primary)', border: '1.5px solid var(--gold-primary)', color: '#0A1325' }}
                                     >
-                                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1A0709" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>
+                                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0A1325" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>
                                     </button>
 
                                     {/* Delete button */}
@@ -2436,13 +2446,13 @@ _Please contact this client immediately and arrange site inspection / discussion
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid var(--gold-border)', paddingBottom: '10px' }}>
               <div>
                 <span className="architectural-tag" style={{ fontSize: '0.65rem' }}>TEAM MANAGEMENT &amp; WHATSAPP DISPATCH</span>
-                <h3 style={{ color: '#1A0709', marginTop: '2px', fontSize: '1.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
+                <h3 style={{ color: '#0A1325', marginTop: '2px', fontSize: '1.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
                   Manage Staff
                 </h3>
               </div>
               <button
                 onClick={() => setStaffModalOpen(false)}
-                style={{ background: 'none', border: 'none', fontSize: '1.6rem', color: '#1A0709', cursor: 'pointer' }}
+                style={{ background: 'none', border: 'none', fontSize: '1.6rem', color: '#0A1325', cursor: 'pointer' }}
               >
                 &times;
               </button>
@@ -2450,7 +2460,7 @@ _Please contact this client immediately and arrange site inspection / discussion
 
             <div style={{ background: 'rgba(37, 211, 102, 0.1)', border: '1px solid rgba(37, 211, 102, 0.4)', borderRadius: '6px', padding: '10px 14px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '10px' }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="#25D366" style={{ flexShrink: 0 }}><path d="M12.031 0C5.385 0 0 5.386 0 12.031c0 2.124.553 4.197 1.604 6.02L0 24l6.155-1.614A11.968 11.968 0 0 0 12.03 24c6.645 0 12.03-5.385 12.03-12.031C24.06 5.386 18.675 0 12.031 0zm.012 22.012c-1.808 0-3.585-.486-5.143-1.408l-.369-.219-3.817 1.001 1.019-3.721-.241-.383A9.99 9.99 0 0 1 2.012 12.03c0-5.524 4.496-10.02 10.031-10.02 5.524 0 10.02 4.496 10.02 10.02 0 5.536-4.496 10.012-10.02 10.012zm5.503-7.519c-.302-.152-1.785-.881-2.062-.981-.277-.101-.479-.152-.68.152-.202.302-.782.981-.959 1.183-.176.201-.353.226-.655.075-1.745-.875-2.894-1.559-4.04-3.535-.302-.52.302-.482.864-1.608.101-.201.05-.378-.025-.529-.075-.152-.68-1.636-.932-2.24-.244-.588-.493-.508-.68-.518-.176-.009-.378-.009-.58-.009-.201 0-.528.075-.804.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.92 1.233 3.122.151.201 2.128 3.25 5.156 4.558 2.164.935 2.809.845 3.791.7.636-.094 1.785-.73 2.037-1.435.252-.705.252-1.309.176-1.435-.076-.125-.278-.201-.58-.352z" /></svg>
-              <p style={{ margin: 0, fontSize: '0.80rem', color: '#1A0709', lineHeight: 1.4 }}>
+              <p style={{ margin: 0, fontSize: '0.80rem', color: '#0A1325', lineHeight: 1.4 }}>
                 <strong>Automated WhatsApp Notifications:</strong> When a customer is assigned to a staff member, their enquiry details will automatically reach that staff member&apos;s WhatsApp number.
               </p>
             </div>
@@ -2476,7 +2486,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                     }}
                   >
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 800, color: '#1A0709', marginBottom: '3px' }}>
+                      <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 800, color: '#0A1325', marginBottom: '3px' }}>
                         STAFF #{idx + 1} NAME &amp; DESIGNATION
                       </label>
                       <input
@@ -2500,14 +2510,14 @@ _Please contact this client immediately and arrange site inspection / discussion
                           borderRadius: '4px',
                           border: '1px solid var(--gold-border)',
                           background: '#FFFDF8',
-                          color: '#1A0709',
+                          color: '#0A1325',
                           boxSizing: 'border-box'
                         }}
                       />
                     </div>
 
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 800, color: '#1A0709', marginBottom: '3px' }}>
+                      <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 800, color: '#0A1325', marginBottom: '3px' }}>
                         WHATSAPP NUMBER
                       </label>
                       <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
@@ -2535,7 +2545,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                             borderRadius: '4px',
                             border: '1px solid var(--gold-border)',
                             background: '#FFFDF8',
-                            color: '#1A0709',
+                            color: '#0A1325',
                             boxSizing: 'border-box'
                           }}
                         />
@@ -2587,7 +2597,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  background: '#1A0709',
+                  background: '#0A1325',
                   color: '#F3E5AB',
                   border: '1.5px solid #C6A15B',
                   boxShadow: '0 2px 8px rgba(26, 7, 9, 0.2)'
@@ -2608,7 +2618,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   borderRadius: '6px',
                   border: '1.5px solid #718096',
                   background: '#FFFFFF',
-                  color: '#1A0709',
+                  color: '#0A1325',
                   cursor: 'pointer'
                 }}
               >
@@ -2642,13 +2652,13 @@ _Please contact this client immediately and arrange site inspection / discussion
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid var(--gold-border)', paddingBottom: '10px' }}>
               <div>
                 <span className="architectural-tag" style={{ fontSize: '0.65rem' }}>ADMIN CRM ENTRY</span>
-                <h3 style={{ color: '#1A0709', marginTop: '2px', fontSize: '1.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
+                <h3 style={{ color: '#0A1325', marginTop: '2px', fontSize: '1.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
                   {editingCustId ? 'Edit Customer Record' : 'Add Walk-in / Direct Call Customer'}
                 </h3>
               </div>
               <button
                 onClick={() => setCustomerModalOpen(false)}
-                style={{ background: 'none', border: 'none', fontSize: '1.6rem', color: '#1A0709', cursor: 'pointer' }}
+                style={{ background: 'none', border: 'none', fontSize: '1.6rem', color: '#0A1325', cursor: 'pointer' }}
               >
                 &times;
               </button>
@@ -2656,7 +2666,7 @@ _Please contact this client immediately and arrange site inspection / discussion
 
             <form onSubmit={handleSaveCustomer} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
-                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1A0709', display: 'block', marginBottom: '4px' }}>
+                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#0A1325', display: 'block', marginBottom: '4px' }}>
                   CUSTOMER FULL NAME *
                 </label>
                 <input
@@ -2665,13 +2675,13 @@ _Please contact this client immediately and arrange site inspection / discussion
                   placeholder="e.g. Ramesh Sundaram"
                   value={custForm.name}
                   onChange={(e) => setCustForm({ ...custForm, name: e.target.value })}
-                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#1A0709', boxSizing: 'border-box' }}
+                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#0A1325', boxSizing: 'border-box' }}
                 />
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div>
-                  <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1A0709', display: 'block', marginBottom: '4px' }}>
+                  <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#0A1325', display: 'block', marginBottom: '4px' }}>
                     PHONE NUMBER *
                   </label>
                   <input
@@ -2680,11 +2690,11 @@ _Please contact this client immediately and arrange site inspection / discussion
                     placeholder="+91 98422 00000"
                     value={custForm.phone}
                     onChange={(e) => setCustForm({ ...custForm, phone: e.target.value })}
-                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#1A0709', boxSizing: 'border-box' }}
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#0A1325', boxSizing: 'border-box' }}
                   />
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1A0709', display: 'block', marginBottom: '4px' }}>
+                  <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#0A1325', display: 'block', marginBottom: '4px' }}>
                     EMAIL ADDRESS
                   </label>
                   <input
@@ -2692,13 +2702,13 @@ _Please contact this client immediately and arrange site inspection / discussion
                     placeholder="client@example.com"
                     value={custForm.email}
                     onChange={(e) => setCustForm({ ...custForm, email: e.target.value })}
-                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#1A0709', boxSizing: 'border-box' }}
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#0A1325', boxSizing: 'border-box' }}
                   />
                 </div>
               </div>
 
               <div>
-                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1A0709', display: 'block', marginBottom: '4px' }}>
+                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#0A1325', display: 'block', marginBottom: '4px' }}>
                   REQUIREMENT / PREFERRED PLOT &amp; LOCATION
                 </label>
                 <input
@@ -2706,18 +2716,18 @@ _Please contact this client immediately and arrange site inspection / discussion
                   placeholder="e.g. 1500 Sq.Ft East Facing Plot #14, Kambalapatti"
                   value={custForm.requirement}
                   onChange={(e) => setCustForm({ ...custForm, requirement: e.target.value })}
-                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#1A0709', boxSizing: 'border-box' }}
+                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#0A1325', boxSizing: 'border-box' }}
                 />
               </div>
 
               <div>
-                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1A0709', display: 'block', marginBottom: '4px' }}>
+                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#0A1325', display: 'block', marginBottom: '4px' }}>
                   ASSIGNED STAFF / AGENT
                 </label>
                 <select
                   value={custForm.assignedStaff}
                   onChange={(e) => setCustForm({ ...custForm, assignedStaff: e.target.value })}
-                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#1A0709', fontWeight: 600, boxSizing: 'border-box', cursor: 'pointer' }}
+                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', fontWeight: 600, boxSizing: 'border-box', cursor: 'pointer' }}
                 >
                   {staffRoster.map((s) => {
                     const sName = typeof s === 'string' ? s : s.name;
@@ -2731,7 +2741,7 @@ _Please contact this client immediately and arrange site inspection / discussion
               </div>
 
               <div>
-                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1A0709', display: 'block', marginBottom: '4px' }}>
+                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#0A1325', display: 'block', marginBottom: '4px' }}>
                   ADDITIONAL NOTES / REMARKS
                 </label>
                 <textarea
@@ -2739,7 +2749,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   placeholder="e.g. Visited Kambalapatti site on Sunday. Token amount ₹50,000 paid."
                   value={custForm.notes}
                   onChange={(e) => setCustForm({ ...custForm, notes: e.target.value })}
-                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', fontFamily: 'inherit', color: '#1A0709', boxSizing: 'border-box' }}
+                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', fontFamily: 'inherit', color: '#0A1325', boxSizing: 'border-box' }}
                 />
               </div>
 

@@ -141,7 +141,7 @@ export default function AboutPage() {
           </div>
 
           {/* Back Side */}
-          <div className="flip-card-back bg-gradient-to-br from-[#160D08] via-[#22140D] to-[#120804] text-cream p-3.5 sm:p-4 rounded-xl border-1.5 border-gold-primary shadow-2xl flex flex-col justify-between">
+          <div className="flip-card-back bg-gradient-to-br from-[#0A1325] via-[#0E1A33] to-[#070D1A] text-cream p-3.5 sm:p-4 rounded-xl border-1.5 border-gold-primary shadow-2xl flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between pb-1.5 mb-2 border-b border-gold-primary/30">
                 <span className="font-heading text-[11px] font-bold text-gold-light bg-gold-primary/20 px-2 py-0.5 rounded border border-gold-primary/50">
@@ -158,7 +158,7 @@ export default function AboutPage() {
 
               <ul className="space-y-1.5 font-mono text-[10.5px] sm:text-[11px] text-cream/95">
                 {stage.deliverables.map((item, dIdx) => (
-                  <li key={dIdx} className="flex items-start gap-1.5 bg-espresso-950/40 p-1 rounded border border-gold-primary/15">
+                  <li key={dIdx} className="flex items-start gap-1.5 bg-[#070D1A]/60 p-1 rounded border border-gold-primary/20">
                     <span className="text-gold-primary font-bold text-xs leading-none mt-0.5">✓</span>
                     <span className="leading-snug">{item}</span>
                   </li>
@@ -232,14 +232,14 @@ export default function AboutPage() {
             {/* Story Image Frame */}
             <div className="relative group">
               <div className="absolute -inset-2 bg-gradient-to-r from-gold-primary/30 to-gold-antique/20 rounded-2xl filter blur-lg opacity-75 group-hover:opacity-100 transition duration-500" />
-              <div className="relative border-2 border-gold-primary/80 p-2.5 bg-[#FAF5EC] rounded-2xl shadow-xl overflow-hidden">
+              <div className="relative border-2 border-gold-primary/80 p-2 sm:p-2.5 bg-[#FAF5EC] rounded-2xl shadow-xl overflow-hidden flex flex-col">
                 <img
                   src="/Images/Shashtika_Heritage_Story.jpg"
                   alt="20 Years SHASHTIKA Architectural Heritage"
-                  className="w-full h-[260px] sm:h-[300px] lg:h-[320px] object-cover rounded-xl border border-gold-border/60 group-hover:scale-[1.02] transition-transform duration-500"
+                  className="w-full h-[220px] sm:h-[300px] lg:h-[320px] object-cover rounded-xl border border-gold-border/60 group-hover:scale-[1.02] transition-transform duration-500"
                 />
-                <div className="absolute bottom-5 left-5 right-5 bg-[#1A0709]/95 backdrop-blur-md p-3 rounded-lg border border-gold-primary/70 text-gold-light shadow-xl">
-                  <div className="flex items-center justify-between">
+                <div className="story-heritage-badge relative mt-2.5 sm:mt-0 sm:absolute sm:bottom-5 sm:left-5 sm:right-5 bg-[#0A1325] sm:bg-[#0A1325]/95 backdrop-blur-md p-3 rounded-lg border border-gold-primary/70 text-gold-light shadow-xl">
+                  <div className="flex items-center justify-between gap-2">
                     <div>
                       <span className="font-mono text-[9px] text-gold-antique uppercase tracking-widest block font-bold">
                         FOUNDED IN 2004 • 20 YEARS HERITAGE
@@ -248,7 +248,7 @@ export default function AboutPage() {
                         POLLACHI &amp; COIMBATORE CORRIDORS
                       </span>
                     </div>
-                    <span className="px-2.5 py-0.5 rounded bg-[#2D0E12] border border-gold-border text-gold-light font-mono text-[9.5px] font-bold">
+                    <span className="px-2.5 py-0.5 rounded bg-[#070D1A] border border-gold-border text-gold-light font-mono text-[9.5px] font-bold flex-shrink-0">
                       EST. 2004
                     </span>
                   </div>
@@ -273,7 +273,7 @@ export default function AboutPage() {
               {/* Milestone Timeline Cards */}
               <div className="space-y-2 mt-4">
                 <div className="p-2.5 sm:p-3 rounded-lg bg-biscuit-100/70 border border-gold-border/40 hover:border-gold-primary hover:bg-biscuit-100 transition-all flex items-start gap-3 group">
-                  <span className="px-2 py-0.5 rounded bg-[#1A0709] text-gold-light font-mono text-[10.5px] font-extrabold tracking-wider mt-0.5 shadow-xs">
+                  <span className="px-2 py-0.5 rounded bg-[#0A1325] text-gold-light font-mono text-[10.5px] font-extrabold tracking-wider mt-0.5 shadow-xs">
                     2004
                   </span>
                   <div>
@@ -287,7 +287,7 @@ export default function AboutPage() {
                 </div>
 
                 <div className="p-2.5 sm:p-3 rounded-lg bg-biscuit-100/70 border border-gold-border/40 hover:border-gold-primary hover:bg-biscuit-100 transition-all flex items-start gap-3 group">
-                  <span className="px-2 py-0.5 rounded bg-[#1A0709] text-gold-light font-mono text-[10.5px] font-extrabold tracking-wider mt-0.5 shadow-xs">
+                  <span className="px-2 py-0.5 rounded bg-[#0A1325] text-gold-light font-mono text-[10.5px] font-extrabold tracking-wider mt-0.5 shadow-xs">
                     2015
                   </span>
                   <div>
@@ -301,7 +301,7 @@ export default function AboutPage() {
                 </div>
 
                 <div className="p-2.5 sm:p-3 rounded-lg bg-biscuit-100/70 border border-gold-border/40 hover:border-gold-primary hover:bg-biscuit-100 transition-all flex items-start gap-3 group">
-                  <span className="px-2 py-0.5 rounded bg-[#1A0709] text-gold-light font-mono text-[10.5px] font-extrabold tracking-wider mt-0.5 shadow-xs">
+                  <span className="px-2 py-0.5 rounded bg-[#0A1325] text-gold-light font-mono text-[10.5px] font-extrabold tracking-wider mt-0.5 shadow-xs">
                     2024
                   </span>
                   <div>
@@ -633,7 +633,7 @@ export default function AboutPage() {
           </div>
 
           {/* CTA Banner */}
-          <div className="workflow-cta-banner mt-8 sm:mt-10 bg-gradient-to-r from-espresso-950 via-[#221611] to-espresso-950 border border-gold-primary rounded-xl p-5 sm:p-6 flex flex-col md:flex-row items-center justify-between gap-5 shadow-xl">
+          <div className="workflow-cta-banner mt-8 sm:mt-10 bg-gradient-to-r from-[#0A1325] via-[#0E1A33] to-[#070D1A] border border-gold-primary rounded-xl p-5 sm:p-6 flex flex-col md:flex-row items-center justify-between gap-5 shadow-xl">
             <div>
               <h4 className="font-heading font-extrabold text-base sm:text-lg text-cream mb-1">
                 READY TO INVEST IN A CLEAR-TITLE PLOT?
