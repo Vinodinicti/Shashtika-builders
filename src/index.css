@@ -381,10 +381,10 @@ body {
 .stat-card {
   width: 100%;
   height: 56px;
-  background: linear-gradient(90deg, #FDF5DF 0%, #F5E4BD 30%, #E2C37E 70%, #BE9036 100%);
-  border: 1.5px solid #8F6A24;
-  border-radius: 4px;
-  padding: 5px 8px;
+  background: linear-gradient(135deg, #DEBA70 0%, #C6A15B 50%, #B88F40 100%);
+  border: 1px solid #E5D2A6;
+  border-radius: 6px;
+  padding: 6px 8px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -393,26 +393,13 @@ body {
   position: relative;
   overflow: hidden;
   box-shadow: 
-    0 8px 22px rgba(10, 19, 37, 0.28),
-    0 2px 6px rgba(0, 0, 0, 0.2),
-    inset 0 1px 1px rgba(255, 255, 255, 0.8),
-    inset 0 -1px 2px rgba(120, 85, 20, 0.35);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    0 6px 18px rgba(0, 0, 0, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.45),
+    inset 0 -1px 2px rgba(120, 85, 20, 0.3);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Tamil Nadu No 1 Style Inner White/Cream Inset Double-Border Frame */
-.stat-card::before {
-  content: '';
-  position: absolute;
-  inset: 2.5px;
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  border-radius: 2px;
-  pointer-events: none;
-  z-index: 2;
-  transition: all 0.35s ease;
-}
-
-/* Subtle Radiant Light Sweep Across Plaque */
+/* Subtle Radiant Light Sweep Across Cards */
 .stat-card::after {
   content: '';
   position: absolute;
@@ -420,11 +407,11 @@ body {
   left: -100%;
   width: 50%;
   height: 200%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
   transform: rotate(25deg);
   animation: statShineSweep 5s ease-in-out infinite;
   pointer-events: none;
-  z-index: 3;
+  z-index: 2;
 }
 
 @keyframes statShineSweep {
@@ -434,59 +421,53 @@ body {
 }
 
 .stat-card:hover {
-  transform: translateY(-3px) scale(1.025);
-  background: linear-gradient(90deg, #FFFFFF 0%, #FAF0D4 30%, #E8CD88 70%, #CB9F42 100%);
-  border-color: #7A581A;
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #E5C37A 0%, #D4AF5F 50%, #C6A15B 100%);
+  border-color: #FFFDF7;
   box-shadow: 
-    0 12px 28px rgba(10, 19, 37, 0.35),
-    0 0 18px rgba(198, 161, 91, 0.5),
-    inset 0 1px 1.5px rgba(255, 255, 255, 1);
-}
-
-.stat-card:hover::before {
-  border-color: rgba(255, 255, 255, 1);
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+    0 10px 24px rgba(0, 0, 0, 0.5),
+    0 0 16px rgba(198, 161, 91, 0.5),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.8);
 }
 
 .stat-number {
   font-family: var(--font-heading);
-  font-size: clamp(1.24rem, 1.6vw, 1.48rem);
-  font-weight: 900;
-  color: #071426;
+  font-size: clamp(1.24rem, 1.55vw, 1.48rem);
+  font-weight: 800;
+  color: #0A1325;
   display: block;
   line-height: 1;
   margin-bottom: 2px;
   transition: transform 0.3s ease, color 0.3s ease;
-  text-shadow: 0 0.5px 1px rgba(255, 255, 255, 0.75);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.5px;
   position: relative;
-  z-index: 4;
+  z-index: 3;
 }
 
 .stat-card:hover .stat-number {
-  color: #030A14;
+  color: #050B17;
   transform: scale(1.05);
 }
 
 .stat-label {
-  font-family: var(--font-heading);
+  font-family: var(--font-mono);
   font-size: 0.60rem;
-  letter-spacing: 1.2px;
-  color: #071426;
+  letter-spacing: 1px;
+  color: #0A1325;
   text-transform: uppercase;
   font-weight: 800;
   display: block;
   text-align: center;
   line-height: 1.15;
+  white-space: nowrap;
   transition: color 0.3s ease;
-  text-shadow: 0 0.5px 0.5px rgba(255, 255, 255, 0.6);
   position: relative;
-  z-index: 4;
+  z-index: 3;
 }
 
 .stat-card:hover .stat-label {
-  color: #030A14;
+  color: #050B17;
 }
 
 @media (max-width: 991px) {
