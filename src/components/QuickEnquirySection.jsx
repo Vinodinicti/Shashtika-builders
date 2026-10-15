@@ -115,8 +115,8 @@ export default function QuickEnquirySection() {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-3 sm:space-y-4">
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-4">
                 <div>
                   <label className="block font-mono text-[10px] tracking-wider text-gold-light uppercase mb-1.5">
                     FULL NAME *

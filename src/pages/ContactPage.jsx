@@ -264,144 +264,153 @@ export default function ContactPage() {
                 Have questions about DTCP layouts, pricing, or custom villa construction? Our dedicated property advisors are ready to assist you.
               </p>
 
-              <div className="space-y-4 font-body text-sm text-[#1A0709]">
+              <div className="contact-details-grid grid grid-cols-2 gap-2 sm:gap-3 font-body text-sm text-[#1A0709]">
                 {/* Phone Helpline */}
-                <div className="flex items-start gap-3 p-3.5 rounded-lg bg-[#FAF6EE] border border-gold-border/40">
-                  <div className="w-10 h-10 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <div className="contact-detail-card p-2.5 sm:p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-start gap-2 sm:gap-2.5">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                     </svg>
                   </div>
-                  <div>
-                    <span className="font-mono text-[10px] tracking-wider text-gold-antique uppercase font-bold block">
+                  <div className="min-w-0">
+                    <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-gold-antique uppercase font-bold block truncate">
                       CALL HELPLINE
                     </span>
-                    <a href="tel:+919363599754" className="font-bold text-[#1A0709] hover:text-gold-primary transition-colors text-base block mt-0.5">
+                    <a href="tel:+919363599754" className="font-bold text-[#1A0709] hover:text-gold-primary transition-colors text-[0.8rem] sm:text-sm block mt-0.5 truncate">
                       +91 93635 99754
                     </a>
                   </div>
                 </div>
 
+                {/* WhatsApp Quick Chat */}
+                <a
+                  href="https://wa.me/919363599754?text=Hello%20SHASHTIKA,%20I%20am%20interested%20in%20plots/construction"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="contact-detail-card p-2.5 sm:p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-start gap-2 sm:gap-2.5 hover:border-gold-primary transition-colors no-underline"
+                >
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                    </svg>
+                  </div>
+                  <div className="min-w-0">
+                    <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-[#128C7E] uppercase font-bold block truncate">
+                      WHATSAPP CHAT
+                    </span>
+                    <span className="font-bold text-[#1A0709] text-[0.8rem] sm:text-sm block mt-0.5 truncate">
+                      Chat with Us →
+                    </span>
+                  </div>
+                </a>
+
                 {/* Email Address */}
-                <div className="flex items-start gap-3 p-3.5 rounded-lg bg-[#FAF6EE] border border-gold-border/40">
-                  <div className="w-10 h-10 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <div className="contact-detail-card p-2.5 sm:p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-start gap-2 sm:gap-2.5">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect width="20" height="16" x="2" y="4" rx="2"/>
                       <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
                     </svg>
                   </div>
-                  <div>
-                    <span className="font-mono text-[10px] tracking-wider text-gold-antique uppercase font-bold block">
+                  <div className="min-w-0">
+                    <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-gold-antique uppercase font-bold block truncate">
                       EMAIL INQUIRIES
                     </span>
-                    <a href="mailto:contact@shashtika.com" className="font-bold text-[#1A0709] hover:text-gold-primary transition-colors block mt-0.5">
+                    <a href="mailto:contact@shashtika.com" className="font-bold text-[#1A0709] hover:text-gold-primary transition-colors text-[0.74rem] sm:text-xs block mt-0.5 truncate">
                       contact@shashtika.com
                     </a>
                   </div>
                 </div>
 
                 {/* Advisory Hours */}
-                <div className="flex items-start gap-3 p-3.5 rounded-lg bg-[#FAF6EE] border border-gold-border/40">
-                  <div className="w-10 h-10 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <div className="contact-detail-card p-2.5 sm:p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-start gap-2 sm:gap-2.5">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <circle cx="12" cy="12" r="10"/>
                       <polyline points="12 6 12 12 16 14"/>
                     </svg>
                   </div>
-                  <div>
-                    <span className="font-mono text-[10px] tracking-wider text-gold-antique uppercase font-bold block">
+                  <div className="min-w-0">
+                    <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-gold-antique uppercase font-bold block truncate">
                       ADVISORY HOURS
                     </span>
-                    <span className="font-bold text-[#1A0709] block mt-0.5">
-                      Mon – Sun: 9:00 AM – 7:30 PM
+                    <span className="font-bold text-[#1A0709] text-[0.74rem] sm:text-xs block mt-0.5 truncate">
+                      9:00 AM – 7:30 PM
                     </span>
                   </div>
                 </div>
               </div>
-
-              {/* WhatsApp Quick Enquiry Button */}
-              <div className="mt-8">
-                <a
-                  href="https://wa.me/919363599754?text=Hello%20SHASHTIKA,%20I%20am%20interested%20in%20plots/construction"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-whatsapp"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-                  </svg>
-                  <span>WHATSAPP QUICK ENQUIRY</span>
-                </a>
-              </div>
             </div>
 
             {/* RIGHT COLUMN: SITE VISIT & PLOT ENQUIRY FORM */}
-            <div id="enquiry-form-section">
-              <div className="mb-6">
-                <span className="architectural-tag">PROPERTY & SITE VISIT ENQUIRY</span>
+            <div id="enquiry-form-section" className="contact-form-box">
+              <div className="mb-4 sm:mb-6">
+                <span className="architectural-tag">PROPERTY &amp; SITE VISIT ENQUIRY</span>
                 <h2 style={{
                   fontFamily: 'var(--font-heading)',
-                  fontSize: 'clamp(1.35rem, 2.1vw, 1.8rem)',
+                  fontSize: 'clamp(1.25rem, 2vw, 1.7rem)',
                   color: '#1A0709',
-                  marginTop: '6px',
-                  marginBottom: '8px',
+                  marginTop: '4px',
+                  marginBottom: '4px',
                   fontWeight: 800
                 }}>
                   SCHEDULE A SITE VISIT OR PLOT ENQUIRY
                 </h2>
-                <p style={{ color: '#521D24', fontSize: '0.88rem', lineHeight: '1.6' }}>
-                  Fill out your requirement details below. Our project engineers will connect with you within 2 hours with verified plot layouts and pricing.
+                <p style={{ color: '#521D24', fontSize: '0.82rem', lineHeight: '1.45' }}>
+                  Fill out your details below. Our project engineers will connect within 2 hours with verified plot layouts and pricing.
                 </p>
               </div>
 
               {errorMessage && (
-                <div className="mb-6 p-4 bg-red-100 border border-red-300 text-red-800 rounded text-sm">
+                <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-800 rounded text-xs">
                   {errorMessage}
                 </div>
               )}
 
               {submittedLead && (
-                <div className="mb-6 p-4 bg-emerald-50 border border-emerald-400 text-emerald-900 rounded-md">
-                  <div className="flex items-center gap-2 font-bold mb-1">
-                    <span className="text-lg">✓</span> Enquiry Successfully Submitted!
+                <div className="mb-4 p-3.5 bg-emerald-50 border border-emerald-400 text-emerald-900 rounded-md">
+                  <div className="flex items-center gap-2 font-bold mb-1 text-sm">
+                    <span className="text-base">✓</span> Enquiry Successfully Submitted!
                   </div>
                   <p className="text-xs leading-relaxed">
-                    Thank you, <strong>{submittedLead.customerName}</strong>! Your enquiry has been received. Our project engineer will call you at <strong>{submittedLead.phone}</strong> shortly to confirm your site visit.
+                    Thank you, <strong>{submittedLead.customerName}</strong>! Our project engineer will call you at <strong>{submittedLead.phone}</strong> shortly to confirm your site visit.
                   </p>
                 </div>
               )}
 
               <form id="contact-form" onSubmit={handleSubmit}>
-                {/* Full Name */}
-                <div className="form-group">
-                  <label className="form-label">FULL NAME *</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="form-input"
-                    placeholder="e.g. Ramesh Kumar"
-                    required
-                  />
-                </div>
+                {/* 2 & 2 Pair 1: Full Name & Phone Number */}
+                <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-2 sm:mb-3">
+                  <div className="form-group mb-0">
+                    <label className="form-label">FULL NAME *</label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="form-input"
+                      placeholder="e.g. Ramesh"
+                      required
+                    />
+                  </div>
 
-                {/* Phone & Email Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="form-group">
-                    <label className="form-label">PHONE NUMBER *</label>
+                  <div className="form-group mb-0">
+                    <label className="form-label">PHONE NO *</label>
                     <input
                       type="tel"
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
                       className="form-input"
-                      placeholder="+91 98765 43210"
+                      placeholder="98765 43210"
                       required
                     />
                   </div>
+                </div>
 
-                  <div className="form-group">
+                {/* 2 & 2 Pair 2: Email & Preferred Location */}
+                <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-2 sm:mb-3">
+                  <div className="form-group mb-0">
                     <label className="form-label">EMAIL ADDRESS</label>
                     <input
                       type="email"
@@ -412,12 +421,9 @@ export default function ContactPage() {
                       placeholder="ramesh@gmail.com"
                     />
                   </div>
-                </div>
 
-                {/* Preferred Location & Purpose Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="form-group">
-                    <label className="form-label">PREFERRED LOCATION *</label>
+                  <div className="form-group mb-0">
+                    <label className="form-label">LOCATION *</label>
                     <select
                       name="location"
                       value={formData.location}
@@ -425,14 +431,17 @@ export default function ContactPage() {
                       className="form-select"
                       required
                     >
-                      <option value="Coimbatore">Coimbatore Corridor</option>
-                      <option value="Pollachi">Pollachi Corridor</option>
-                      <option value="Both Locations">Both Coimbatore & Pollachi</option>
+                      <option value="Coimbatore">Coimbatore</option>
+                      <option value="Pollachi">Pollachi</option>
+                      <option value="Both Locations">Both</option>
                     </select>
                   </div>
+                </div>
 
-                  <div className="form-group">
-                    <label className="form-label">BUYING PURPOSE *</label>
+                {/* 2 & 2 Pair 3: Buying Purpose & Timeline */}
+                <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-2 sm:mb-3">
+                  <div className="form-group mb-0">
+                    <label className="form-label">PURPOSE *</label>
                     <select
                       name="purpose"
                       value={formData.purpose}
@@ -440,18 +449,15 @@ export default function ContactPage() {
                       className="form-select"
                       required
                     >
-                      <option value="Residential Construction">Residential Villa / Home</option>
-                      <option value="Investment & Appreciation">Long-Term Investment & ROI</option>
-                      <option value="Commercial / Office">Commercial / Office Space</option>
-                      <option value="Farm Plot Retreat">Farm House / Weekend Retreat</option>
+                      <option value="Residential Construction">Residential Villa</option>
+                      <option value="Investment & Appreciation">Investment ROI</option>
+                      <option value="Commercial / Office">Commercial Space</option>
+                      <option value="Farm Plot Retreat">Farm House</option>
                     </select>
                   </div>
-                </div>
 
-                {/* Timeline & Budget Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="form-group">
-                    <label className="form-label">PURCHASE TIMELINE (WITHIN DAYS) *</label>
+                  <div className="form-group mb-0">
+                    <label className="form-label">TIMELINE *</label>
                     <select
                       name="timeline"
                       value={formData.timeline}
@@ -459,15 +465,18 @@ export default function ContactPage() {
                       className="form-select"
                       required
                     >
-                      <option value="Within 15 Days (Immediate)">Within 15 Days (Immediate)</option>
+                      <option value="Within 15 Days (Immediate)">Immediate (15 Days)</option>
                       <option value="1 to 3 Months">1 to 3 Months</option>
                       <option value="3 to 6 Months">3 to 6 Months</option>
-                      <option value="6+ Months / Planning">6+ Months / Planning</option>
+                      <option value="6+ Months / Planning">6+ Months</option>
                     </select>
                   </div>
+                </div>
 
-                  <div className="form-group">
-                    <label className="form-label">ESTIMATED BUDGET *</label>
+                {/* 2 & 2 Pair 4: Estimated Budget & Plot of Interest */}
+                <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-2 sm:mb-3">
+                  <div className="form-group mb-0">
+                    <label className="form-label">BUDGET *</label>
                     <select
                       name="budget"
                       value={formData.budget}
@@ -475,37 +484,36 @@ export default function ContactPage() {
                       className="form-select"
                       required
                     >
-                      <option value="Below ₹25 Lakhs">Below ₹ 25 Lakhs</option>
-                      <option value="₹25 Lakhs - ₹50 Lakhs">₹ 25 Lakhs – ₹ 50 Lakhs</option>
-                      <option value="₹50 Lakhs - ₹1 Crore">₹ 50 Lakhs – ₹ 1 Crore</option>
-                      <option value="Above ₹1 Crore">Above ₹ 1 Crore (High Budget)</option>
+                      <option value="Below ₹25 Lakhs">&lt; ₹25 Lakhs</option>
+                      <option value="₹25 Lakhs - ₹50 Lakhs">₹25L – ₹50L</option>
+                      <option value="₹50 Lakhs - ₹1 Crore">₹50L – ₹1Cr</option>
+                      <option value="Above ₹1 Crore">&gt; ₹1 Crore</option>
                     </select>
+                  </div>
+
+                  <div className="form-group mb-0">
+                    <label className="form-label">PLOT OF INTEREST</label>
+                    <input
+                      type="text"
+                      name="plot"
+                      value={formData.plot}
+                      onChange={handleChange}
+                      className="form-input"
+                      placeholder="e.g. Plot #104"
+                    />
                   </div>
                 </div>
 
-                {/* Project / Plot of Interest */}
-                <div className="form-group">
-                  <label className="form-label">PROJECT / PLOT OF INTEREST</label>
-                  <input
-                    type="text"
-                    name="plot"
-                    value={formData.plot}
-                    onChange={handleChange}
-                    className="form-input"
-                    placeholder="e.g. Plot #104 - Pollachi Golden Vistas"
-                  />
-                </div>
-
                 {/* Additional Specifications / Notes */}
-                <div className="form-group">
-                  <label className="form-label">ADDITIONAL SPECIFICATIONS / NOTES</label>
+                <div className="form-group mb-3">
+                  <label className="form-label">SPECIFICATIONS / NOTES</label>
                   <textarea
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     className="form-textarea"
-                    rows="3"
-                    placeholder="Specify facing preferences, corner plot requirement, or construction needs..."
+                    rows="2"
+                    placeholder="Facing preferences, corner plot requirement, etc..."
                   />
                 </div>
 

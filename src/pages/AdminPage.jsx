@@ -1434,7 +1434,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                 e.currentTarget.style.color = '#E5D2A6';
               }}
             >
-              AUTHENTICATE &amp; ENTER DASHBOARD &rarr;
+              AUTHENTICATE &amp; ENTER DASHBOARD
             </button>
 
             <div style={{ textAlign: 'center', marginTop: '6px' }}>
@@ -1451,7 +1451,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   gap: '6px'
                 }}
               >
-                &larr; Return to Public Website
+                Return to Public Website
               </a>
             </div>
           </form>
@@ -2702,6 +2702,362 @@ _Please contact this client immediately and arrange site inspection / discussion
                   </div>
                 </div>
               )}
+
+              {/* PANEL 4: UPCOMING PROJECTS MANAGER */}
+              {activeTab === 'upcoming-projects' && (
+                <div style={{ background: 'var(--bg-ivory)', border: '1.5px solid var(--gold-border)', borderRadius: 'var(--radius-md)', padding: '28px', boxShadow: 'var(--shadow-soft)' }}>
+                  {/* Panel Top Header Bar */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '24px', paddingBottom: '18px', borderBottom: '1.5px solid var(--gold-border)' }}>
+                    <div>
+                      <span className="architectural-tag">PORTFOLIO INVENTORY CONTROL</span>
+                      <h3 style={{ fontSize: '1.4rem', color: '#0A1325', marginTop: '4px', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
+                        Upcoming Projects Manager
+                      </h3>
+                      <p style={{ fontSize: '0.88rem', color: 'rgba(26, 7, 9, 0.75)', marginTop: '4px' }}>
+                        Add, edit, or remove project developments shown on the public site 3D carousel. Upload project photographs and specify key amenities.
+                      </p>
+                    </div>
+
+                    <div className="admin-action-toolbar" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+                      <button
+                        onClick={handleResetDefaultProjects}
+                        className="btn btn-outline-gold"
+                        style={{ fontSize: '0.78rem', padding: '9px 16px', fontWeight: 700, cursor: 'pointer' }}
+                        title="Restore original projects"
+                      >
+                        RESTORE DEFAULTS
+                      </button>
+
+                      <a
+                        href="/#upcoming"
+                        className="btn btn-outline-gold"
+                        style={{ fontSize: '0.78rem', padding: '9px 16px', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                      >
+                        PREVIEW PUBLIC SITE
+                      </a>
+
+                      <button
+                        onClick={handleOpenAddProjectModal}
+                        style={{
+                          fontSize: '0.80rem',
+                          padding: '10px 18px',
+                          fontWeight: 800,
+                          borderRadius: '6px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          background: 'linear-gradient(135deg, #C6A15B 0%, #AA7C11 100%)',
+                          color: '#0A1325',
+                          border: '1.5px solid #8C6B28',
+                          boxShadow: '0 4px 14px rgba(198, 161, 91, 0.35)',
+                          cursor: 'pointer',
+                          letterSpacing: '0.4px',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A1325" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                        ADD UPCOMING PROJECT
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Section 1: Live Interactive 3D Carousel Preview */}
+                  <div style={{ marginBottom: '32px', background: '#0F1C36', borderRadius: '12px', padding: '24px 20px 20px', border: '1.5px solid rgba(198, 161, 91, 0.4)', boxShadow: '0 8px 30px rgba(10, 19, 37, 0.4)', position: 'relative', overflow: 'hidden' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '16px', borderBottom: '1px solid rgba(198, 161, 91, 0.25)', paddingBottom: '12px' }}>
+                      <div>
+                        <span style={{ fontSize: '0.62rem', fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#C6A15B', letterSpacing: '1px' }}>
+                          HOMEPAGE LIVE 3D ORBIT PREVIEW
+                        </span>
+                        <h4 style={{ color: '#FFFDF7', fontSize: '1.1rem', margin: '2px 0 0', fontWeight: 800, fontFamily: 'var(--font-heading)' }}>
+                          Real-Time Animation &amp; Interactive Orbit
+                        </h4>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <button
+                          type="button"
+                          onClick={() => setIsCarouselAutoRotating(!isCarouselAutoRotating)}
+                          style={{
+                            padding: '5px 12px',
+                            fontSize: '0.72rem',
+                            fontWeight: 700,
+                            borderRadius: '4px',
+                            border: '1px solid #C6A15B',
+                            background: isCarouselAutoRotating ? 'rgba(198, 161, 91, 0.2)' : 'transparent',
+                            color: '#F3E5AB',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          {isCarouselAutoRotating ? 'PAUSE ROTATION' : 'RESUME ROTATION'}
+                        </button>
+                        <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)', fontFamily: 'var(--font-mono)' }}>
+                          Project {upcomingProjects.length === 0 ? 0 : previewActiveIdx + 1} of {upcomingProjects.length}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* 3D Flat Orbit Carousel (Exact same animation as public site) */}
+                    {upcomingProjects.length === 0 ? (
+                      <div style={{ padding: '40px 20px', textAlign: 'center', color: '#F3E5AB' }}>
+                        No upcoming projects available. Click &quot;ADD UPCOMING PROJECT&quot; above to create one.
+                      </div>
+                    ) : (
+                      <div className="upcoming-3d-wrapper" style={{ height: '380px', margin: '0 auto' }}>
+                        <div className="upcoming-3d-inner">
+                          {upcomingProjects.map((proj, idx) => {
+                            const style = getAdminCarouselCardStyle(idx);
+                            const isFront = (idx - previewActiveIdx + upcomingProjects.length) % upcomingProjects.length === 0;
+
+                            return (
+                              <article
+                                key={idx}
+                                onClick={() => setPreviewActiveIdx(idx)}
+                                style={style}
+                                className={`project-card-3d ${isFront ? 'active-front-card' : ''}`}
+                              >
+                                <div className="project-card-image-wrap">
+                                  <img src={proj.image} alt={proj.title} onError={(e) => { e.target.src = '/Images/Upcoming_Green_Valley.jpg'; }} />
+                                  <span className="project-badge">{proj.badge}</span>
+                                  <div className="card-3d-radial-glow" />
+                                </div>
+                                <div className="project-card-body">
+                                  <div>
+                                    <div className="project-card-meta">
+                                      <span className="project-city">{proj.city}</span>
+                                      <span className="meta-sep">•</span>
+                                      <span className="project-tag">{proj.tag}</span>
+                                    </div>
+                                    <h3>{proj.title}</h3>
+                                    <div className="card-mini-stats">
+                                      <span>{proj.area}</span>
+                                      <span className="stat-bullet">•</span>
+                                      <span>{proj.road}</span>
+                                    </div>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleOpenEditProjectModal(proj, idx);
+                                    }}
+                                    className="btn-more-details"
+                                    style={{ cursor: 'pointer' }}
+                                  >
+                                    EDIT DETAILS
+                                  </button>
+                                </div>
+                              </article>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Indicator dots */}
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', marginTop: '16px' }}>
+                      {upcomingProjects.map((_, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setPreviewActiveIdx(idx)}
+                          style={{
+                            width: previewActiveIdx === idx ? '24px' : '8px',
+                            height: '8px',
+                            borderRadius: '4px',
+                            background: previewActiveIdx === idx ? '#C6A15B' : 'rgba(198, 161, 91, 0.4)',
+                            border: 'none',
+                            cursor: 'pointer',
+                            transition: 'all 0.25s ease'
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Section 2: Manage Projects Grid with Edit and Remove buttons */}
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
+                      <div>
+                        <h4 style={{ margin: 0, fontSize: '1.15rem', color: '#0A1325', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
+                          Project Showcase Roster ({filteredUpcomingProjects.length} Projects)
+                        </h4>
+                        <span style={{ fontSize: '0.80rem', color: 'rgba(10, 19, 37, 0.7)' }}>
+                          Each card below can be directly edited or removed from the website.
+                        </span>
+                      </div>
+
+                      <div style={{ position: 'relative', minWidth: '220px' }}>
+                        <input
+                          type="text"
+                          placeholder="Search by title or city..."
+                          value={projectSearchQuery}
+                          onChange={(e) => setProjectSearchQuery(e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '8px 12px 8px 32px',
+                            borderRadius: 'var(--radius-sm)',
+                            border: '1px solid var(--gold-border)',
+                            background: 'var(--bg-cream)',
+                            fontSize: '0.84rem',
+                            color: '#0A1325'
+                          }}
+                        />
+                        <svg style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', width: '14px', height: '14px', fill: 'rgba(26,7,9,0.5)' }} viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z" /></svg>
+                      </div>
+                    </div>
+
+                    {filteredUpcomingProjects.length === 0 ? (
+                      <div style={{ textAlign: 'center', padding: '40px 20px', background: 'var(--bg-cream)', borderRadius: '8px', border: '1px dashed var(--gold-border)' }}>
+                        <p style={{ color: '#0A1325', fontWeight: 600 }}>No projects found matching &quot;{projectSearchQuery}&quot;.</p>
+                      </div>
+                    ) : (
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+                        {filteredUpcomingProjects.map((proj, idx) => {
+                          const realIdx = upcomingProjects.indexOf(proj);
+
+                          return (
+                            <div
+                              key={idx}
+                              style={{
+                                background: 'var(--bg-cream)',
+                                border: '1.5px solid var(--gold-border)',
+                                borderRadius: '12px',
+                                overflow: 'hidden',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                boxShadow: '0 4px 16px rgba(10, 19, 37, 0.08)',
+                                transition: 'all 0.25s ease'
+                              }}
+                            >
+                              <div>
+                                {/* Card Image Thumbnail */}
+                                <div style={{ position: 'relative', height: '160px', width: '100%', overflow: 'hidden', background: '#0A1325' }}>
+                                  <img
+                                    src={proj.image}
+                                    alt={proj.title}
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    onError={(e) => {
+                                      e.target.src = '/Images/Upcoming_Green_Valley.jpg';
+                                    }}
+                                  />
+                                  <span
+                                    style={{
+                                      position: 'absolute',
+                                      top: '10px',
+                                      left: '10px',
+                                      background: 'rgba(10, 19, 37, 0.85)',
+                                      border: '1px solid #C6A15B',
+                                      color: '#FFFDF7',
+                                      fontFamily: 'var(--font-mono)',
+                                      fontSize: '0.62rem',
+                                      fontWeight: 700,
+                                      padding: '3px 8px',
+                                      borderRadius: '4px'
+                                    }}
+                                  >
+                                    {proj.city} • {proj.tag}
+                                  </span>
+                                  <span
+                                    style={{
+                                      position: 'absolute',
+                                      top: '10px',
+                                      right: '10px',
+                                      background: '#C6A15B',
+                                      color: '#0A1325',
+                                      fontFamily: 'var(--font-mono)',
+                                      fontSize: '0.62rem',
+                                      fontWeight: 800,
+                                      padding: '3px 8px',
+                                      borderRadius: '4px'
+                                    }}
+                                  >
+                                    {proj.badge}
+                                  </span>
+                                </div>
+
+                                {/* Card Content */}
+                                <div style={{ padding: '16px' }}>
+                                  <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0A1325', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
+                                    {proj.title}
+                                  </h4>
+                                  <p style={{ margin: '0 0 12px 0', fontSize: '0.80rem', color: 'rgba(10, 19, 37, 0.75)', lineHeight: 1.45, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                    {proj.desc}
+                                  </p>
+
+                                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', padding: '8px 10px', background: 'rgba(198, 161, 91, 0.1)', borderRadius: '6px', marginBottom: '12px' }}>
+                                    <div>
+                                      <span style={{ fontSize: '0.58rem', fontFamily: 'var(--font-mono)', color: '#8C6B28', display: 'block' }}>TOTAL AREA</span>
+                                      <strong style={{ fontSize: '0.78rem', color: '#0A1325' }}>{proj.area || 'N/A'}</strong>
+                                    </div>
+                                    <div>
+                                      <span style={{ fontSize: '0.58rem', fontFamily: 'var(--font-mono)', color: '#8C6B28', display: 'block' }}>ROAD WIDTH</span>
+                                      <strong style={{ fontSize: '0.78rem', color: '#0A1325' }}>{proj.road || 'N/A'}</strong>
+                                    </div>
+                                    <div style={{ gridColumn: 'span 2' }}>
+                                      <span style={{ fontSize: '0.58rem', fontFamily: 'var(--font-mono)', color: '#8C6B28', display: 'block' }}>APPROVAL STATUS</span>
+                                      <strong style={{ fontSize: '0.74rem', color: '#065F46' }}>{proj.approval || 'DTCP Approved'}</strong>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Edit and Remove Buttons */}
+                              <div style={{ padding: '12px 16px', borderTop: '1px solid rgba(198, 161, 91, 0.25)', display: 'flex', gap: '8px', justifyContent: 'flex-end', background: 'rgba(255, 255, 255, 0.5)' }}>
+                                <button
+                                  type="button"
+                                  onClick={() => handleOpenEditProjectModal(proj, realIdx)}
+                                  style={{
+                                    flex: 1,
+                                    padding: '8px 12px',
+                                    fontSize: '0.74rem',
+                                    fontWeight: 800,
+                                    borderRadius: '6px',
+                                    border: '1.5px solid #C6A15B',
+                                    background: '#0A1325',
+                                    color: '#F3E5AB',
+                                    cursor: 'pointer',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '6px',
+                                    transition: 'all 0.2s ease'
+                                  }}
+                                >
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F3E5AB" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>
+                                  EDIT PROJECT
+                                </button>
+
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteProject(realIdx)}
+                                  style={{
+                                    padding: '8px 14px',
+                                    fontSize: '0.74rem',
+                                    fontWeight: 800,
+                                    borderRadius: '6px',
+                                    border: '1.5px solid #D9534F',
+                                    background: 'rgba(217, 83, 79, 0.1)',
+                                    color: '#D9534F',
+                                    cursor: 'pointer',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '6px',
+                                    transition: 'all 0.2s ease'
+                                  }}
+                                  title={`Delete ${proj.title}`}
+                                >
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D9534F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                  REMOVE
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -3036,6 +3392,289 @@ _Please contact this client immediately and arrange site inspection / discussion
                   style={{ fontSize: '0.78rem', padding: '8px 20px', fontWeight: 800, cursor: 'pointer' }}
                 >
                   SAVE RECORD
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* UPCOMING PROJECT ADD / EDIT MODAL */}
+      {projectModalOpen && (
+        <div className="admin-modal-overlay" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(4px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div className="admin-modal-card" style={{ background: 'var(--bg-ivory)', border: '1.5px solid var(--gold-border)', borderRadius: 'var(--radius-md)', maxWidth: '640px', width: '100%', padding: '24px 28px', boxShadow: '0 20px 50px rgba(0,0,0,0.4)', position: 'relative', maxHeight: '90vh', overflowY: 'auto' }}>
+            {/* Modal Header */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid var(--gold-border)', paddingBottom: '10px' }}>
+              <div>
+                <span className="architectural-tag" style={{ fontSize: '0.65rem' }}>UPCOMING TOWNSHIP SPECIFICATIONS</span>
+                <h3 style={{ color: '#0A1325', marginTop: '2px', fontSize: '1.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
+                  {editingProjectIdx !== null ? 'Edit Upcoming Project' : 'Add New Upcoming Project'}
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setProjectModalOpen(false)}
+                style={{ background: 'none', border: 'none', fontSize: '1.6rem', color: '#0A1325', cursor: 'pointer' }}
+              >
+                &times;
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveProject} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              {/* Title */}
+              <div>
+                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
+                  PROJECT TITLE *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={projectForm.title}
+                  onChange={(e) => setProjectForm({ ...projectForm, title: e.target.value })}
+                  placeholder="e.g. SHASHTIKA Grand Horizon"
+                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              {/* City and Tag */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
+                    CITY / REGION *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={projectForm.city}
+                    onChange={(e) => setProjectForm({ ...projectForm, city: e.target.value })}
+                    placeholder="e.g. Pollachi or Coimbatore"
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', boxSizing: 'border-box' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
+                    PROJECT CATEGORY TAG *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={projectForm.tag}
+                    onChange={(e) => setProjectForm({ ...projectForm, tag: e.target.value })}
+                    placeholder="e.g. Farm Plots or Residential"
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+
+              {/* Badge, Area, Road */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
+                    LAUNCH BADGE *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={projectForm.badge}
+                    onChange={(e) => setProjectForm({ ...projectForm, badge: e.target.value })}
+                    placeholder="e.g. Ready to Launch"
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', boxSizing: 'border-box' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
+                    TOTAL AREA *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={projectForm.area}
+                    onChange={(e) => setProjectForm({ ...projectForm, area: e.target.value })}
+                    placeholder="e.g. 5.9 ACRES"
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', boxSizing: 'border-box' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
+                    ROAD ACCESS *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={projectForm.road}
+                    onChange={(e) => setProjectForm({ ...projectForm, road: e.target.value })}
+                    placeholder="e.g. 40 FT ROADS"
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+
+              {/* Approval and Location */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
+                    APPROVAL STATUS
+                  </label>
+                  <input
+                    type="text"
+                    value={projectForm.approval}
+                    onChange={(e) => setProjectForm({ ...projectForm, approval: e.target.value })}
+                    placeholder="e.g. DTCP & RERA Approved Layout"
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', boxSizing: 'border-box' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
+                    LOCATION CORRIDOR
+                  </label>
+                  <input
+                    type="text"
+                    value={projectForm.location}
+                    onChange={(e) => setProjectForm({ ...projectForm, location: e.target.value })}
+                    placeholder="e.g. Pollachi Highway Corridor"
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+
+              {/* Image Selection / Upload Section */}
+              <div style={{ border: '1.5px solid var(--gold-border)', borderRadius: '8px', padding: '14px', background: 'rgba(198, 161, 91, 0.08)' }}>
+                <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 800, color: '#0A1325', marginBottom: '8px' }}>
+                  PROJECT PHOTOGRAPH / IMAGE *
+                </label>
+
+                <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                  {/* Thumbnail Preview */}
+                  <div style={{ width: '110px', height: '80px', borderRadius: '6px', overflow: 'hidden', border: '1.5px solid #C6A15B', background: '#0A1325', flexShrink: 0 }}>
+                    <img
+                      src={projectForm.image || '/Images/Upcoming_Green_Valley.jpg'}
+                      alt="Preview"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      onError={(e) => { e.target.src = '/Images/Upcoming_Green_Valley.jpg'; }}
+                    />
+                  </div>
+
+                  <div style={{ flex: 1, minWidth: '220px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {/* File upload button */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <label
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          padding: '7px 14px',
+                          fontSize: '0.76rem',
+                          fontWeight: 800,
+                          background: '#0A1325',
+                          color: '#F3E5AB',
+                          border: '1px solid #C6A15B',
+                          borderRadius: '6px',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#F3E5AB" strokeWidth="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
+                        Upload Photo from Device
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageFileUpload}
+                          style={{ display: 'none' }}
+                        />
+                      </label>
+                      <span style={{ fontSize: '0.72rem', color: 'rgba(10, 19, 37, 0.6)' }}>
+                        PNG, JPG or WebP (up to 5MB)
+                      </span>
+                    </div>
+
+                    {/* Or manual URL */}
+                    <div>
+                      <input
+                        type="text"
+                        required
+                        value={projectForm.image}
+                        onChange={(e) => setProjectForm({ ...projectForm, image: e.target.value })}
+                        placeholder="Or enter image URL (e.g. /Images/Upcoming_Green_Valley.jpg)"
+                        style={{ width: '100%', padding: '7px 10px', borderRadius: '4px', border: '1px solid var(--gold-border)', background: '#FFF', fontSize: '0.80rem', color: '#0A1325', boxSizing: 'border-box' }}
+                      />
+                    </div>
+
+                    {/* Quick Image Presets */}
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.66rem', fontWeight: 700, color: 'rgba(10, 19, 37, 0.7)' }}>Quick presets:</span>
+                      {[
+                        { label: 'Green Valley', url: '/Images/Upcoming_Green_Valley.jpg' },
+                        { label: 'Heritage Hills', url: '/Images/Upcoming_Heritage_Hills.jpg' },
+                        { label: 'Emerald Palms', url: '/Images/Upcoming_Emerald_Palms.jpg' },
+                        { label: 'Royal Enclave', url: '/Images/Upcoming_Royal_Enclave.jpg' },
+                        { label: 'Luxury Villa', url: '/Images/Hero_Villa.jpg' }
+                      ].map((p, pIdx) => (
+                        <button
+                          key={pIdx}
+                          type="button"
+                          onClick={() => setProjectForm({ ...projectForm, image: p.url })}
+                          style={{
+                            padding: '2px 7px',
+                            fontSize: '0.66rem',
+                            borderRadius: '4px',
+                            border: '1px solid rgba(198, 161, 91, 0.4)',
+                            background: projectForm.image === p.url ? '#C6A15B' : '#FFFDF7',
+                            color: projectForm.image === p.url ? '#0A1325' : '#4A3E38',
+                            cursor: 'pointer',
+                            fontWeight: projectForm.image === p.url ? 800 : 500
+                          }}
+                        >
+                          {p.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Description */}
+              <div>
+                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
+                  BRIEF SUMMARY DESCRIPTION
+                </label>
+                <textarea
+                  rows="2"
+                  value={projectForm.desc}
+                  onChange={(e) => setProjectForm({ ...projectForm, desc: e.target.value })}
+                  placeholder="101 premium gated agro-residency units with drip irrigation, solar avenue lights, and organic plantation layouts."
+                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.86rem', color: '#0A1325', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              {/* Highlights & Features (one per line) */}
+              <div>
+                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
+                  KEY FEATURES &amp; HIGHLIGHTS (One amenity per line)
+                </label>
+                <textarea
+                  rows="4"
+                  value={projectForm.features}
+                  onChange={(e) => setProjectForm({ ...projectForm, features: e.target.value })}
+                  placeholder="DTCP & RERA Approved Layout&#10;40 ft Wide Internal Tar Roads&#10;Solar Powered Street Lighting&#10;Individual Drip Irrigation Connections&#10;24/7 Gated Security & Perimeter Wall"
+                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.84rem', fontFamily: 'monospace', color: '#0A1325', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              {/* Form Action Buttons */}
+              <div style={{ marginTop: '10px', display: 'flex', gap: '10px', justifyContent: 'flex-end', borderTop: '1px solid var(--gold-border)', paddingTop: '14px' }}>
+                <button
+                  type="button"
+                  onClick={() => setProjectModalOpen(false)}
+                  className="btn btn-outline-gold"
+                  style={{ fontSize: '0.78rem', padding: '8px 18px', cursor: 'pointer' }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-gold"
+                  style={{ fontSize: '0.78rem', padding: '8px 22px', fontWeight: 800, cursor: 'pointer' }}
+                >
+                  SAVE PROJECT
                 </button>
               </div>
             </form>
