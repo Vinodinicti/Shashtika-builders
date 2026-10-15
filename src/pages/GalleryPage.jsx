@@ -399,12 +399,11 @@ export default function GalleryPage() {
                   className="realistic-showcase-img"
                 />
                 <div className="realistic-motion-tint" />
+                <div className="realistic-ambient-shimmer" />
                 <div className="realistic-canvas-badge">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   <span>40FT DUAL CARRIAGEWAY</span>
                 </div>
-                <div className="road-perspective-laser" />
-                <div className="road-headlight-glider" />
                 <div className="realistic-callout-pill">
                   <span>|← 40 FT ROADWAY + 6 FT STORM DRAIN →|</span>
                   <span className="text-emerald-400 font-bold">● ACTIVE</span>
@@ -430,18 +429,11 @@ export default function GalleryPage() {
                   className="realistic-showcase-img"
                 />
                 <div className="realistic-motion-tint" />
+                <div className="realistic-ambient-shimmer" />
                 <div className="realistic-canvas-badge">
                   <span className="w-2 h-2 rounded-full bg-gold-primary animate-pulse" />
                   <span>DTCP / RERA VERIFIED</span>
                 </div>
-                <div className="blueprint-scanner-beam" />
-                {/* Rotating Surveyor Reticle */}
-                <svg className="blueprint-surveyor-reticle" viewBox="0 0 44 44" fill="none">
-                  <circle cx="22" cy="22" r="18" stroke="#E5D2A6" strokeWidth="1" strokeDasharray="3 3" />
-                  <circle cx="22" cy="22" r="2.5" fill="#C6A15B" />
-                  <line x1="2" y1="22" x2="42" y2="22" stroke="#C6A15B" strokeWidth="1" />
-                  <line x1="22" y1="2" x2="22" y2="42" stroke="#C6A15B" strokeWidth="1" />
-                </svg>
                 <div className="realistic-callout-pill">
                   <span>✓ 100% DTCP APPROVED BLUEPRINTS</span>
                   <span className="text-gold-light font-bold">10% PARK</span>
@@ -467,11 +459,11 @@ export default function GalleryPage() {
                   className="realistic-showcase-img"
                 />
                 <div className="realistic-motion-tint" />
+                <div className="realistic-ambient-shimmer" />
                 <div className="realistic-canvas-badge">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   <span>24/7 GATED SECURITY</span>
                 </div>
-                <div className="arch-spotlight-sheen" />
                 <div className="realistic-callout-pill">
                   <span>GRAND ENTRANCE ARCH &amp; PALM AVENUE</span>
                   <span className="text-emerald-400 font-bold">SECURED</span>

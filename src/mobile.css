@@ -1443,76 +1443,341 @@
     white-space: nowrap !important;
   }
 
-  /* Mobile Gallery Grid Transformation — Elegant Vertical/Swipe Cards */
+  /* Mobile Gallery Grid Transformation — Exact Desktop Accordion Experience */
   .gallery-grid {
     display: flex !important;
-    flex-direction: column !important;
-    height: auto !important;
-    gap: 14px !important;
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-    box-shadow: none !important;
-  }
-
-  .gallery-item {
-    flex: none !important;
-    width: 100% !important;
-    height: 320px !important;
-    min-width: 100% !important;
-    border-radius: 14px !important;
+    flex-direction: row !important;
+    height: 440px !important;
+    gap: 6px !important;
     background: #1A0709 !important;
-    border: 1px solid rgba(198, 161, 91, 0.45) !important;
-    box-shadow: 0 8px 24px rgba(26, 7, 9, 0.35) !important;
+    border: 1.2px solid rgba(198, 161, 91, 0.45) !important;
+    border-radius: 14px !important;
+    padding: 8px 6px !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45) !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
+    align-items: stretch !important;
   }
 
-  /* Hide vertical label on mobile stacked cards */
-  .gallery-vertical-label {
+  .gallery-grid::-webkit-scrollbar {
     display: none !important;
   }
 
-  .gallery-item-img-wrap {
-    height: 200px !important;
-    min-height: 200px !important;
-  }
-
-  .gallery-card-body {
-    padding: 14px 16px !important;
+  .gallery-item {
+    flex: 1 1 0% !important;
+    min-width: 48px !important;
+    width: auto !important;
+    height: 100% !important;
+    border-radius: 10px !important;
+    background: #230B0E !important;
+    border: 1px solid rgba(198, 161, 91, 0.35) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    cursor: pointer !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
-    background: linear-gradient(180deg, #1A0709 0%, #2A0D12 100%) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+    transition: flex 0.45s cubic-bezier(0.25, 1, 0.5, 1),
+                min-width 0.45s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease !important;
   }
 
-  .gallery-card-title {
-    font-size: 1.15rem !important;
+  .gallery-item.active {
+    flex: 5 1 220px !important;
+    min-width: 210px !important;
+    border-color: #E5D2A6 !important;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.75), 0 0 20px rgba(198, 161, 91, 0.35) !important;
+    z-index: 5 !important;
   }
 
-  /* Modal Details Overlay on Mobile */
-  .gallery-modal-overlay {
-    padding: 10px !important;
-    align-items: flex-end !important;
+  /* Vertical Running Capsule Label — Exact Desktop Style for Mobile */
+  .gallery-vertical-label {
+    display: inline-flex !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) rotate(-90deg) !important;
+    transform-origin: center center !important;
+    white-space: nowrap !important;
+    font-family: var(--font-heading) !important;
+    font-size: 0.62rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.10em !important;
+    text-transform: uppercase !important;
+    color: #E5D2A6 !important;
+    pointer-events: none !important;
+    z-index: 5 !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9) !important;
+    background: rgba(26, 7, 9, 0.92) !important;
+    padding: 5px 12px !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(229, 210, 166, 0.45) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6) !important;
+    transition: all 0.35s ease !important;
   }
 
-  .gallery-modal-box {
-    border-radius: 20px 20px 0 0 !important;
-    max-height: 90vh !important;
-    padding: 20px 16px !important;
+  .gallery-item.active .gallery-vertical-label {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translate(-50%, -50%) rotate(0deg) scale(0.85) !important;
+  }
+
+  .gallery-item-img-wrap {
+    position: absolute !important;
+    inset: 0 !important;
     width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    overflow: hidden !important;
+    background-color: #1A0709 !important;
+    z-index: 1 !important;
   }
 
-  .gallery-modal-box img {
-    height: 200px !important;
-    border-radius: 10px !important;
+  .gallery-item-img-wrap img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease !important;
   }
 
+  .gallery-item.active .gallery-item-img-wrap img {
+    transform: scale(1.06) !important;
+    filter: brightness(1) contrast(1) !important;
+  }
+
+  /* Badges positioning on Mobile */
+  .gallery-classifying-bar {
+    position: absolute !important;
+    top: 8px !important;
+    left: 6px !important;
+    right: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 3px !important;
+    z-index: 4 !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+  }
+
+  .gallery-classifying-badge {
+    font-size: 0.50rem !important;
+    padding: 3px 5px !important;
+    border-radius: 3px !important;
+    white-space: nowrap !important;
+  }
+
+  .gallery-status-badge {
+    font-size: 0.48rem !important;
+    padding: 3px 5px !important;
+    border-radius: 3px !important;
+    white-space: nowrap !important;
+  }
+
+  .gallery-cad-pill {
+    font-size: 0.52rem !important;
+    padding: 3px 6px !important;
+  }
+
+  .gallery-item.active .gallery-classifying-badge {
+    display: none !important;
+  }
+
+  .gallery-item.active .gallery-cad-pill {
+    display: inline-flex !important;
+  }
+
+  /* Card Body Overlay on Mobile */
+  .gallery-card-body {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 4 !important;
+    padding: 10px 12px 10px !important;
+    background: linear-gradient(180deg, rgba(26, 7, 9, 0) 0%, rgba(26, 7, 9, 0.88) 32%, #1A0709 100%) !important;
+    opacity: 0 !important;
+    transform: translateY(10px) !important;
+    transition: opacity 0.35s ease, transform 0.35s ease !important;
+    pointer-events: auto !important;
+  }
+
+  .gallery-item.active .gallery-card-body {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  .gallery-card-body .architectural-tag {
+    font-size: 0.56rem !important;
+    margin-bottom: 2px !important;
+  }
+
+  .gallery-card-body h4 {
+    font-size: 0.88rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 4px !important;
+    color: #FAF7F2 !important;
+  }
+
+  .gallery-card-specs-footer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    font-size: 0.60rem !important;
+    color: #D8C5A7 !important;
+  }
+
+  .gallery-card-specs-footer .specs-action {
+    font-size: 0.60rem !important;
+    color: var(--gold-primary) !important;
+    font-weight: 800 !important;
+  }
+
+  /* Modal Details Overlay on Mobile — Compact, Scaled Down & Shortened */
+  .project-modal-overlay,
+  .gallery-modal-overlay {
+    padding: 12px 10px !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .project-modal-card,
+  .gallery-modal-box {
+    border-radius: 14px !important;
+    max-height: 88vh !important;
+    width: 100% !important;
+    max-width: 420px !important;
+    margin: auto !important;
+    overflow-y: auto !important;
+  }
+
+  .project-modal-close {
+    top: 10px !important;
+    right: 10px !important;
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 1.1rem !important;
+  }
+
+  .project-modal-img-wrap {
+    height: 140px !important;
+    min-height: 140px !important;
+  }
+
+  .project-modal-img-wrap img {
+    height: 140px !important;
+    object-fit: cover !important;
+  }
+
+  .project-modal-badge {
+    bottom: 8px !important;
+    left: 10px !important;
+  }
+
+  .project-modal-badge span {
+    font-size: 0.60rem !important;
+    padding: 2px 6px !important;
+  }
+
+  .project-modal-body {
+    padding: 12px 14px 16px !important;
+  }
+
+  .project-modal-body .architectural-tag {
+    font-size: 0.55rem !important;
+    letter-spacing: 1px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .project-modal-title,
   .gallery-modal-box h2 {
-    font-size: 1.35rem !important;
+    font-size: 1.12rem !important;
+    line-height: 1.2 !important;
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
   }
 
+  .project-modal-location {
+    font-size: 0.68rem !important;
+    letter-spacing: 0.6px !important;
+    margin-bottom: 6px !important;
+    line-height: 1.3 !important;
+  }
+
+  .project-modal-desc {
+    font-size: 0.75rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 10px !important;
+    color: #4A1B22 !important;
+  }
+
+  /* Specification Grid: 2-column Compact Layout */
+  .project-spec-grid,
   .gallery-modal-specs-grid {
+    display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;
+    gap: 5px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .project-spec-item {
+    padding: 5px 8px !important;
+    border-radius: 4px !important;
+  }
+
+  .project-spec-label {
+    font-size: 0.48rem !important;
+    letter-spacing: 0.6px !important;
+    margin-bottom: 1px !important;
+  }
+
+  .project-spec-val {
+    font-size: 0.70rem !important;
+    line-height: 1.2 !important;
+    font-weight: 700 !important;
+  }
+
+  /* Highlights Box: Compact & Slim */
+  .project-modal-highlights-box {
+    padding: 7px 10px !important;
+    margin-bottom: 10px !important;
+    border-left-width: 2.5px !important;
+  }
+
+  .project-modal-highlights-box strong {
+    font-size: 0.56rem !important;
+    letter-spacing: 0.8px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .project-modal-highlights-box p {
+    font-size: 0.70rem !important;
+    line-height: 1.35 !important;
+  }
+
+  /* Action Buttons in Modal */
+  .project-modal-body .flex.flex-wrap.gap-3 {
+    margin-top: 8px !important;
+    gap: 6px !important;
+    display: flex !important;
+  }
+
+  .project-modal-body .btn-primary,
+  .project-modal-body .btn-gold {
+    flex: 1 1 calc(50% - 4px) !important;
+    padding: 7px 8px !important;
+    font-size: 0.65rem !important;
+    letter-spacing: 0.6px !important;
+    text-align: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
   }
 }
 

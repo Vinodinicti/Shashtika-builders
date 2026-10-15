@@ -615,21 +615,20 @@ export default function AboutPage() {
             </p>
           </div>
 
-          {/* Stage Cards: Row 1 (3 Cards) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-[1240px] mx-auto">
-            {stages.slice(0, 3).map((stage, idx) => renderStageCard(stage, idx))}
-          </div>
+          {/* 5-Stage Development Process (2 - 2 - 1 Cards Format) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-[1040px] mx-auto">
+            {/* Row 1: 2 Cards (Stage 01 & 02) */}
+            {stages.slice(0, 2).map((stage, idx) => renderStageCard(stage, idx))}
 
-          {/* Stage Cards: Row 2 (2 Cards Centered) */}
-          <div className="flex flex-col md:flex-row justify-center items-stretch gap-6 lg:gap-8 max-w-[1240px] mx-auto mt-5 lg:mt-6">
-            {stages.slice(3, 5).map((stage, idx) => (
-              <div
-                key={stage.num}
-                className="w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1.333rem)]"
-              >
-                {renderStageCard(stage, idx + 3)}
+            {/* Row 2: 2 Cards (Stage 03 & 04) */}
+            {stages.slice(2, 4).map((stage, idx) => renderStageCard(stage, idx + 2))}
+
+            {/* Row 3: 1 Card Centered (Stage 05) */}
+            <div className="md:col-span-2 flex justify-center">
+              <div className="w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(50%-1rem)]">
+                {renderStageCard(stages[4], 4)}
               </div>
-            ))}
+            </div>
           </div>
 
           {/* CTA Banner */}
