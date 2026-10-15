@@ -4660,4 +4660,36 @@ body {
   transform: scale(1.1);
 }
 
+/* ==========================================================================
+   FLOATING ACTION BUTTONS (Helpline & WhatsApp) — Shashtika Blue & Gold Theme
+   ========================================================================== */
+.floating-action-stack {
+  z-index: 50;
+}
+
+.floating-action-btn {
+  background: linear-gradient(135deg, #0F1C36 0%, #0A1325 100%) !important;
+  border: 1.5px solid #C6A15B !important;
+  color: #E5D2A6 !important;
+  box-shadow: 0 4px 14px rgba(10, 19, 37, 0.5), 0 0 10px rgba(198, 161, 91, 0.25) !important;
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+
+.floating-action-btn:hover {
+  background: linear-gradient(135deg, #DEBA70 0%, #C6A15B 50%, #B88F40 100%) !important;
+  border-color: #FFFDF7 !important;
+  color: #0A1325 !important;
+  box-shadow: 0 6px 18px rgba(10, 19, 37, 0.6), 0 0 16px rgba(198, 161, 91, 0.6) !important;
+}
+
+.floating-action-btn:active {
+  transform: scale(0.96);
+}
+
+.floating-action-btn svg {
+  display: block;
+}
+
+
 

@@ -2343,4 +2343,28 @@
   }
 }
 
+/* ==========================================================================
+   19. FLOATING ACTION STACK — COMPACT MOBILE VIEW (FloatingActionStack.jsx)
+   ========================================================================== */
+@media (max-width: 991px) {
+  .floating-action-stack {
+    bottom: 16px !important;
+    right: 16px !important;
+    gap: 8px !important;
+  }
+
+  .floating-action-btn {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+  }
+
+  .floating-action-btn svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+}
+
+
 
