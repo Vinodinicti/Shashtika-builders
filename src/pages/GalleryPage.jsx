@@ -377,128 +377,112 @@ export default function GalleryPage() {
             <h2 style={{
               fontFamily: 'var(--font-heading)',
               fontSize: 'clamp(1.4rem, 2.1vw, 1.85rem)',
-              color: '#1A0709',
+              color: '#0A1325',
               marginTop: '6px',
               marginBottom: '10px',
               fontWeight: 800
             }}>
               CIVIL ENGINEERING EXCELLENCE
             </h2>
-            <p style={{ color: '#521D24', fontSize: '0.92rem', lineHeight: '1.6' }}>
+            <p style={{ color: '#475569', fontSize: '0.92rem', lineHeight: '1.6' }}>
               Every photograph in our gallery reflects SHASHTIKA's commitment to rigorous civil construction, legal town planning, and environmental aesthetics.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Card 1: Road & Infrastructure Blueprint Motion */}
+            {/* Card 1: Realistic Road & Infrastructure Showcase */}
             <div className="diagrammatic-card">
               <div className="diagrammatic-canvas">
-                <svg width="280" height="150" viewBox="0 0 280 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* Road Surface Layer */}
-                  <rect x="20" y="45" width="240" height="26" fill="#2D0E12" stroke="#C6A15B" strokeWidth="1.5" rx="3" />
-                  <line x1="20" y1="58" x2="260" y2="58" stroke="#E5D2A6" strokeWidth="2" className="diagram-dash-lane" />
-
-                  {/* Moving Vehicle Headlights Motion Marker */}
-                  <g className="diagram-vehicle-group">
-                    <circle cx="0" cy="58" r="4.5" fill="#E5D2A6" stroke="#C6A15B" strokeWidth="1.5" className="diagram-vehicle-headlight" />
-                  </g>
-
-                  {/* Kerbstone Layers */}
-                  <rect x="20" y="71" width="240" height="14" fill="#230B0E" stroke="#99793B" strokeWidth="1" />
-                  <rect x="20" y="85" width="240" height="18" fill="#1A0709" stroke="#99793B" strokeWidth="1" strokeDasharray="4 4" />
-
-                  {/* Underground Water Runoff Pipe */}
-                  <rect x="90" y="108" width="100" height="18" rx="9" fill="#230B0E" stroke="#C6A15B" strokeWidth="1.5" />
-                  <line x1="95" y1="117" x2="185" y2="117" stroke="#E5D2A6" strokeWidth="2" className="diagram-water-flow" />
-
-                  {/* Dimension Callouts */}
-                  <line x1="20" y1="28" x2="260" y2="28" stroke="#C6A15B" strokeWidth="1" strokeDasharray="2 2" />
-                  <path d="M20 24 L20 32 M260 24 L260 32" stroke="#C6A15B" strokeWidth="1.5" />
-                  <text x="140" y="22" textAnchor="middle" fill="#E5D2A6" fontFamily="Space Mono" fontSize="10" fontWeight="700">
-                    |← 40 FT HEAVY ASPHALT ROAD →|
-                  </text>
-                </svg>
+                <img
+                  src="/Images/Shashtika_Engineered_Roads.jpg"
+                  alt="40ft and 30ft Engineered Tar Roads"
+                  className="realistic-showcase-img"
+                />
+                <div className="realistic-motion-tint" />
+                <div className="realistic-canvas-badge">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>40FT DUAL CARRIAGEWAY</span>
+                </div>
+                <div className="road-perspective-laser" />
+                <div className="road-headlight-glider" />
+                <div className="realistic-callout-pill">
+                  <span>|← 40 FT ROADWAY + 6 FT STORM DRAIN →|</span>
+                  <span className="text-emerald-400 font-bold">● ACTIVE</span>
+                </div>
               </div>
               <div className="diagrammatic-card-body">
                 <span className="architectural-tag">01. INFRASTRUCTURE</span>
-                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', color: '#1A0709', margin: '10px 0 12px', fontWeight: 700 }}>
-                  40FT & 30FT HEAVY TAR ROADS
+                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', color: '#0A1325', margin: '10px 0 12px', fontWeight: 700 }}>
+                  40FT &amp; 30FT HEAVY TAR ROADS
                 </h3>
-                <p style={{ fontSize: '0.92rem', color: '#521D24', lineHeight: '1.65' }}>
+                <p style={{ fontSize: '0.92rem', color: '#475569', lineHeight: '1.65' }}>
                   Laying 4-layer asphalt compaction with concrete kerb stones and rainwater runoff channels for 30+ year road longevity.
                 </p>
               </div>
             </div>
 
-            {/* Card 2: Town Planning Blueprint Motion */}
+            {/* Card 2: Realistic Town Planning Blueprint Showcase */}
             <div className="diagrammatic-card">
               <div className="diagrammatic-canvas">
-                <svg width="280" height="150" viewBox="0 0 280 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* Blueprint Plot Grid */}
-                  <rect x="20" y="20" width="115" height="50" rx="3" fill="rgba(198,161,91,0.08)" stroke="#C6A15B" strokeWidth="1.5" className="diagram-cad-path" />
-                  <rect x="145" y="20" width="115" height="50" rx="3" fill="rgba(198,161,91,0.08)" stroke="#C6A15B" strokeWidth="1.5" className="diagram-cad-path" />
-                  <rect x="20" y="80" width="115" height="50" rx="3" fill="rgba(198,161,91,0.08)" stroke="#C6A15B" strokeWidth="1.5" className="diagram-cad-path" />
-
-                  {/* Rotating Surveyor Reticle Compass */}
-                  <g className="diagram-surveyor-compass" transform="translate(202, 105)">
-                    <circle cx="0" cy="0" r="22" stroke="#E5D2A6" strokeWidth="1" strokeDasharray="4 4" className="diagram-compass-rotate" />
-                    <circle cx="0" cy="0" r="3" fill="#C6A15B" />
-                    <line x1="-28" y1="0" x2="28" y2="0" stroke="#C6A15B" strokeWidth="1" />
-                    <line x1="0" y1="-28" x2="0" y2="28" stroke="#C6A15B" strokeWidth="1" />
-                  </g>
-
-                  {/* DTCP Approval Badge Stamp Seal */}
-                  <g className="diagram-stamp-anim" transform="translate(80, 45)">
-                    <rect x="-45" y="-14" width="90" height="28" rx="4" fill="#1A0709" stroke="#C6A15B" strokeWidth="1.5" />
-                    <text x="0" y="4" textAnchor="middle" fill="#E5D2A6" fontFamily="Space Mono" fontSize="9" fontWeight="700">
-                      ✓ DTCP PASSED
-                    </text>
-                  </g>
+                <img
+                  src="/Images/Shashtika_Process_2_DTCP.jpg"
+                  alt="DTCP and RERA Approved Blueprints"
+                  className="realistic-showcase-img"
+                />
+                <div className="realistic-motion-tint" />
+                <div className="realistic-canvas-badge">
+                  <span className="w-2 h-2 rounded-full bg-gold-primary animate-pulse" />
+                  <span>DTCP / RERA VERIFIED</span>
+                </div>
+                <div className="blueprint-scanner-beam" />
+                {/* Rotating Surveyor Reticle */}
+                <svg className="blueprint-surveyor-reticle" viewBox="0 0 44 44" fill="none">
+                  <circle cx="22" cy="22" r="18" stroke="#E5D2A6" strokeWidth="1" strokeDasharray="3 3" />
+                  <circle cx="22" cy="22" r="2.5" fill="#C6A15B" />
+                  <line x1="2" y1="22" x2="42" y2="22" stroke="#C6A15B" strokeWidth="1" />
+                  <line x1="22" y1="2" x2="22" y2="42" stroke="#C6A15B" strokeWidth="1" />
                 </svg>
+                <div className="realistic-callout-pill">
+                  <span>✓ 100% DTCP APPROVED BLUEPRINTS</span>
+                  <span className="text-gold-light font-bold">10% PARK</span>
+                </div>
               </div>
               <div className="diagrammatic-card-body">
                 <span className="architectural-tag">02. TOWN PLANNING</span>
-                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', color: '#1A0709', margin: '10px 0 12px', fontWeight: 700 }}>
-                  DTCP & RERA APPROVED BLUEPRINTS
+                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', color: '#0A1325', margin: '10px 0 12px', fontWeight: 700 }}>
+                  DTCP &amp; RERA APPROVED BLUEPRINTS
                 </h3>
-                <p style={{ fontSize: '0.92rem', color: '#521D24', lineHeight: '1.65' }}>
+                <p style={{ fontSize: '0.92rem', color: '#475569', lineHeight: '1.65' }}>
                   100% legal title clearance, 10% dedicated open space park reservation, and instant 80% bank loan approval across all layouts.
                 </p>
               </div>
             </div>
 
-            {/* Card 3: Entrance Arch Elevation Motion */}
+            {/* Card 3: Realistic Entrance Arch Elevation Showcase */}
             <div className="diagrammatic-card">
               <div className="diagrammatic-canvas">
-                <svg width="280" height="150" viewBox="0 0 280 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* Entrance Arch Pillars */}
-                  <rect x="40" y="40" width="26" height="90" fill="#230B0E" stroke="#C6A15B" strokeWidth="1.5" />
-                  <rect x="214" y="40" width="26" height="90" fill="#230B0E" stroke="#C6A15B" strokeWidth="1.5" />
-
-                  {/* Top Arch Pediment Beam */}
-                  <rect x="30" y="24" width="220" height="20" rx="3" fill="#2D0E12" stroke="#E5D2A6" strokeWidth="1.5" />
-                  <text x="140" y="38" textAnchor="middle" fill="#FFFDF7" fontFamily="Cinzel" fontSize="9" fontWeight="700" letterSpacing="1">
-                    SHASHTIKA GRAND ENTRANCE
-                  </text>
-
-                  {/* Automated Barrier Gate Arm */}
-                  <g className="diagram-gate-arm" style={{ transformOrigin: '66px 85px' }}>
-                    <line x1="66" y1="85" x2="214" y2="85" stroke="#C6A15B" strokeWidth="3" strokeDasharray="12 6" />
-                  </g>
-
-                  {/* 24/7 Security Kiosk Radar Signal Waves */}
-                  <g transform="translate(140, 112)">
-                    <circle cx="0" cy="0" r="4" fill="none" stroke="#E5D2A6" strokeWidth="1.5" className="diagram-radar-wave" />
-                    <rect x="-15" y="-12" width="30" height="30" fill="#1A0709" stroke="#99793B" strokeWidth="1" />
-                  </g>
-                </svg>
+                <img
+                  src="/Images/Hero_Arch.jpg"
+                  alt="Architectural Entrance Arches"
+                  className="realistic-showcase-img"
+                />
+                <div className="realistic-motion-tint" />
+                <div className="realistic-canvas-badge">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>24/7 GATED SECURITY</span>
+                </div>
+                <div className="arch-spotlight-sheen" />
+                <div className="realistic-callout-pill">
+                  <span>GRAND ENTRANCE ARCH &amp; PALM AVENUE</span>
+                  <span className="text-emerald-400 font-bold">SECURED</span>
+                </div>
               </div>
               <div className="diagrammatic-card-body">
                 <span className="architectural-tag">03. LANDSCAPING</span>
-                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', color: '#1A0709', margin: '10px 0 12px', fontWeight: 700 }}>
+                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', color: '#0A1325', margin: '10px 0 12px', fontWeight: 700 }}>
                   ARCHITECTURAL ENTRANCE ARCHES
                 </h3>
-                <p style={{ fontSize: '0.92rem', color: '#521D24', lineHeight: '1.65' }}>
+                <p style={{ fontSize: '0.92rem', color: '#475569', lineHeight: '1.65' }}>
                   Grand entrance gates, 24/7 security kiosks, perimeter compound walling, and royal avenue palm trees.
                 </p>
               </div>

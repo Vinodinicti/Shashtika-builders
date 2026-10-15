@@ -412,41 +412,55 @@
     width: 100% !important;
     height: 54px !important;
     padding: 4px 6px !important;
-    background: linear-gradient(135deg, #FBF4E2 0%, #EEDBB3 30%, #D8BE82 70%, #C6A15B 100%) !important;
-    border: 1.5px solid var(--gold-primary) !important;
-    border-radius: 6px !important;
+    background: linear-gradient(90deg, #FDF5DF 0%, #F5E4BD 30%, #E2C37E 70%, #BE9036 100%) !important;
+    border: 1.5px solid #8F6A24 !important;
+    border-radius: 4px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    box-shadow: 0 6px 18px rgba(10, 19, 37, 0.28), inset 0 1px 1.5px rgba(255, 255, 255, 0.9), inset 0 -1px 2px rgba(169, 130, 58, 0.35) !important;
+    box-shadow: 0 6px 18px rgba(10, 19, 37, 0.28), 0 2px 5px rgba(0, 0, 0, 0.18) !important;
     position: relative !important;
     overflow: hidden !important;
+  }
+
+  .hero-stats-banner .stat-card::before {
+    content: '' !important;
+    position: absolute !important;
+    inset: 2px !important;
+    border: 1px solid rgba(255, 255, 255, 0.9) !important;
+    border-radius: 2px !important;
+    pointer-events: none !important;
+    z-index: 2 !important;
   }
 
   .hero-stats-banner .stat-number {
     font-size: 1.22rem !important;
     line-height: 1 !important;
-    color: #0A1325 !important;
-    font-weight: 800 !important;
+    color: #071426 !important;
+    font-weight: 900 !important;
     font-family: var(--font-heading) !important;
     margin-bottom: 2px !important;
-    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6) !important;
+    text-shadow: 0 0.5px 1px rgba(255, 255, 255, 0.75) !important;
     font-variant-numeric: tabular-nums !important;
     letter-spacing: 0.5px !important;
+    position: relative !important;
+    z-index: 3 !important;
   }
 
   .hero-stats-banner .stat-label {
-    font-size: 0.58rem !important;
-    letter-spacing: 0.8px !important;
+    font-size: 0.55rem !important;
+    letter-spacing: 1px !important;
     text-transform: uppercase !important;
-    color: #0A1325 !important;
-    font-family: var(--font-mono) !important;
+    color: #071426 !important;
+    font-family: var(--font-heading) !important;
     font-weight: 800 !important;
     text-align: center !important;
     line-height: 1.1 !important;
     white-space: nowrap !important;
-    text-shadow: 0 0.5px 0.5px rgba(255, 255, 255, 0.5) !important;
+    text-shadow: 0 0.5px 0.5px rgba(255, 255, 255, 0.6) !important;
+    position: relative !important;
+    z-index: 3 !important;
   }
 
   /* Gallery Hero Stats Banner on Mobile (4 cards in 2x2 grid) */
