@@ -626,8 +626,10 @@ body {
 
 @media (max-width: 768px) {
   .location-cards-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-width: 500px;
+    margin: 0 auto;
   }
 }
 

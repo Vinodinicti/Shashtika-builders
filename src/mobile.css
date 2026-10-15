@@ -547,120 +547,130 @@
     white-space: nowrap !important;
   }
 
-  /* Location Cards Grid: 2x2 Layout on Mobile */
+  /* Location Cards Grid: 1 on Screen (Full-width single card layout) on Mobile */
   .location-cards-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 10px !important;
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+    max-width: 500px !important;
+    margin: 0 auto !important;
   }
 
   .location-card {
-    border-radius: 12px !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22) !important;
   }
 
   .location-card-blob {
-    width: 130px !important;
-    height: 130px !important;
+    width: 180px !important;
+    height: 180px !important;
   }
 
   .location-card-img-wrap {
-    height: 105px !important;
-    min-height: 105px !important;
-    max-height: 110px !important;
-    border-radius: 11px 11px 0 0 !important;
+    height: 180px !important;
+    min-height: 180px !important;
+    max-height: 200px !important;
+    border-radius: 15px 15px 0 0 !important;
   }
 
   .location-card-tag {
-    top: 6px !important;
-    left: 6px !important;
-    font-size: 0.50rem !important;
-    padding: 2px 5px !important;
-    letter-spacing: 0.4px !important;
-    border-radius: 3px !important;
+    top: 10px !important;
+    left: 10px !important;
+    font-size: 0.62rem !important;
+    padding: 3px 8px !important;
+    letter-spacing: 0.6px !important;
+    border-radius: 4px !important;
   }
 
   .location-approval-badge {
-    top: 6px !important;
-    right: 6px !important;
-    font-size: 0.48rem !important;
-    padding: 2px 5px !important;
-    letter-spacing: 0.4px !important;
-    border-radius: 3px !important;
+    top: 10px !important;
+    right: 10px !important;
+    font-size: 0.60rem !important;
+    padding: 3px 8px !important;
+    letter-spacing: 0.6px !important;
+    border-radius: 4px !important;
   }
 
   .location-card-body {
-    padding: 8px 8px 10px 8px !important;
-    border-radius: 0 0 11px 11px !important;
+    padding: 16px 18px 18px !important;
+    border-radius: 0 0 15px 15px !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
   }
 
   .location-card-body .architectural-tag {
-    font-size: 0.50rem !important;
-    margin-bottom: 2px !important;
-    letter-spacing: 0.5px !important;
+    font-size: 0.60rem !important;
+    margin-bottom: 4px !important;
+    letter-spacing: 0.6px !important;
   }
 
   .location-card-title {
-    font-size: 0.82rem !important;
-    line-height: 1.22 !important;
-    margin-top: 1px !important;
+    font-size: 1.15rem !important;
+    line-height: 1.3 !important;
+    margin-top: 2px !important;
     font-weight: 800 !important;
   }
 
-  /* Minimal Details: Hide lengthy paragraph description on mobile front card */
+  /* Clear description preview on front card */
   .location-card-desc {
-    display: none !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    font-size: 0.82rem !important;
+    line-height: 1.45 !important;
+    color: #4A3E38 !important;
+    margin-top: 4px !important;
+    margin-bottom: 6px !important;
   }
 
-  /* Minimal Specs Row on front card */
+  /* Full Specs Row on front card */
   .location-card-specs-row {
-    margin-top: 6px !important;
-    padding: 4px 6px !important;
+    margin-top: 10px !important;
+    padding: 8px 12px !important;
     background-color: #FAF4EB !important;
-    border: 1px solid rgba(198, 161, 91, 0.25) !important;
-    border-radius: 4px !important;
+    border: 1px solid rgba(198, 161, 91, 0.28) !important;
+    border-radius: 6px !important;
     display: flex !important;
-    flex-direction: column !important;
-    gap: 2px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
   }
 
   .location-spec-col-road {
-    display: none !important; /* Road details shown in full popup inspector */
+    display: block !important;
   }
 
   .location-spec-col-price {
-    display: flex !important;
-    align-items: baseline !important;
-    justify-content: space-between !important;
-    width: 100% !important;
+    display: block !important;
+    text-align: right !important;
   }
 
   .location-spec-lbl {
-    font-size: 0.50rem !important;
-    letter-spacing: 0.4px !important;
+    font-size: 0.58rem !important;
+    letter-spacing: 0.6px !important;
   }
 
   .location-spec-val {
-    font-size: 0.74rem !important;
+    font-size: 0.84rem !important;
     font-weight: 800 !important;
   }
 
-  /* Compact Action Button */
+  /* Action Button */
   .location-card-btn {
-    margin-top: 6px !important;
+    margin-top: 12px !important;
     width: 100% !important;
-    font-size: 0.60rem !important;
-    padding: 5px 6px !important;
-    min-height: 28px !important;
+    font-size: 0.72rem !important;
+    padding: 10px 14px !important;
+    min-height: 40px !important;
     text-align: center !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     border-radius: 6px !important;
-    letter-spacing: 0.3px !important;
+    letter-spacing: 0.5px !important;
     white-space: nowrap !important;
+    font-weight: 800 !important;
   }
 }
 
@@ -2213,4 +2223,124 @@
     gap: 12px !important;
   }
 }
+
+/* ==========================================================================
+   18. FOOTER — ULTRA-COMPACT SLIM MOBILE VIEW (Footer.jsx)
+   ========================================================================== */
+@media (max-width: 991px) {
+  footer.footer-section,
+  footer {
+    padding-top: 24px !important;
+    padding-bottom: 20px !important;
+  }
+
+  .footer-main-grid {
+    gap: 16px !important;
+    margin-bottom: 16px !important;
+  }
+
+  /* Col 1: Brand */
+  .footer-col-brand .footer-brand-header {
+    margin-bottom: 4px !important;
+    gap: 8px !important;
+  }
+
+  .footer-brand-img {
+    height: 26px !important;
+    width: auto !important;
+  }
+
+  .footer-brand-title {
+    font-size: 1.25rem !important;
+    letter-spacing: 1px !important;
+  }
+
+  .footer-brand-sub {
+    font-size: 8.5px !important;
+    margin-bottom: 6px !important;
+    letter-spacing: 1.2px !important;
+  }
+
+  .footer-brand-desc {
+    font-size: 0.72rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .footer-cert-badge {
+    padding: 3px 8px !important;
+    font-size: 8.5px !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  /* Col 2: Navigation Links */
+  .footer-col-title {
+    font-size: 0.68rem !important;
+    margin-bottom: 6px !important;
+    letter-spacing: 1px !important;
+  }
+
+  .footer-nav-list {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px 14px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .footer-nav-list li {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .footer-nav-list li a {
+    font-size: 0.75rem !important;
+    padding: 2px 0 !important;
+    display: inline-block !important;
+  }
+
+  /* Col 3: Direct Contact */
+  .footer-contact-desc {
+    font-size: 0.72rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .footer-contact-icons {
+    gap: 8px !important;
+  }
+
+  .footer-contact-icons a {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+  }
+
+  .footer-contact-icons a svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  .footer-helpline-box {
+    margin-top: 8px !important;
+    padding-top: 6px !important;
+    font-size: 0.68rem !important;
+  }
+
+  /* Bottom Bar */
+  .footer-bottom-bar {
+    padding-top: 12px !important;
+    gap: 6px !important;
+    font-size: 0.65rem !important;
+    line-height: 1.35 !important;
+    text-align: center !important;
+  }
+
+  .footer-bottom-bar .flex.items-center.gap-2\.5,
+  .footer-bottom-bar .flex.items-center {
+    gap: 8px !important;
+    justify-content: center !important;
+  }
+}
+
 
