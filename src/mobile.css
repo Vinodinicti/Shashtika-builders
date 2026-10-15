@@ -2227,7 +2227,7 @@
 /* ==========================================================================
    18. FOOTER — ULTRA-COMPACT SLIM MOBILE VIEW (Footer.jsx)
    ========================================================================== */
-@media (max-width: 991px) {
+@media (max-width: 768px) {
   footer.footer-section,
   footer {
     padding-top: 24px !important;
