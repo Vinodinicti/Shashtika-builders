@@ -1,8 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { PLOTS_DATA, PROJECT_METADATA, getPlotStats } from '../data/plotsKambalapattiData';
+import { PLOTS_DATA, PROJECT_METADATA } from '../data/plotsKambalapattiData';
+import { KINATHUKADAVU_PLOTS_DATA, KINATHUKADAVU_METADATA } from '../data/plotsKinathukadavuData';
+import KinathukadavuBlueprintSVG from '../components/KinathukadavuBlueprintSVG';
 
 export default function PlotsPage() {
-  const [plotsData, setPlotsData] = useState(() => {
+  // Active Layout Location: 'kambalampatti' | 'kinathukadavu'
+  const [activeLocation, setActiveLocation] = useState('kambalampatti');
+
+  // Kambalampatti plots with sync
+  const [kambalampattiPlots, setKambalampattiPlots] = useState(() => {
     const saved = localStorage.getItem('shashtika_plots_inventory');
     if (saved) {
       try {
@@ -13,6 +19,23 @@ export default function PlotsPage() {
     }
     return PLOTS_DATA;
   });
+
+  // Kinathukadavu plots with sync
+  const [kinathukadavuPlots, setKinathukadavuPlots] = useState(() => {
+    const saved = localStorage.getItem('shashtika_plots_inventory_kinathukadavu');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return KINATHUKADAVU_PLOTS_DATA;
+      }
+    }
+    return KINATHUKADAVU_PLOTS_DATA;
+  });
+
+  // Active dataset and metadata based on selected location
+  const currentMetadata = activeLocation === 'kambalampatti' ? PROJECT_METADATA : KINATHUKADAVU_METADATA;
+  const activePlots = activeLocation === 'kambalampatti' ? kambalampattiPlots : kinathukadavuPlots;
 
   const [selectedFilter, setSelectedFilter] = useState('ALL');
   const [tableFilter, setTableFilter] = useState('ALL');
@@ -26,7 +49,13 @@ export default function PlotsPage() {
       const saved = localStorage.getItem('shashtika_plots_inventory');
       if (saved) {
         try {
-          setPlotsData(JSON.parse(saved));
+          setKambalampattiPlots(JSON.parse(saved));
+        } catch (e) {}
+      }
+      const savedKinathu = localStorage.getItem('shashtika_plots_inventory_kinathukadavu');
+      if (savedKinathu) {
+        try {
+          setKinathukadavuPlots(JSON.parse(savedKinathu));
         } catch (e) {}
       }
     };
@@ -39,16 +68,16 @@ export default function PlotsPage() {
   }, []);
 
   const stats = useMemo(() => {
-    const total = plotsData.length;
-    const available = plotsData.filter((p) => p.status === 'AVAILABLE').length;
-    const prebooked = plotsData.filter((p) => p.status === 'PRE-BOOKED').length;
-    const sold = plotsData.filter((p) => p.status === 'SOLD').length;
+    const total = activePlots.length;
+    const available = activePlots.filter((p) => p.status === 'AVAILABLE').length;
+    const prebooked = activePlots.filter((p) => p.status === 'PRE-BOOKED').length;
+    const sold = activePlots.filter((p) => p.status === 'SOLD').length;
     return { total, available, prebooked, sold };
-  }, [plotsData]);
+  }, [activePlots]);
 
   // Filtered plots for table
   const filteredPlots = useMemo(() => {
-    return plotsData.filter((p) => {
+    return activePlots.filter((p) => {
       const matchesFilter = tableFilter === 'ALL' || p.status === tableFilter;
       const query = searchQuery.toLowerCase().trim();
       const matchesSearch =
@@ -60,29 +89,31 @@ export default function PlotsPage() {
         String(p.cent).includes(query);
       return matchesFilter && matchesSearch;
     });
-  }, [plotsData, tableFilter, searchQuery]);
+  }, [activePlots, tableFilter, searchQuery]);
 
-  // Plots split into 4 tables (16 plots each: 1-16, 17-32, 33-48, 49-64) for 2x2 grid layout
-  const table1Plots = useMemo(() => {
-    return filteredPlots.filter((p) => p.number >= 1 && p.number <= 16);
-  }, [filteredPlots]);
+  // Dynamic 4-Table chunking for 2x2 grid layout
+  const tableChunks = useMemo(() => {
+    if (activeLocation === 'kambalampatti') {
+      return [
+        { label: 'PLOTS 01 – 16', id: '01-16', plots: filteredPlots.filter((p) => p.number >= 1 && p.number <= 16) },
+        { label: 'PLOTS 17 – 32', id: '17-32', plots: filteredPlots.filter((p) => p.number >= 17 && p.number <= 32) },
+        { label: 'PLOTS 33 – 48', id: '33-48', plots: filteredPlots.filter((p) => p.number >= 33 && p.number <= 48) },
+        { label: 'PLOTS 49 – 64', id: '49-64', plots: filteredPlots.filter((p) => p.number >= 49 && p.number <= 64) }
+      ];
+    } else {
+      return [
+        { label: 'PLOTS 01 – 11', id: '01-11', plots: filteredPlots.filter((p) => p.number >= 1 && p.number <= 11) },
+        { label: 'PLOTS 12 – 22', id: '12-22', plots: filteredPlots.filter((p) => p.number >= 12 && p.number <= 22) },
+        { label: 'PLOTS 23 – 32', id: '23-32', plots: filteredPlots.filter((p) => p.number >= 23 && p.number <= 32) },
+        { label: 'PLOTS 33 – 42', id: '33-42', plots: filteredPlots.filter((p) => p.number >= 33 && p.number <= 42) }
+      ];
+    }
+  }, [activeLocation, filteredPlots]);
 
-  const table2Plots = useMemo(() => {
-    return filteredPlots.filter((p) => p.number >= 17 && p.number <= 32);
-  }, [filteredPlots]);
-
-  const table3Plots = useMemo(() => {
-    return filteredPlots.filter((p) => p.number >= 33 && p.number <= 48);
-  }, [filteredPlots]);
-
-  const table4Plots = useMemo(() => {
-    return filteredPlots.filter((p) => p.number >= 49 && p.number <= 64);
-  }, [filteredPlots]);
-
-  // WhatsApp enquiry handler (Strictly no price details)
+  // WhatsApp enquiry handler
   const openWhatsApp = (plot) => {
     const text = encodeURIComponent(
-      `Hello SHASHTIKA Plot Developers,\n\nI am interested in DTCP Approved Plot #${plot.number} (${plot.sqft} Sq.Ft / ${plot.cent} Cents ${plot.remSqft > 0 ? `${plot.remSqft} Sq.Ft` : ''}) at ${PROJECT_METADATA.name}, Kambalapatti Village, Anaimalai Taluk.\n\nApproval No: ${PROJECT_METADATA.approvalNo}\nSurvey No: ${PROJECT_METADATA.sfNumbers}\nFacing: ${plot.facing}\nRoad: ${plot.road}\n\nPlease share the detailed site visit schedule and booking assistance.`
+      `Hello SHASHTIKA Plot Developers,\n\nI am interested in Plot #${plot.number} (${plot.sqft} Sq.Ft / ${plot.cent} Cents ${plot.remSqft > 0 ? `${plot.remSqft} Sq.Ft` : ''}) at ${currentMetadata.name}, ${currentMetadata.location}.\n\nApproval No: ${currentMetadata.approvalNo}\nSurvey No: ${currentMetadata.sfNumbers}\nFacing: ${plot.facing}\nRoad: ${plot.road}\n\nPlease share the detailed site visit schedule and booking assistance.`
     );
     window.open(`https://wa.me/919363599754?text=${text}`, '_blank');
   };
@@ -303,10 +334,6 @@ export default function PlotsPage() {
         {/* Main Container - Exact matching max-w-[1320px] and alignment as Home Hero */}
         <div className="max-w-[1320px] mx-auto px-4 sm:px-8 w-full flex flex-col justify-center h-full relative z-[3] flex-1">
           <div className="hero-fit-content">
-            <div className="architectural-tag" style={{ marginBottom: '14px', color: '#E5D2A6' }}>
-              PREMIUM PLOTS INVENTORY
-            </div>
-
             <h1 className="hero-headline">
               <span className="gold-hero-badge">FIND YOUR PLOT</span>
               <br />
@@ -315,22 +342,26 @@ export default function PlotsPage() {
               <span style={{ color: '#E5D2A6' }}>STARTS HERE</span>
             </h1>
 
-            <p className="hero-subtext">
-              Explore real-time DTCP-approved plot layouts with interactive availability map, location blueprints, and instant booking details across Coimbatore &amp; Pollachi.
-            </p>
-
             <div className="flex flex-wrap items-center gap-4 mt-6">
               <a
                 href="#plot-masterplan-card"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('plot-masterplan-card')?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="inline-flex items-center gap-2 px-5 py-3 rounded bg-gold-primary text-espresso-950 font-mono text-[0.78rem] font-extrabold tracking-[1.5px] border border-gold-light hover:bg-gold-light transition-all shadow-[0_6px_20px_rgba(0,0,0,0.4)] cursor-pointer"
               >
                 EXPLORE BLUEPRINT MAP ↓
               </a>
               <a
                 href="#plots-directory-card"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('plots-directory-card')?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="inline-flex items-center gap-2 px-5 py-3 rounded border-[1.8px] border-gold-primary text-cream font-mono text-[0.78rem] font-extrabold tracking-[1.5px] bg-gold-primary/20 backdrop-blur-md hover:bg-gold-primary hover:text-espresso-950 transition-all shadow-[0_4px_18px_rgba(0,0,0,0.4)] cursor-pointer"
               >
-                VIEW 64 PLOTS DIRECTORY
+                VIEW PLOTS DIRECTORY
               </a>
             </div>
           </div>
@@ -340,6 +371,64 @@ export default function PlotsPage() {
       {/* 2. MAIN LAYOUT CONTAINER */}
       <div id="plot-masterplan-card" className="max-w-[1320px] mx-auto px-4 sm:px-8 mt-10">
         
+        {/* Location Switcher Buttons */}
+        <div className="location-switcher-wrapper mb-8">
+          <div className="text-center mb-3">
+            <span className="architectural-tag centered">— SELECT DTCP LAYOUT LOCATION —</span>
+            <h2 className="font-heading font-extrabold text-xl sm:text-2xl text-espresso-950 mt-1">
+              CHOOSE RESIDENTIAL MASTER PLAN
+            </h2>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-2xl mx-auto p-2 bg-white border-2 border-gold-primary rounded-2xl shadow-[0_8px_25px_rgba(26,7,9,0.08)]">
+            <button
+              type="button"
+              onClick={() => {
+                setActiveLocation('kambalampatti');
+                setSelectedPlot(null);
+                setTableFilter('ALL');
+                setSelectedFilter('ALL');
+              }}
+              className={`flex-1 w-full py-3 px-5 rounded-xl transition-all duration-300 flex items-center justify-between sm:justify-center gap-3 cursor-pointer ${
+                activeLocation === 'kambalampatti'
+                  ? 'bg-[#1A0709] text-white shadow-md border-2 border-[#1A0709]'
+                  : 'bg-transparent text-[#1A0709] hover:bg-[#FAF7F2] border border-transparent'
+              }`}
+            >
+              <span className="font-heading font-extrabold text-sm sm:text-base tracking-wide">
+                KAMBALAMPATTI LAYOUT
+              </span>
+              <span className={`px-2.5 py-0.5 rounded text-[11px] font-mono font-black uppercase ${
+                activeLocation === 'kambalampatti' ? 'bg-gold-primary text-espresso-950' : 'bg-[#FAF7F2] text-[#1A0709] border border-gold-border/60'
+              }`}>
+                64 PLOTS
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setActiveLocation('kinathukadavu');
+                setSelectedPlot(null);
+                setTableFilter('ALL');
+                setSelectedFilter('ALL');
+              }}
+              className={`flex-1 w-full py-3 px-5 rounded-xl transition-all duration-300 flex items-center justify-between sm:justify-center gap-3 cursor-pointer ${
+                activeLocation === 'kinathukadavu'
+                  ? 'bg-[#1A0709] text-white shadow-md border-2 border-[#1A0709]'
+                  : 'bg-transparent text-[#1A0709] hover:bg-[#FAF7F2] border border-transparent'
+              }`}
+            >
+              <span className="font-heading font-extrabold text-sm sm:text-base tracking-wide">
+                KINATHUKADAVU LAYOUT
+              </span>
+              <span className={`px-2.5 py-0.5 rounded text-[11px] font-mono font-black uppercase ${
+                activeLocation === 'kinathukadavu' ? 'bg-gold-primary text-espresso-950' : 'bg-[#FAF7F2] text-[#1A0709] border border-gold-border/60'
+              }`}>
+                42 PLOTS
+              </span>
+            </button>
+          </div>
+        </div>
+
         {/* Availability Filter Bar */}
         <div className="availability-bar flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-8">
           <button
@@ -378,17 +467,21 @@ export default function PlotsPage() {
           </button>
         </div>
 
-        {/* 3. MASTER PLAN CARD */}
-        <div className="masterplan-card bg-cream border border-gold-border rounded-xl p-4 sm:p-6 shadow-soft relative">
+        {/* 3. DUAL MASTER PLAN & LOCATION SHOWCASE GRID */}
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+          
+          {/* LEFT COLUMN: MASTER PLAN BLUEPRINT & LEGEND (xl:col-span-8) */}
+          <div className="xl:col-span-8 space-y-6">
+            <div className="masterplan-card bg-cream border border-gold-border rounded-xl p-4 sm:p-6 shadow-soft relative">
           
           {/* Masterplan Toolbar */}
           <div className="masterplan-toolbar flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-gold-border/40">
             <div>
               <span className="architectural-tag">
-                PROJECT: {PROJECT_METADATA.name}
+                PROJECT: {currentMetadata.name}
               </span>
               <p className="font-body text-xs sm:text-sm text-espresso-700 mt-1">
-                {PROJECT_METADATA.approvalNo} • {PROJECT_METADATA.sfNumbers} • {PROJECT_METADATA.location}
+                {currentMetadata.approvalNo} • {currentMetadata.sfNumbers} • {currentMetadata.location}
               </p>
             </div>
 
@@ -450,6 +543,7 @@ export default function PlotsPage() {
                 minWidth: zoomLevel > 1 ? `${zoomLevel * 100}%` : '100%'
               }}
             >
+              {activeLocation === 'kambalampatti' ? (
                 <svg
                   id="plot-masterplan-svg"
                   viewBox="0 0 1180 840"
@@ -858,7 +952,7 @@ export default function PlotsPage() {
                   </g>
 
                   {/* 9. Render All 64 Plots */}
-                  {plotsData.map((plot) => {
+                  {kambalampattiPlots.map((plot) => {
                     const coords = getPlotCoordinates(plot.number);
                     const colors = getStatusColor(plot.status);
                     const isSelected = selectedPlot?.number === plot.number;
@@ -965,7 +1059,15 @@ export default function PlotsPage() {
                     </text>
                   </g>
                 </svg>
-              </div>
+              ) : (
+                <KinathukadavuBlueprintSVG
+                  plots={activePlots}
+                  selectedPlot={selectedPlot}
+                  selectedFilter={selectedFilter}
+                  onSelectPlot={setSelectedPlot}
+                />
+              )}
+            </div>
           </div>
           
           {/* Mobile Interactive Hint */}
@@ -1042,18 +1144,87 @@ export default function PlotsPage() {
             </div>
           </div>
         </div>
+          </div>
+          {/* END LEFT COLUMN */}
 
-        {/* 5. COMPLETE 64 PLOTS DIRECTORY SPECIFICATION TABLE (REPLICATING BLUEPRINT TABLE) */}
+          {/* RIGHT COLUMN: LOCATION & AMENITIES CARD (xl:col-span-4) */}
+          <div className="xl:col-span-4">
+            {currentMetadata.locationHighlights && (
+              <div className="bg-[#FFFDF8] border-2 border-gold-primary rounded-xl overflow-hidden shadow-[0_8px_30px_rgba(10,19,37,0.12)]">
+                
+                {/* Single Clean Location Image */}
+                <div className="relative h-60 sm:h-64 w-full overflow-hidden bg-espresso-950">
+                  <img
+                    src={currentMetadata.locationHighlights.image}
+                    alt={currentMetadata.locationHighlights.title}
+                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1A0709]/85 via-transparent to-transparent" />
+                  <span className="absolute bottom-3 left-4 px-3 py-1 rounded text-[11px] font-mono font-bold bg-[#1A0709] text-gold-light border border-gold-primary/50 shadow-sm">
+                    {currentMetadata.locationHighlights.imageCaption}
+                  </span>
+                </div>
+
+                {/* Details in Points (Without Emojis) */}
+                <div className="p-5 sm:p-6">
+                  <div className="mb-4 pb-3 border-b border-gold-border/50">
+                    <span className="architectural-tag">
+                      {currentMetadata.locationHighlights.tag}
+                    </span>
+                    <h3 className="font-heading font-extrabold text-lg sm:text-xl text-espresso-950 mt-1">
+                      {currentMetadata.locationHighlights.title}
+                    </h3>
+                    <p className="font-body text-xs text-espresso-700 mt-0.5">
+                      {currentMetadata.locationHighlights.subtitle}
+                    </p>
+                  </div>
+
+                  {/* Clean Bullet Points */}
+                  <ul className="space-y-3">
+                    {currentMetadata.locationHighlights.points.map((point, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-[13px] text-espresso-900 leading-relaxed">
+                        <span className="w-1.5 h-1.5 rounded-full bg-gold-primary mt-2 flex-shrink-0" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Clean Action Button */}
+                  <div className="mt-6 pt-4 border-t border-gold-border/40">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const text = encodeURIComponent(
+                          `Hello SHASHTIKA Plot Developers,\n\nI am interested in plots at ${currentMetadata.name} (${currentMetadata.location}).\n\nPlease share layout availability and pricing details.`
+                        );
+                        window.open(`https://wa.me/919363599754?text=${text}`, '_blank');
+                      }}
+                      className="w-full py-3 px-4 rounded-lg bg-[#1A0709] hover:bg-gold-primary hover:text-espresso-950 border-2 border-gold-primary text-white font-mono text-xs font-bold tracking-wider uppercase text-center transition-all cursor-pointer shadow-md"
+                    >
+                      ENQUIRE ABOUT PLOTS →
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            )}
+          </div>
+          {/* END RIGHT COLUMN */}
+
+        </div>
+        {/* END DUAL MASTER PLAN & LOCATION SHOWCASE GRID */}
+
+        {/* 5. COMPLETE PLOTS DIRECTORY SPECIFICATION TABLE */}
         <div id="plots-directory-card" className="layout-summary-table-card mt-10 bg-cream border border-gold-border rounded-xl p-5 sm:p-7 shadow-soft">
           
           <div className="plots-table-header-bar flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-gold-border/50">
             <div>
               <span className="architectural-tag">OFFICIAL MASTER PLAN EXTENT DIRECTORY</span>
               <h3 className="font-heading font-extrabold text-xl sm:text-2xl text-espresso-900 mt-1">
-                HOUSE SITES EXTENT DETAILS (PLOTS 01 TO 64)
+                HOUSE SITES EXTENT DETAILS (PLOTS 01 TO {activePlots.length})
               </h3>
               <p className="font-mono text-xs text-gold-dark mt-0.5">
-                DTCP Approval: {PROJECT_METADATA.approvalNo} • {PROJECT_METADATA.sfNumbers}
+                DTCP Approval: {currentMetadata.approvalNo} • {currentMetadata.sfNumbers}
               </p>
             </div>
 
@@ -1112,17 +1283,14 @@ export default function PlotsPage() {
 
           {/* 4-Table 2x2 Grid (2 on screen and below 2 tables on mobile, 4-col on desktop) */}
           <div className="plots-tables-grid grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 border border-gold-border/40 rounded-lg p-1.5 sm:p-2 bg-[#FAF7F2]">
-            {renderPlotTable('PLOTS 01 – 16', table1Plots, '01-16')}
-            {renderPlotTable('PLOTS 17 – 32', table2Plots, '17-32')}
-            {renderPlotTable('PLOTS 33 – 48', table3Plots, '33-48')}
-            {renderPlotTable('PLOTS 49 – 64', table4Plots, '49-64')}
+            {tableChunks.map((chunk) => renderPlotTable(chunk.label, chunk.plots, chunk.id))}
           </div>
 
           {/* Masterplan Summary Footnote */}
           <div className="mt-4 p-3 bg-biscuit-100 rounded border border-gold-border/40 flex flex-wrap items-center justify-between text-xs text-espresso-700 font-mono">
-            <span>TOTAL PLOTS: <strong>64 PLOTS</strong></span>
-            <span>TOTAL AREA: <strong>78,574 SQ.FT (1 ACRE 80 CENTS)</strong></span>
-            <span>DTCP NO: <strong>02/2025</strong></span>
+            <span>TOTAL PLOTS: <strong>{currentMetadata.totalPlots}</strong></span>
+            <span>TOTAL AREA: <strong>{currentMetadata.totalArea}</strong></span>
+            <span>DTCP NO: <strong>{currentMetadata.approvalNo}</strong></span>
           </div>
 
         </div>
@@ -1167,9 +1335,9 @@ export default function PlotsPage() {
                 Plot #{selectedPlot.number} — {selectedPlot.facing}
               </h3>
               <p className="font-body text-xs sm:text-sm text-espresso-700 mt-1.5 flex items-center gap-2 flex-wrap">
-                <span className="font-semibold text-espresso-900">{PROJECT_METADATA.name}</span>
+                <span className="font-semibold text-espresso-900">{currentMetadata.name}</span>
                 <span>•</span>
-                <span className="font-mono text-gold-dark font-bold">{PROJECT_METADATA.approvalNo}</span>
+                <span className="font-mono text-gold-dark font-bold">{currentMetadata.approvalNo}</span>
               </p>
             </div>
 
@@ -1231,14 +1399,40 @@ export default function PlotsPage() {
 
               <div className="flex items-center justify-between px-4 py-3 text-xs sm:text-sm bg-white/60">
                 <span className="font-semibold text-espresso-700">Survey Numbers</span>
-                <strong className="font-bold text-espresso-950 font-mono text-xs sm:text-sm">{PROJECT_METADATA.sfNumbers}</strong>
+                <strong className="font-bold text-espresso-950 font-mono text-xs sm:text-sm">{currentMetadata.sfNumbers}</strong>
               </div>
 
               <div className="flex items-center justify-between px-4 py-3 text-xs sm:text-sm">
                 <span className="font-semibold text-espresso-700">Taluk &amp; Village</span>
-                <strong className="font-bold text-espresso-950 text-right">{PROJECT_METADATA.location}</strong>
+                <strong className="font-bold text-espresso-950 text-right">{currentMetadata.location}</strong>
               </div>
             </div>
+
+            {/* Location Landmarks & Amenities Strip inside Modal (Clean, No Emojis) */}
+            {currentMetadata.locationHighlights && (
+              <div className="bg-[#FAF4EB] p-3.5 rounded-xl border border-gold-border/60 mb-5 shadow-2xs">
+                <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-gold-border/40">
+                  <span className="font-mono text-[10.5px] font-bold text-gold-dark uppercase tracking-wider">
+                    LOCATION HIGHLIGHTS &amp; AMENITIES
+                  </span>
+                  <span className="font-mono text-[10px] font-extrabold text-espresso-900 bg-white border border-gold-border/40 px-2 py-0.5 rounded">
+                    {currentMetadata.shortName || 'CORRIDOR'}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-1.5 text-xs text-espresso-950 font-medium">
+                  {currentMetadata.locationHighlights.points.slice(0, 4).map((pt, i) => (
+                    <span key={i} className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white rounded-md border border-gold-border/50 text-[11px] shadow-2xs">
+                      <span className="w-1.5 h-1.5 rounded-full bg-gold-primary flex-shrink-0" />
+                      <span>{pt}</span>
+                    </span>
+                  ))}
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white rounded-md border border-gold-border/50 text-[11px] shadow-2xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-gold-primary flex-shrink-0" />
+                    <span>Road: {selectedPlot.road}</span>
+                  </span>
+                </div>
+              </div>
+            )}
 
             {/* Government DTCP Approval Trust Card */}
             <div className="bg-espresso-950 text-gold-light p-4 rounded-xl border border-gold-primary mb-5 shadow-sm">
@@ -1247,7 +1441,7 @@ export default function PlotsPage() {
                   GOVERNMENT DTCP APPROVAL
                 </span>
                 <span className="font-mono text-xs sm:text-sm text-gold-light font-bold">
-                  {PROJECT_METADATA.approvalNo}
+                  {currentMetadata.approvalNo}
                 </span>
               </div>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-cream/95 pt-2.5 font-medium">
@@ -1274,9 +1468,9 @@ export default function PlotsPage() {
               </button>
               <a
                 href="tel:+919842210542"
-                className="btn btn-outline-gold py-3 px-5 rounded-lg text-xs sm:text-sm font-mono font-bold tracking-wider text-center cursor-pointer flex items-center justify-center gap-2"
+                className="btn btn-outline-gold py-3 px-6 rounded-lg text-xs sm:text-sm font-mono font-bold tracking-wider text-center cursor-pointer flex items-center justify-center gap-2"
               >
-                <span>CALL US NOW</span>
+                <span>CALL NOW</span>
               </a>
             </div>
           </div>

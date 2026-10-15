@@ -40,25 +40,18 @@ export default function LoadingScreen({ onLoaded }) {
         fadeOut ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
       style={{
-        backgroundColor: '#0A1325',
-        backgroundImage: `
-          radial-gradient(circle at center, rgba(198, 161, 91, 0.14) 0%, transparent 65%),
-          linear-gradient(rgba(198, 161, 91, 0.05) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(198, 161, 91, 0.05) 1px, transparent 1px),
-          radial-gradient(circle at center, #0F1F3D 0%, #0A1325 55%, #050B16 100%)
-        `,
-        backgroundSize: '100% 100%, 36px 36px, 36px 36px, 100% 100%',
+        backgroundColor: '#FFFFFF',
       }}
     >
       <div className="text-center px-4 w-full max-w-md flex flex-col items-center">
-        {/* 3D Rotating Logo Cube Loader (Royal Blue & Gold Theme) */}
+        {/* 3D Rotating Logo Cube Loader (White Cube & Red Logo) */}
         <div className="cube-loader-container">
           <div className="cube-loader">
             <div className="cube-top">
               <img
                 src="/Images/Shashtika_Emblem.png"
                 alt="SHASHTIKA Emblem"
-                className="max-w-[82%] max-h-[82%] object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)]"
+                className="max-w-[85%] max-h-[85%] object-contain drop-shadow-[0_4px_12px_rgba(211,47,47,0.22)]"
               />
             </div>
             <div className="cube-wrapper">
@@ -71,7 +64,7 @@ export default function LoadingScreen({ onLoaded }) {
                   <img
                     src="/Images/Shashtika_Emblem.png"
                     alt="SHASHTIKA Logo"
-                    className="max-w-[90%] max-h-[90%] object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)] pointer-events-none"
+                    className="max-w-[88%] max-h-[88%] object-contain drop-shadow-[0_4px_12px_rgba(211,47,47,0.22)] pointer-events-none"
                   />
                 </div>
               ))}
@@ -79,28 +72,31 @@ export default function LoadingScreen({ onLoaded }) {
           </div>
         </div>
 
-        {/* Brand Name SHASHTIKA in Golden Shine like in Header */}
-        <div className="flex flex-col items-center justify-center -mt-3 mb-4">
-          <span className="logo-title gold-glow-letters text-2xl sm:text-3xl font-heading font-extrabold tracking-[3px] sm:tracking-[4px] leading-tight">
+        {/* Brand Name SHASHTIKA */}
+        <div className="flex flex-col items-center justify-center -mt-2 mb-3">
+          <span className="font-heading font-black text-2xl sm:text-3xl tracking-[4px] leading-tight text-[#1A0709]">
             SHASHTIKA
           </span>
-          <span className="font-mono text-[9px] sm:text-[10px] tracking-[2.5px] text-gold-light uppercase mt-1 opacity-90">
+          <span className="font-mono text-[9px] sm:text-[10px] tracking-[2.5px] text-[#C5221F] uppercase mt-1 font-extrabold">
             PLOT DEVELOPERS &amp; BUILDERS
           </span>
         </div>
 
-        {/* Gold Sweep Line */}
-        <div className="gold-sweep-line w-full max-w-[280px]">
+        {/* Sweep Progress Line */}
+        <div className="w-full max-w-[280px] h-[3px] bg-neutral-200 rounded-full overflow-hidden my-2.5">
           <div
-            className="gold-sweep-fill"
-            style={{ width: `${progress}%` }}
+            className="h-full rounded-full transition-all duration-75"
+            style={{
+              width: `${progress}%`,
+              background: 'linear-gradient(90deg, #E53935, #C62828)'
+            }}
           />
         </div>
 
         {/* Progress % and Status Text */}
-        <div className="flex items-center justify-between w-full max-w-[280px] mt-2 font-mono text-[9px] sm:text-[10px] text-gold-antique uppercase font-semibold">
-          <span className="tracking-[1.5px] text-gold-light/90">{statusText}</span>
-          <span className="text-gold-primary font-bold pl-2">{progress}%</span>
+        <div className="flex items-center justify-between w-full max-w-[280px] mt-1 font-mono text-[9px] sm:text-[10px] text-espresso-800 uppercase font-bold">
+          <span className="tracking-[1px] text-espresso-700">{statusText}</span>
+          <span className="text-[#C5221F] font-black pl-2">{progress}%</span>
         </div>
       </div>
     </div>

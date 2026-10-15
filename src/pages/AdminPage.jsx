@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { PLOTS_DATA, PROJECT_METADATA } from '../data/plotsKambalapattiData';
-import { UPCOMING_PROJECTS } from '../data/homeData';
+import { KINATHUKADAVU_PLOTS_DATA, KINATHUKADAVU_METADATA } from '../data/plotsKinathukadavuData';
 
 // Default Staff Roster with Names and WhatsApp Mobile Numbers
 const DEFAULT_STAFF_ROSTER = [
@@ -195,7 +195,9 @@ export default function AdminPage() {
 
   // Active Tab: 'ai-leads' | 'plot-management' | 'customer-tracker'
   const [activeTab, setActiveTab] = useState(() => {
-    return localStorage.getItem('shashtika_admin_active_tab') || 'ai-leads';
+    const saved = localStorage.getItem('shashtika_admin_active_tab');
+    if (saved && saved !== 'upcoming-projects') return saved;
+    return 'ai-leads';
   });
 
   // Staff & Agent Roster with WhatsApp Mobile Numbers
@@ -230,8 +232,11 @@ export default function AdminPage() {
   const [leadCategoryFilter, setLeadCategoryFilter] = useState('ALL');
   const [leadSearchQuery, setLeadSearchQuery] = useState('');
 
-  // Plot Inventory State (64 Kambalapatti DTCP plots)
-  const [plots, setPlots] = useState(() => {
+  // Active Plot Location for Admin Management
+  const [adminPlotLocation, setAdminPlotLocation] = useState('kambalampatti');
+
+  // Kambalampatti Plots State
+  const [kambalaPlots, setKambalaPlots] = useState(() => {
     const saved = localStorage.getItem('shashtika_plots_inventory');
     if (saved) {
       try {
@@ -241,6 +246,22 @@ export default function AdminPage() {
     }
     return PLOTS_DATA;
   });
+
+  // Kinathukadavu Plots State
+  const [kinathuPlots, setKinathuPlots] = useState(() => {
+    const saved = localStorage.getItem('shashtika_plots_inventory_kinathukadavu');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {}
+    }
+    return KINATHUKADAVU_PLOTS_DATA;
+  });
+
+  // Active plot list and metadata
+  const plots = adminPlotLocation === 'kambalampatti' ? kambalaPlots : kinathuPlots;
+  const currentAdminMetadata = adminPlotLocation === 'kambalampatti' ? PROJECT_METADATA : KINATHUKADAVU_METADATA;
 
   const [plotStatusFilter, setPlotStatusFilter] = useState('ALL');
   const [plotSearchQuery, setPlotSearchQuery] = useState('');
@@ -274,234 +295,20 @@ export default function AdminPage() {
     notes: ''
   });
 
-  // Upcoming Projects Showcase State
-  const [upcomingProjects, setUpcomingProjects] = useState(() => {
-    const saved = localStorage.getItem('shashtika_upcoming_projects');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      } catch (e) {}
-    }
-    return UPCOMING_PROJECTS;
-  });
-
-  const [previewActiveIdx, setPreviewActiveIdx] = useState(0);
-  const [isCarouselAutoRotating, setIsCarouselAutoRotating] = useState(true);
-  const [projectModalOpen, setProjectModalOpen] = useState(false);
-  const [editingProjectIdx, setEditingProjectIdx] = useState(null);
-  const [projectSearchQuery, setProjectSearchQuery] = useState('');
-
-  const [projectForm, setProjectForm] = useState({
-    title: '',
-    city: 'Pollachi',
-    tag: 'Residential',
-    badge: 'Ready to Launch',
-    area: '5.9 ACRES',
-    road: '40 FT ROADS',
-    image: '/Images/Upcoming_Green_Valley.jpg',
-    desc: '',
-    approval: 'DTCP & RERA Approved Layout',
-    location: '',
-    features: ''
-  });
-
-  useEffect(() => {
-    localStorage.setItem('shashtika_upcoming_projects', JSON.stringify(upcomingProjects));
-    window.dispatchEvent(new Event('shashtika_upcoming_projects_updated'));
-  }, [upcomingProjects]);
-
-  useEffect(() => {
-    if (!isCarouselAutoRotating || upcomingProjects.length <= 1) return;
-    const timer = setInterval(() => {
-      setPreviewActiveIdx((prev) => (prev + 1) % upcomingProjects.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, [upcomingProjects.length, isCarouselAutoRotating]);
-
-  const filteredUpcomingProjects = useMemo(() => {
-    if (!projectSearchQuery.trim()) return upcomingProjects;
-    const q = projectSearchQuery.toLowerCase();
-    return upcomingProjects.filter(
-      (p) =>
-        (p.title && p.title.toLowerCase().includes(q)) ||
-        (p.city && p.city.toLowerCase().includes(q)) ||
-        (p.tag && p.tag.toLowerCase().includes(q)) ||
-        (p.location && p.location.toLowerCase().includes(q))
-    );
-  }, [upcomingProjects, projectSearchQuery]);
-
-  const handleOpenAddProjectModal = () => {
-    setEditingProjectIdx(null);
-    setProjectForm({
-      title: '',
-      city: 'Pollachi',
-      tag: 'Residential',
-      badge: 'Ready to Launch',
-      area: '5.0 ACRES',
-      road: '40 FT ROADS',
-      image: '/Images/Upcoming_Green_Valley.jpg',
-      desc: 'Prime residential enclave with wide internal roads, 24/7 water supply, DTCP & RERA certification, and rapid capital appreciation.',
-      approval: 'DTCP & RERA Approved Layout',
-      location: 'Pollachi Highway Corridor',
-      features: 'DTCP & RERA Approved Layout\n40 ft Wide Internal Tar Roads\n24/7 Gated Security & Perimeter Wall\nSolar Powered Street Lighting\nIndividual Water Connection & Storage Tank'
-    });
-    setProjectModalOpen(true);
-  };
-
-  const handleOpenEditProjectModal = (proj, idx) => {
-    setEditingProjectIdx(idx);
-    setProjectForm({
-      title: proj.title || '',
-      city: proj.city || 'Pollachi',
-      tag: proj.tag || 'Residential',
-      badge: proj.badge || 'Ready to Launch',
-      area: proj.area || '',
-      road: proj.road || '',
-      image: proj.image || '/Images/Upcoming_Green_Valley.jpg',
-      desc: proj.desc || '',
-      approval: proj.approval || 'DTCP & RERA Approved Layout',
-      location: proj.location || '',
-      features: Array.isArray(proj.features) ? proj.features.join('\n') : (proj.features || '')
-    });
-    setProjectModalOpen(true);
-  };
-
-  const handleDeleteProject = (idx) => {
-    const target = upcomingProjects[idx];
-    if (!target) return;
-    const confirmed = window.confirm(`Remove "${target.title}" from Upcoming Projects? This will immediately remove it from the public homepage.`);
-    if (confirmed) {
-      const updated = upcomingProjects.filter((_, i) => i !== idx);
-      setUpcomingProjects(updated);
-      if (previewActiveIdx >= updated.length) {
-        setPreviewActiveIdx(Math.max(0, updated.length - 1));
-      }
-    }
-  };
-
-  const handleSaveProject = (e) => {
-    e.preventDefault();
-    if (!projectForm.title.trim()) {
-      alert('Please provide a Project Title.');
-      return;
-    }
-    if (!projectForm.image.trim()) {
-      alert('Please provide or upload a Project Image.');
-      return;
-    }
-
-    const featuresArray = projectForm.features
-      .split('\n')
-      .map((f) => f.trim())
-      .filter(Boolean);
-
-    const newProjectData = {
-      title: projectForm.title.trim(),
-      city: projectForm.city.trim(),
-      tag: projectForm.tag.trim(),
-      badge: projectForm.badge.trim(),
-      area: projectForm.area.trim(),
-      road: projectForm.road.trim(),
-      image: projectForm.image.trim(),
-      desc: projectForm.desc.trim(),
-      approval: projectForm.approval.trim(),
-      location: projectForm.location.trim(),
-      features: featuresArray.length > 0 ? featuresArray : [
-        'DTCP & RERA Approved Layout',
-        'Wide Internal Tar Roads',
-        '24/7 Gated Security'
-      ]
-    };
-
-    if (editingProjectIdx !== null) {
-      const updated = [...upcomingProjects];
-      updated[editingProjectIdx] = newProjectData;
-      setUpcomingProjects(updated);
-    } else {
-      setUpcomingProjects([newProjectData, ...upcomingProjects]);
-      setPreviewActiveIdx(0);
-    }
-
-    setProjectModalOpen(false);
-  };
-
-  const handleImageFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        alert('Please select an image smaller than 5MB.');
-        return;
-      }
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProjectForm((prev) => ({ ...prev, image: reader.result }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleResetDefaultProjects = () => {
-    const confirmed = window.confirm('Restore default upcoming projects list? This will replace your customized showcase with the original project blueprints.');
-    if (confirmed) {
-      setUpcomingProjects(UPCOMING_PROJECTS);
-      setPreviewActiveIdx(0);
-    }
-  };
-
-  const getAdminCarouselCardStyle = (idx) => {
-    const total = upcomingProjects.length;
-    if (total === 0) return {};
-    if (total === 1) {
-      return {
-        transform: 'translateX(0px) scale(1)',
-        opacity: 1,
-        zIndex: 100,
-        visibility: 'visible',
-        pointerEvents: 'auto'
-      };
-    }
-    let diff = (idx - previewActiveIdx) % total;
-    if (diff < 0) diff += total;
-
-    const angle = diff * (360 / total) * (Math.PI / 180);
-    const radiusX = 260;
-    const radiusZ = 130;
-
-    const x = Math.sin(angle) * radiusX;
-    const z = Math.cos(angle) * radiusZ;
-    const normalizedZ = (z + radiusZ) / (2 * radiusZ);
-
-    if (normalizedZ < 0.30) {
-      return {
-        opacity: 0,
-        visibility: 'hidden',
-        pointerEvents: 'none',
-        transform: `translateX(${x.toFixed(1)}px) scale(0.72)`
-      };
-    }
-
-    const scale = 0.82 + (normalizedZ - 0.30) * 0.28;
-    const zIndex = Math.round(normalizedZ * 100);
-
-    return {
-      transform: `translateX(${x.toFixed(1)}px) scale(${scale.toFixed(2)})`,
-      opacity: 1,
-      zIndex,
-      visibility: 'visible',
-      pointerEvents: 'auto'
-    };
-  };
-
   // Persist State to localStorage
   useEffect(() => {
     localStorage.setItem('shashtika_admin_leads', JSON.stringify(leads));
   }, [leads]);
 
   useEffect(() => {
-    localStorage.setItem('shashtika_plots_inventory', JSON.stringify(plots));
+    localStorage.setItem('shashtika_plots_inventory', JSON.stringify(kambalaPlots));
     window.dispatchEvent(new Event('shashtika_plot_updated'));
-  }, [plots]);
+  }, [kambalaPlots]);
+
+  useEffect(() => {
+    localStorage.setItem('shashtika_plots_inventory_kinathukadavu', JSON.stringify(kinathuPlots));
+    window.dispatchEvent(new Event('shashtika_plot_updated'));
+  }, [kinathuPlots]);
 
   useEffect(() => {
     localStorage.setItem('shashtika_customers_registry', JSON.stringify(customers));
@@ -756,9 +563,15 @@ _Please contact this client immediately and arrange site inspection / discussion
 
   // Plot Status Updater
   const handlePlotStatusChange = (plotNumber, newStatus) => {
-    setPlots((prev) =>
-      prev.map((p) => (p.number === plotNumber ? { ...p, status: newStatus } : p))
-    );
+    if (adminPlotLocation === 'kambalampatti') {
+      setKambalaPlots((prev) =>
+        prev.map((p) => (p.number === plotNumber ? { ...p, status: newStatus } : p))
+      );
+    } else {
+      setKinathuPlots((prev) =>
+        prev.map((p) => (p.number === plotNumber ? { ...p, status: newStatus } : p))
+      );
+    }
   };
 
   // Lead Actions with Automatic Cross-Sync & WhatsApp Notification
@@ -1291,7 +1104,7 @@ _Please contact this client immediately and arrange site inspection / discussion
             <h2
               style={{
                 fontFamily: 'var(--font-heading)',
-                color: '#0A1325',
+                color: '#1A0709',
                 fontSize: '1.65rem',
                 fontWeight: 900,
                 letterSpacing: '1px'
@@ -1320,7 +1133,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.74rem',
                   fontWeight: 700,
-                  color: '#0A1325',
+                  color: '#1A0709',
                   letterSpacing: '1px',
                   marginBottom: '6px',
                   textTransform: 'uppercase'
@@ -1342,7 +1155,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   border: '1.5px solid #CCD8E8',
                   background: '#F0F5FA',
                   fontSize: '0.94rem',
-                  color: '#0A1325',
+                  color: '#1A0709',
                   outline: 'none',
                   boxSizing: 'border-box'
                 }}
@@ -1356,7 +1169,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.74rem',
                   fontWeight: 700,
-                  color: '#0A1325',
+                  color: '#1A0709',
                   letterSpacing: '1px',
                   marginBottom: '6px',
                   textTransform: 'uppercase'
@@ -1378,7 +1191,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   border: '1.5px solid #CCD8E8',
                   background: '#F0F5FA',
                   fontSize: '0.94rem',
-                  color: '#0A1325',
+                  color: '#1A0709',
                   outline: 'none',
                   boxSizing: 'border-box'
                 }}
@@ -1408,7 +1221,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                 width: '100%',
                 padding: '14px 18px',
                 marginTop: '6px',
-                background: 'linear-gradient(135deg, #0A1325 0%, #0E1D3B 50%, #070D1A 100%)',
+                background: 'linear-gradient(135deg, #1A0709 0%, #2D0E12 50%, #1A0709 100%)',
                 color: '#E5D2A6',
                 border: '1.5px solid #C6A15B',
                 borderRadius: '6px',
@@ -1426,11 +1239,11 @@ _Please contact this client immediately and arrange site inspection / discussion
                 transition: 'all 0.25s ease'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#0F1C36';
+                e.currentTarget.style.backgroundColor = '#2D0E12';
                 e.currentTarget.style.color = '#FFFDF7';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = '#0A1325';
+                e.currentTarget.style.backgroundColor = '#1A0709';
                 e.currentTarget.style.color = '#E5D2A6';
               }}
             >
@@ -1443,7 +1256,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                 style={{
                   fontSize: '0.82rem',
                   fontFamily: 'var(--font-mono)',
-                  color: '#0A1325',
+                  color: '#1A0709',
                   fontWeight: 700,
                   textDecoration: 'none',
                   display: 'inline-flex',
@@ -1465,9 +1278,9 @@ _Please contact this client immediately and arrange site inspection / discussion
     <div
       className="admin-portal-page"
       style={{
-        backgroundColor: '#070D1A',
+        backgroundColor: '#1A0709',
         backgroundImage: `
-          radial-gradient(circle at 50% 15%, rgba(20, 42, 82, 0.35) 0%, transparent 60%),
+          radial-gradient(circle at 50% 15%, rgba(198, 161, 91, 0.12) 0%, transparent 60%),
           linear-gradient(rgba(198, 161, 91, 0.05) 1px, transparent 1px),
           linear-gradient(90deg, rgba(198, 161, 91, 0.05) 1px, transparent 1px)
         `,
@@ -1591,25 +1404,6 @@ _Please contact this client immediately and arrange site inspection / discussion
                     <span className="tab-btn-sub">Centralized Client Registry ({customers.length})</span>
                   </div>
                 </button>
-
-                {/* BUTTON 4: UPCOMING PROJECTS */}
-                <button
-                  type="button"
-                  className={`admin-nav-tab-btn ${activeTab === 'upcoming-projects' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('upcoming-projects')}
-                >
-                  <div className="tab-btn-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                      <polygon points="12 2 2 7 12 12 22 7 12 2" />
-                      <polyline points="2 17 12 22 22 17" />
-                      <polyline points="2 12 12 17 22 12" />
-                    </svg>
-                  </div>
-                  <div className="tab-btn-text">
-                    <span className="tab-btn-title">Upcoming Projects</span>
-                    <span className="tab-btn-sub">Showcase &amp; 3D Carousel ({upcomingProjects.length})</span>
-                  </div>
-                </button>
               </nav>
             </div>
 
@@ -1626,7 +1420,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                       <div className="architectural-tag" style={{ marginBottom: '8px', color: 'var(--gold-antique)', fontWeight: 700 }}>
                         AI ASSISTANT LEAD SCORING ENGINE
                       </div>
-                      <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.4rem, 2.5vw, 2.0rem)', color: '#0A1325', fontWeight: 800, letterSpacing: '0.5px', marginBottom: '8px' }}>
+                      <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.4rem, 2.5vw, 2.0rem)', color: '#1A0709', fontWeight: 800, letterSpacing: '0.5px', marginBottom: '8px' }}>
                         AI Lead Intelligence &amp; Action Priority
                       </h3>
                       <p style={{ fontSize: '0.92rem', color: 'rgba(10, 19, 37, 0.75)', lineHeight: 1.6, fontWeight: 500 }}>
@@ -1645,7 +1439,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '8px',
-                          background: '#0A1325',
+                          background: '#1A0709',
                           color: '#F3E5AB',
                           border: '1.5px solid #C6A15B',
                           boxShadow: '0 4px 14px rgba(10, 19, 37, 0.35)',
@@ -1691,10 +1485,10 @@ _Please contact this client immediately and arrange site inspection / discussion
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '8px',
-                          background: '#1E3A8A',
+                          background: '#DC2626',
                           color: '#FFFFFF',
-                          border: '1.5px solid #1D4ED8',
-                          boxShadow: '0 4px 12px rgba(30, 58, 138, 0.25)',
+                          border: '1.5px solid #B91C1C',
+                          boxShadow: '0 4px 12px rgba(220, 38, 38, 0.25)',
                           cursor: 'pointer',
                           letterSpacing: '0.4px',
                           transition: 'all 0.2s ease'
@@ -1811,7 +1605,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                           border: '1px solid var(--gold-border)',
                           background: 'var(--bg-cream)',
                           fontSize: '0.88rem',
-                          color: '#0A1325',
+                          color: '#1A0709',
                           outline: 'none',
                           boxSizing: 'border-box'
                         }}
@@ -1949,11 +1743,11 @@ _Please contact this client immediately and arrange site inspection / discussion
                                       </button>
                                     </div>
                                   )}
-                                  <div style={{ fontWeight: 800, color: '#0A1325', fontSize: '0.95rem', marginBottom: '4px' }}>
+                                  <div style={{ fontWeight: 800, color: '#1A0709', fontSize: '0.95rem', marginBottom: '4px' }}>
                                     {lead.name}
                                   </div>
-                                  <div style={{ fontSize: '0.82rem', color: '#0A1325', fontWeight: 700, marginBottom: '2px' }}>
-                                    <a href={`tel:${lead.phone}`} style={{ color: '#0A1325', textDecoration: 'none' }}>{lead.phone}</a>
+                                  <div style={{ fontSize: '0.82rem', color: '#1A0709', fontWeight: 700, marginBottom: '2px' }}>
+                                    <a href={`tel:${lead.phone}`} style={{ color: '#1A0709', textDecoration: 'none' }}>{lead.phone}</a>
                                   </div>
                                   <div style={{ fontSize: '0.78rem', color: 'rgba(10,19,37,0.65)' }}>{lead.email}</div>
                                   <div style={{ fontSize: '0.70rem', color: '#A9823A', fontFamily: 'var(--font-mono)', marginTop: '4px' }}>
@@ -1962,7 +1756,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                 </td>
 
                                 <td style={{ verticalAlign: 'top' }}>
-                                  <div style={{ fontWeight: 700, color: '#0A1325', fontSize: '0.86rem', marginBottom: '4px' }}>
+                                  <div style={{ fontWeight: 700, color: '#1A0709', fontSize: '0.86rem', marginBottom: '4px' }}>
                                     {lead.budget}
                                   </div>
                                   <div style={{ fontSize: '0.80rem', color: 'rgba(10,19,37,0.75)' }}>{lead.purpose}</div>
@@ -1970,11 +1764,11 @@ _Please contact this client immediately and arrange site inspection / discussion
                                 </td>
 
                                 <td style={{ verticalAlign: 'top' }}>
-                                  <div style={{ fontWeight: 700, color: '#0A1325', fontSize: '0.86rem', marginBottom: '4px' }}>
+                                  <div style={{ fontWeight: 700, color: '#1A0709', fontSize: '0.86rem', marginBottom: '4px' }}>
                                     {lead.targetPlot}
                                   </div>
                                   <div style={{ fontSize: '0.80rem', color: 'rgba(10,19,37,0.75)' }}>
-                                    Timeline: <strong style={{ color: isHot ? '#C53030' : '#0A1325' }}>{lead.timeline}</strong>
+                                    Timeline: <strong style={{ color: isHot ? '#C53030' : '#1A0709' }}>{lead.timeline}</strong>
                                   </div>
                                 </td>
 
@@ -1991,7 +1785,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                         fontSize: '0.82rem',
                                         fontWeight: 700,
                                         background: 'var(--bg-cream)',
-                                        color: '#0A1325',
+                                        color: '#1A0709',
                                         cursor: 'pointer'
                                       }}
                                     >
@@ -2053,7 +1847,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                         currentAction === 'SITE VISIT SCHEDULED' ? '#1e7e34' :
                                         currentAction === 'TOKEN PAID' ? '#8C6B28' :
                                         currentAction === 'REJECTED' ? '#C53030' :
-                                        '#0A1325'
+                                        '#1A0709'
                                     }}
                                   >
                                     <option value="NEW LEAD">NEW LEAD</option>
@@ -2072,7 +1866,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                       href={`tel:${lead.phone}`}
                                       className="admin-icon-btn"
                                       title={`Call ${lead.name} (${lead.phone})`}
-                                      style={{ background: '#0A1325', border: '1.5px solid var(--gold-primary)', color: '#FFFDF8' }}
+                                      style={{ background: '#1A0709', border: '1.5px solid var(--gold-primary)', color: '#FFFDF8' }}
                                     >
                                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
                                     </a>
@@ -2116,7 +1910,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '20px' }}>
                     <div>
                       <span className="architectural-tag">LIVE LAYOUT INVENTORY CONTROL</span>
-                      <h3 style={{ fontSize: '1.4rem', color: '#0A1325', marginTop: '4px', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
+                      <h3 style={{ fontSize: '1.4rem', color: '#1A0709', marginTop: '4px', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
                         Plot Management Table
                       </h3>
                       <p style={{ fontSize: '0.88rem', color: 'rgba(10, 19, 37, 0.75)', marginTop: '4px' }}>
@@ -2130,6 +1924,69 @@ _Please contact this client immediately and arrange site inspection / discussion
                     >
                       PREVIEW PLOTS MAP
                     </a>
+                  </div>
+
+                  {/* Location Selector Tabs */}
+                  <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' }}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAdminPlotLocation('kambalampatti');
+                        setPlotCurrentPage(1);
+                        setPlotSearchQuery('');
+                        setPlotStatusFilter('ALL');
+                      }}
+                      style={{
+                        padding: '10px 20px',
+                        borderRadius: '8px',
+                        border: adminPlotLocation === 'kambalampatti' ? '2px solid #C6A15B' : '1px solid rgba(198,161,91,0.3)',
+                        background: adminPlotLocation === 'kambalampatti' ? '#1A0709' : '#FFFDF8',
+                        color: adminPlotLocation === 'kambalampatti' ? '#F3E5AB' : '#1A0709',
+                        fontWeight: 800,
+                        fontSize: '0.85rem',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        boxShadow: adminPlotLocation === 'kambalampatti' ? '0 4px 14px rgba(10,19,37,0.35)' : 'none',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      <span>KAMBALAMPATTI LAYOUT</span>
+                      <span style={{ fontSize: '0.72rem', padding: '2px 8px', borderRadius: '4px', background: adminPlotLocation === 'kambalampatti' ? '#C6A15B' : '#FAF4EB', color: adminPlotLocation === 'kambalampatti' ? '#1A0709' : '#8A6324', fontWeight: 900 }}>
+                        64 PLOTS
+                      </span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAdminPlotLocation('kinathukadavu');
+                        setPlotCurrentPage(1);
+                        setPlotSearchQuery('');
+                        setPlotStatusFilter('ALL');
+                      }}
+                      style={{
+                        padding: '10px 20px',
+                        borderRadius: '8px',
+                        border: adminPlotLocation === 'kinathukadavu' ? '2px solid #C6A15B' : '1px solid rgba(198,161,91,0.3)',
+                        background: adminPlotLocation === 'kinathukadavu' ? '#1A0709' : '#FFFDF8',
+                        color: adminPlotLocation === 'kinathukadavu' ? '#F3E5AB' : '#1A0709',
+                        fontWeight: 800,
+                        fontSize: '0.85rem',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        boxShadow: adminPlotLocation === 'kinathukadavu' ? '0 4px 14px rgba(10,19,37,0.35)' : 'none',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      <span>KINATHUKADAVU LAYOUT</span>
+                      <span style={{ fontSize: '0.72rem', padding: '2px 8px', borderRadius: '4px', background: adminPlotLocation === 'kinathukadavu' ? '#C6A15B' : '#FAF4EB', color: adminPlotLocation === 'kinathukadavu' ? '#1A0709' : '#8A6324', fontWeight: 900 }}>
+                        42 PLOTS
+                      </span>
+                    </button>
                   </div>
 
                   {/* Real-time Plot Search Bar & Status Filter */}
@@ -2151,7 +2008,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                             border: '1px solid var(--gold-border)',
                             background: 'var(--bg-cream)',
                             fontSize: '0.9rem',
-                            color: '#0A1325',
+                            color: '#1A0709',
                             outline: 'none',
                             boxSizing: 'border-box'
                           }}
@@ -2171,7 +2028,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                           border: '1px solid var(--gold-border)',
                           background: 'var(--bg-cream)',
                           fontSize: '0.88rem',
-                          color: '#0A1325',
+                          color: '#1A0709',
                           fontWeight: 700,
                           cursor: 'pointer'
                         }}
@@ -2183,7 +2040,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                       </select>
                     </div>
 
-                    <div style={{ fontSize: '0.82rem', fontWeight: 800, background: 'var(--gold-primary)', color: '#0A1325', padding: '5px 14px', borderRadius: '12px' }}>
+                    <div style={{ fontSize: '0.82rem', fontWeight: 800, background: 'var(--gold-primary)', color: '#1A0709', padding: '5px 14px', borderRadius: '12px' }}>
                       {plotPageSize} / page
                     </div>
                   </div>
@@ -2220,14 +2077,14 @@ _Please contact this client immediately and arrange site inspection / discussion
                             return (
                               <tr key={plot.number} style={{ borderBottom: '1px solid rgba(198, 161, 91, 0.2)' }}>
                                 <td style={{ padding: '14px 12px', textAlign: 'center', whiteSpace: 'nowrap' }}>
-                                  <strong style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0A1325', fontFamily: 'var(--font-mono)' }}>
+                                  <strong style={{ fontSize: '0.95rem', fontWeight: 800, color: '#1A0709', fontFamily: 'var(--font-mono)' }}>
                                     PLOT {plot.number}
                                   </strong>
                                 </td>
-                                <td style={{ padding: '14px 12px', color: '#0A1325', fontWeight: 600, fontSize: '0.88rem', whiteSpace: 'nowrap' }}>
+                                <td style={{ padding: '14px 12px', color: '#1A0709', fontWeight: 600, fontSize: '0.88rem', whiteSpace: 'nowrap' }}>
                                   <strong>{plot.sqft} Sq.Ft</strong> ({plot.cent} Cents {plot.remSqft > 0 ? `${plot.remSqft} Sq.Ft` : ''})
                                 </td>
-                                <td style={{ padding: '14px 12px', color: '#0A1325', fontWeight: 600, fontSize: '0.88rem', whiteSpace: 'nowrap' }}>
+                                <td style={{ padding: '14px 12px', color: '#1A0709', fontWeight: 600, fontSize: '0.88rem', whiteSpace: 'nowrap' }}>
                                   {plot.facing}
                                 </td>
                                 <td style={{ padding: '14px 12px', color: 'rgba(10,19,37,0.85)', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
@@ -2248,7 +2105,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                       fontSize: '0.82rem',
                                       fontWeight: 700,
                                       background: 'var(--bg-cream)',
-                                      color: '#0A1325',
+                                      color: '#1A0709',
                                       cursor: 'pointer',
                                       whiteSpace: 'nowrap'
                                     }}
@@ -2281,7 +2138,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                         Prev
                       </button>
 
-                      <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#0A1325', padding: '0 10px' }}>
+                      <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#1A0709', padding: '0 10px' }}>
                         Page {safePlotPage} of {totalPlotPages}
                       </span>
 
@@ -2304,7 +2161,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1.5px solid var(--gold-border)' }}>
                     <div>
                       <span className="architectural-tag">CENTRALIZED CLIENT REGISTRY</span>
-                      <h3 style={{ fontSize: '1.4rem', color: '#0A1325', marginTop: '4px', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
+                      <h3 style={{ fontSize: '1.4rem', color: '#1A0709', marginTop: '4px', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
                         Customer Details
                       </h3>
                       <p style={{ fontSize: '0.88rem', color: 'rgba(10, 19, 37, 0.75)', marginTop: '4px' }}>
@@ -2322,7 +2179,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '8px',
-                          background: '#0A1325',
+                          background: '#1A0709',
                           color: '#F3E5AB',
                           border: '1.5px solid #C6A15B',
                           boxShadow: '0 4px 14px rgba(10, 19, 37, 0.25)',
@@ -2345,10 +2202,10 @@ _Please contact this client immediately and arrange site inspection / discussion
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '8px',
-                          background: '#1E3A8A',
+                          background: '#DC2626',
                           color: '#FFFFFF',
-                          border: '1.5px solid #1D4ED8',
-                          boxShadow: '0 4px 12px rgba(30, 58, 138, 0.25)',
+                          border: '1.5px solid #B91C1C',
+                          boxShadow: '0 4px 12px rgba(220, 38, 38, 0.25)',
                           cursor: 'pointer',
                           letterSpacing: '0.4px',
                           transition: 'all 0.2s ease'
@@ -2369,7 +2226,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                           alignItems: 'center',
                           gap: '8px',
                           background: 'linear-gradient(135deg, #C6A15B 0%, #AA7C11 100%)',
-                          color: '#0A1325',
+                          color: '#1A0709',
                           border: '1.5px solid #8C6B28',
                           boxShadow: '0 4px 14px rgba(198, 161, 91, 0.35)',
                           cursor: 'pointer',
@@ -2377,7 +2234,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                           transition: 'all 0.2s ease'
                         }}
                       >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A1325" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A0709" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                         ADD NEW CUSTOMER RECORD
                       </button>
                     </div>
@@ -2419,7 +2276,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                           border: '1px solid var(--gold-border)',
                           background: 'var(--bg-cream)',
                           fontSize: '0.88rem',
-                          color: '#0A1325',
+                          color: '#1A0709',
                           outline: 'none',
                           boxSizing: 'border-box'
                         }}
@@ -2527,7 +2384,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                       </button>
                                     </div>
                                   )}
-                                  <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
+                                  <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#1A0709', marginBottom: '4px' }}>
                                     {cust.date}
                                   </div>
                                   <span style={{ fontSize: '0.7rem', fontWeight: 700, fontFamily: 'var(--font-mono)', padding: '2px 7px', background: 'rgba(198, 161, 91, 0.15)', border: '1px solid var(--gold-border)', color: '#8C6B28', borderRadius: '4px', display: 'inline-block' }}>
@@ -2536,14 +2393,14 @@ _Please contact this client immediately and arrange site inspection / discussion
                                 </td>
 
                                 <td style={{ verticalAlign: 'top' }}>
-                                  <div style={{ fontWeight: 800, color: '#0A1325', fontSize: '0.95rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                  <div style={{ fontWeight: 800, color: '#1A0709', fontSize: '0.95rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
                                     <span>{cust.name}</span>
                                   </div>
                                   <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', fontSize: '0.82rem' }}>
-                                    <div style={{ color: '#0A1325', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                    <div style={{ color: '#1A0709', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
                                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
-                                      <a href={`tel:${cust.phone}`} style={{ color: '#0A1325', textDecoration: 'none' }}>{cust.phone}</a>
+                                      <a href={`tel:${cust.phone}`} style={{ color: '#1A0709', textDecoration: 'none' }}>{cust.phone}</a>
                                     </div>
                                     {cust.email && cust.email !== 'N/A' && (
                                       <div style={{ color: 'rgba(10,19,37,0.7)', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -2555,7 +2412,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                 </td>
 
                                 <td style={{ verticalAlign: 'top' }}>
-                                  <div style={{ fontWeight: 700, color: '#0A1325', fontSize: '0.86rem', marginBottom: '6px', display: 'inline-block', padding: '4px 10px', background: 'rgba(198, 161, 91, 0.15)', border: '1px solid #C6A15B', borderRadius: '4px' }}>
+                                  <div style={{ fontWeight: 700, color: '#1A0709', fontSize: '0.86rem', marginBottom: '6px', display: 'inline-block', padding: '4px 10px', background: 'rgba(198, 161, 91, 0.15)', border: '1px solid #C6A15B', borderRadius: '4px' }}>
                                     {cust.requirement}
                                   </div>
                                   {cust.notes && (
@@ -2570,7 +2427,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                     <select
                                       value={cust.assignedStaff || defaultStaffName}
                                       onChange={(e) => handleUpdateCustomerStaff(cust.id, e.target.value)}
-                                      style={{ padding: '8px 10px', borderRadius: '4px', border: '1.5px solid var(--gold-border)', fontSize: '0.8rem', fontWeight: 700, background: 'var(--bg-cream)', color: '#0A1325', flex: 1, cursor: 'pointer' }}
+                                      style={{ padding: '8px 10px', borderRadius: '4px', border: '1.5px solid var(--gold-border)', fontSize: '0.8rem', fontWeight: 700, background: 'var(--bg-cream)', color: '#1A0709', flex: 1, cursor: 'pointer' }}
                                     >
                                       {staffRoster.map((s) => {
                                         const sName = typeof s === 'string' ? s : s.name;
@@ -2630,7 +2487,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                         (cust.actionTaken || 'NEW LEAD') === 'SITE VISIT SCHEDULED' ? '#1e7e34' :
                                         (cust.actionTaken || 'NEW LEAD') === 'TOKEN PAID' ? '#8C6B28' :
                                         (cust.actionTaken || 'NEW LEAD') === 'REJECTED' ? '#C53030' :
-                                        '#0A1325'
+                                        '#1A0709'
                                     }}
                                   >
                                     <option value="NEW LEAD">NEW LEAD</option>
@@ -2655,7 +2512,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                                       href={`tel:${cust.phone}`}
                                       className="admin-icon-btn"
                                       title={`Call ${cust.name} (${cust.phone})`}
-                                      style={{ background: '#0A1325', border: '1.5px solid var(--gold-primary)', color: '#FFFDF8' }}
+                                      style={{ background: '#1A0709', border: '1.5px solid var(--gold-primary)', color: '#FFFDF8' }}
                                     >
                                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
                                     </a>
@@ -2677,9 +2534,9 @@ _Please contact this client immediately and arrange site inspection / discussion
                                       onClick={() => handleOpenAddCustomerModal(cust.id)}
                                       className="admin-icon-btn"
                                       title={`Edit ${cust.name}`}
-                                      style={{ background: 'var(--gold-primary)', border: '1.5px solid var(--gold-primary)', color: '#0A1325' }}
+                                      style={{ background: 'var(--gold-primary)', border: '1.5px solid var(--gold-primary)', color: '#1A0709' }}
                                     >
-                                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0A1325" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>
+                                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1A0709" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>
                                     </button>
 
                                     {/* Delete button */}
@@ -2703,361 +2560,6 @@ _Please contact this client immediately and arrange site inspection / discussion
                 </div>
               )}
 
-              {/* PANEL 4: UPCOMING PROJECTS MANAGER */}
-              {activeTab === 'upcoming-projects' && (
-                <div style={{ background: 'var(--bg-ivory)', border: '1.5px solid var(--gold-border)', borderRadius: 'var(--radius-md)', padding: '28px', boxShadow: 'var(--shadow-soft)' }}>
-                  {/* Panel Top Header Bar */}
-                  <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '24px', paddingBottom: '18px', borderBottom: '1.5px solid var(--gold-border)' }}>
-                    <div>
-                      <span className="architectural-tag">PORTFOLIO INVENTORY CONTROL</span>
-                      <h3 style={{ fontSize: '1.4rem', color: '#0A1325', marginTop: '4px', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
-                        Upcoming Projects Manager
-                      </h3>
-                      <p style={{ fontSize: '0.88rem', color: 'rgba(26, 7, 9, 0.75)', marginTop: '4px' }}>
-                        Add, edit, or remove project developments shown on the public site 3D carousel. Upload project photographs and specify key amenities.
-                      </p>
-                    </div>
-
-                    <div className="admin-action-toolbar" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
-                      <button
-                        onClick={handleResetDefaultProjects}
-                        className="btn btn-outline-gold"
-                        style={{ fontSize: '0.78rem', padding: '9px 16px', fontWeight: 700, cursor: 'pointer' }}
-                        title="Restore original projects"
-                      >
-                        RESTORE DEFAULTS
-                      </button>
-
-                      <a
-                        href="/#upcoming"
-                        className="btn btn-outline-gold"
-                        style={{ fontSize: '0.78rem', padding: '9px 16px', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-                      >
-                        PREVIEW PUBLIC SITE
-                      </a>
-
-                      <button
-                        onClick={handleOpenAddProjectModal}
-                        style={{
-                          fontSize: '0.80rem',
-                          padding: '10px 18px',
-                          fontWeight: 800,
-                          borderRadius: '6px',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '8px',
-                          background: 'linear-gradient(135deg, #C6A15B 0%, #AA7C11 100%)',
-                          color: '#0A1325',
-                          border: '1.5px solid #8C6B28',
-                          boxShadow: '0 4px 14px rgba(198, 161, 91, 0.35)',
-                          cursor: 'pointer',
-                          letterSpacing: '0.4px',
-                          transition: 'all 0.2s ease'
-                        }}
-                      >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A1325" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                        ADD UPCOMING PROJECT
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Section 1: Live Interactive 3D Carousel Preview */}
-                  <div style={{ marginBottom: '32px', background: '#0F1C36', borderRadius: '12px', padding: '24px 20px 20px', border: '1.5px solid rgba(198, 161, 91, 0.4)', boxShadow: '0 8px 30px rgba(10, 19, 37, 0.4)', position: 'relative', overflow: 'hidden' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '16px', borderBottom: '1px solid rgba(198, 161, 91, 0.25)', paddingBottom: '12px' }}>
-                      <div>
-                        <span style={{ fontSize: '0.62rem', fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#C6A15B', letterSpacing: '1px' }}>
-                          HOMEPAGE LIVE 3D ORBIT PREVIEW
-                        </span>
-                        <h4 style={{ color: '#FFFDF7', fontSize: '1.1rem', margin: '2px 0 0', fontWeight: 800, fontFamily: 'var(--font-heading)' }}>
-                          Real-Time Animation &amp; Interactive Orbit
-                        </h4>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <button
-                          type="button"
-                          onClick={() => setIsCarouselAutoRotating(!isCarouselAutoRotating)}
-                          style={{
-                            padding: '5px 12px',
-                            fontSize: '0.72rem',
-                            fontWeight: 700,
-                            borderRadius: '4px',
-                            border: '1px solid #C6A15B',
-                            background: isCarouselAutoRotating ? 'rgba(198, 161, 91, 0.2)' : 'transparent',
-                            color: '#F3E5AB',
-                            cursor: 'pointer'
-                          }}
-                        >
-                          {isCarouselAutoRotating ? 'PAUSE ROTATION' : 'RESUME ROTATION'}
-                        </button>
-                        <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)', fontFamily: 'var(--font-mono)' }}>
-                          Project {upcomingProjects.length === 0 ? 0 : previewActiveIdx + 1} of {upcomingProjects.length}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* 3D Flat Orbit Carousel (Exact same animation as public site) */}
-                    {upcomingProjects.length === 0 ? (
-                      <div style={{ padding: '40px 20px', textAlign: 'center', color: '#F3E5AB' }}>
-                        No upcoming projects available. Click &quot;ADD UPCOMING PROJECT&quot; above to create one.
-                      </div>
-                    ) : (
-                      <div className="upcoming-3d-wrapper" style={{ height: '380px', margin: '0 auto' }}>
-                        <div className="upcoming-3d-inner">
-                          {upcomingProjects.map((proj, idx) => {
-                            const style = getAdminCarouselCardStyle(idx);
-                            const isFront = (idx - previewActiveIdx + upcomingProjects.length) % upcomingProjects.length === 0;
-
-                            return (
-                              <article
-                                key={idx}
-                                onClick={() => setPreviewActiveIdx(idx)}
-                                style={style}
-                                className={`project-card-3d ${isFront ? 'active-front-card' : ''}`}
-                              >
-                                <div className="project-card-image-wrap">
-                                  <img src={proj.image} alt={proj.title} onError={(e) => { e.target.src = '/Images/Upcoming_Green_Valley.jpg'; }} />
-                                  <span className="project-badge">{proj.badge}</span>
-                                  <div className="card-3d-radial-glow" />
-                                </div>
-                                <div className="project-card-body">
-                                  <div>
-                                    <div className="project-card-meta">
-                                      <span className="project-city">{proj.city}</span>
-                                      <span className="meta-sep">•</span>
-                                      <span className="project-tag">{proj.tag}</span>
-                                    </div>
-                                    <h3>{proj.title}</h3>
-                                    <div className="card-mini-stats">
-                                      <span>{proj.area}</span>
-                                      <span className="stat-bullet">•</span>
-                                      <span>{proj.road}</span>
-                                    </div>
-                                  </div>
-                                  <button
-                                    type="button"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleOpenEditProjectModal(proj, idx);
-                                    }}
-                                    className="btn-more-details"
-                                    style={{ cursor: 'pointer' }}
-                                  >
-                                    EDIT DETAILS
-                                  </button>
-                                </div>
-                              </article>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Indicator dots */}
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', marginTop: '16px' }}>
-                      {upcomingProjects.map((_, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => setPreviewActiveIdx(idx)}
-                          style={{
-                            width: previewActiveIdx === idx ? '24px' : '8px',
-                            height: '8px',
-                            borderRadius: '4px',
-                            background: previewActiveIdx === idx ? '#C6A15B' : 'rgba(198, 161, 91, 0.4)',
-                            border: 'none',
-                            cursor: 'pointer',
-                            transition: 'all 0.25s ease'
-                          }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Section 2: Manage Projects Grid with Edit and Remove buttons */}
-                  <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
-                      <div>
-                        <h4 style={{ margin: 0, fontSize: '1.15rem', color: '#0A1325', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
-                          Project Showcase Roster ({filteredUpcomingProjects.length} Projects)
-                        </h4>
-                        <span style={{ fontSize: '0.80rem', color: 'rgba(10, 19, 37, 0.7)' }}>
-                          Each card below can be directly edited or removed from the website.
-                        </span>
-                      </div>
-
-                      <div style={{ position: 'relative', minWidth: '220px' }}>
-                        <input
-                          type="text"
-                          placeholder="Search by title or city..."
-                          value={projectSearchQuery}
-                          onChange={(e) => setProjectSearchQuery(e.target.value)}
-                          style={{
-                            width: '100%',
-                            padding: '8px 12px 8px 32px',
-                            borderRadius: 'var(--radius-sm)',
-                            border: '1px solid var(--gold-border)',
-                            background: 'var(--bg-cream)',
-                            fontSize: '0.84rem',
-                            color: '#0A1325'
-                          }}
-                        />
-                        <svg style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', width: '14px', height: '14px', fill: 'rgba(26,7,9,0.5)' }} viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z" /></svg>
-                      </div>
-                    </div>
-
-                    {filteredUpcomingProjects.length === 0 ? (
-                      <div style={{ textAlign: 'center', padding: '40px 20px', background: 'var(--bg-cream)', borderRadius: '8px', border: '1px dashed var(--gold-border)' }}>
-                        <p style={{ color: '#0A1325', fontWeight: 600 }}>No projects found matching &quot;{projectSearchQuery}&quot;.</p>
-                      </div>
-                    ) : (
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
-                        {filteredUpcomingProjects.map((proj, idx) => {
-                          const realIdx = upcomingProjects.indexOf(proj);
-
-                          return (
-                            <div
-                              key={idx}
-                              style={{
-                                background: 'var(--bg-cream)',
-                                border: '1.5px solid var(--gold-border)',
-                                borderRadius: '12px',
-                                overflow: 'hidden',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'space-between',
-                                boxShadow: '0 4px 16px rgba(10, 19, 37, 0.08)',
-                                transition: 'all 0.25s ease'
-                              }}
-                            >
-                              <div>
-                                {/* Card Image Thumbnail */}
-                                <div style={{ position: 'relative', height: '160px', width: '100%', overflow: 'hidden', background: '#0A1325' }}>
-                                  <img
-                                    src={proj.image}
-                                    alt={proj.title}
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                    onError={(e) => {
-                                      e.target.src = '/Images/Upcoming_Green_Valley.jpg';
-                                    }}
-                                  />
-                                  <span
-                                    style={{
-                                      position: 'absolute',
-                                      top: '10px',
-                                      left: '10px',
-                                      background: 'rgba(10, 19, 37, 0.85)',
-                                      border: '1px solid #C6A15B',
-                                      color: '#FFFDF7',
-                                      fontFamily: 'var(--font-mono)',
-                                      fontSize: '0.62rem',
-                                      fontWeight: 700,
-                                      padding: '3px 8px',
-                                      borderRadius: '4px'
-                                    }}
-                                  >
-                                    {proj.city} • {proj.tag}
-                                  </span>
-                                  <span
-                                    style={{
-                                      position: 'absolute',
-                                      top: '10px',
-                                      right: '10px',
-                                      background: '#C6A15B',
-                                      color: '#0A1325',
-                                      fontFamily: 'var(--font-mono)',
-                                      fontSize: '0.62rem',
-                                      fontWeight: 800,
-                                      padding: '3px 8px',
-                                      borderRadius: '4px'
-                                    }}
-                                  >
-                                    {proj.badge}
-                                  </span>
-                                </div>
-
-                                {/* Card Content */}
-                                <div style={{ padding: '16px' }}>
-                                  <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0A1325', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
-                                    {proj.title}
-                                  </h4>
-                                  <p style={{ margin: '0 0 12px 0', fontSize: '0.80rem', color: 'rgba(10, 19, 37, 0.75)', lineHeight: 1.45, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                                    {proj.desc}
-                                  </p>
-
-                                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', padding: '8px 10px', background: 'rgba(198, 161, 91, 0.1)', borderRadius: '6px', marginBottom: '12px' }}>
-                                    <div>
-                                      <span style={{ fontSize: '0.58rem', fontFamily: 'var(--font-mono)', color: '#8C6B28', display: 'block' }}>TOTAL AREA</span>
-                                      <strong style={{ fontSize: '0.78rem', color: '#0A1325' }}>{proj.area || 'N/A'}</strong>
-                                    </div>
-                                    <div>
-                                      <span style={{ fontSize: '0.58rem', fontFamily: 'var(--font-mono)', color: '#8C6B28', display: 'block' }}>ROAD WIDTH</span>
-                                      <strong style={{ fontSize: '0.78rem', color: '#0A1325' }}>{proj.road || 'N/A'}</strong>
-                                    </div>
-                                    <div style={{ gridColumn: 'span 2' }}>
-                                      <span style={{ fontSize: '0.58rem', fontFamily: 'var(--font-mono)', color: '#8C6B28', display: 'block' }}>APPROVAL STATUS</span>
-                                      <strong style={{ fontSize: '0.74rem', color: '#065F46' }}>{proj.approval || 'DTCP Approved'}</strong>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              {/* Edit and Remove Buttons */}
-                              <div style={{ padding: '12px 16px', borderTop: '1px solid rgba(198, 161, 91, 0.25)', display: 'flex', gap: '8px', justifyContent: 'flex-end', background: 'rgba(255, 255, 255, 0.5)' }}>
-                                <button
-                                  type="button"
-                                  onClick={() => handleOpenEditProjectModal(proj, realIdx)}
-                                  style={{
-                                    flex: 1,
-                                    padding: '8px 12px',
-                                    fontSize: '0.74rem',
-                                    fontWeight: 800,
-                                    borderRadius: '6px',
-                                    border: '1.5px solid #C6A15B',
-                                    background: '#0A1325',
-                                    color: '#F3E5AB',
-                                    cursor: 'pointer',
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '6px',
-                                    transition: 'all 0.2s ease'
-                                  }}
-                                >
-                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F3E5AB" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>
-                                  EDIT PROJECT
-                                </button>
-
-                                <button
-                                  type="button"
-                                  onClick={() => handleDeleteProject(realIdx)}
-                                  style={{
-                                    padding: '8px 14px',
-                                    fontSize: '0.74rem',
-                                    fontWeight: 800,
-                                    borderRadius: '6px',
-                                    border: '1.5px solid #D9534F',
-                                    background: 'rgba(217, 83, 79, 0.1)',
-                                    color: '#D9534F',
-                                    cursor: 'pointer',
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '6px',
-                                    transition: 'all 0.2s ease'
-                                  }}
-                                  title={`Delete ${proj.title}`}
-                                >
-                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D9534F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                  REMOVE
-                                </button>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -3070,13 +2572,13 @@ _Please contact this client immediately and arrange site inspection / discussion
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid var(--gold-border)', paddingBottom: '10px' }}>
               <div>
                 <span className="architectural-tag" style={{ fontSize: '0.65rem' }}>TEAM MANAGEMENT &amp; WHATSAPP DISPATCH</span>
-                <h3 style={{ color: '#0A1325', marginTop: '2px', fontSize: '1.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
+                <h3 style={{ color: '#1A0709', marginTop: '2px', fontSize: '1.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
                   Manage Staff
                 </h3>
               </div>
               <button
                 onClick={() => setStaffModalOpen(false)}
-                style={{ background: 'none', border: 'none', fontSize: '1.6rem', color: '#0A1325', cursor: 'pointer' }}
+                style={{ background: 'none', border: 'none', fontSize: '1.6rem', color: '#1A0709', cursor: 'pointer' }}
               >
                 &times;
               </button>
@@ -3084,7 +2586,7 @@ _Please contact this client immediately and arrange site inspection / discussion
 
             <div style={{ background: 'rgba(37, 211, 102, 0.1)', border: '1px solid rgba(37, 211, 102, 0.4)', borderRadius: '6px', padding: '10px 14px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '10px' }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="#25D366" style={{ flexShrink: 0 }}><path d="M12.031 0C5.385 0 0 5.386 0 12.031c0 2.124.553 4.197 1.604 6.02L0 24l6.155-1.614A11.968 11.968 0 0 0 12.03 24c6.645 0 12.03-5.385 12.03-12.031C24.06 5.386 18.675 0 12.031 0zm.012 22.012c-1.808 0-3.585-.486-5.143-1.408l-.369-.219-3.817 1.001 1.019-3.721-.241-.383A9.99 9.99 0 0 1 2.012 12.03c0-5.524 4.496-10.02 10.031-10.02 5.524 0 10.02 4.496 10.02 10.02 0 5.536-4.496 10.012-10.02 10.012zm5.503-7.519c-.302-.152-1.785-.881-2.062-.981-.277-.101-.479-.152-.68.152-.202.302-.782.981-.959 1.183-.176.201-.353.226-.655.075-1.745-.875-2.894-1.559-4.04-3.535-.302-.52.302-.482.864-1.608.101-.201.05-.378-.025-.529-.075-.152-.68-1.636-.932-2.24-.244-.588-.493-.508-.68-.518-.176-.009-.378-.009-.58-.009-.201 0-.528.075-.804.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.92 1.233 3.122.151.201 2.128 3.25 5.156 4.558 2.164.935 2.809.845 3.791.7.636-.094 1.785-.73 2.037-1.435.252-.705.252-1.309.176-1.435-.076-.125-.278-.201-.58-.352z" /></svg>
-              <p style={{ margin: 0, fontSize: '0.80rem', color: '#0A1325', lineHeight: 1.4 }}>
+              <p style={{ margin: 0, fontSize: '0.80rem', color: '#1A0709', lineHeight: 1.4 }}>
                 <strong>Automated WhatsApp Notifications:</strong> When a customer is assigned to a staff member, their enquiry details will automatically reach that staff member&apos;s WhatsApp number.
               </p>
             </div>
@@ -3110,7 +2612,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                     }}
                   >
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 800, color: '#0A1325', marginBottom: '3px' }}>
+                      <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 800, color: '#1A0709', marginBottom: '3px' }}>
                         STAFF #{idx + 1} NAME &amp; DESIGNATION
                       </label>
                       <input
@@ -3134,14 +2636,14 @@ _Please contact this client immediately and arrange site inspection / discussion
                           borderRadius: '4px',
                           border: '1px solid var(--gold-border)',
                           background: '#FFFDF8',
-                          color: '#0A1325',
+                          color: '#1A0709',
                           boxSizing: 'border-box'
                         }}
                       />
                     </div>
 
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 800, color: '#0A1325', marginBottom: '3px' }}>
+                      <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 800, color: '#1A0709', marginBottom: '3px' }}>
                         WHATSAPP NUMBER
                       </label>
                       <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
@@ -3169,7 +2671,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                             borderRadius: '4px',
                             border: '1px solid var(--gold-border)',
                             background: '#FFFDF8',
-                            color: '#0A1325',
+                            color: '#1A0709',
                             boxSizing: 'border-box'
                           }}
                         />
@@ -3221,7 +2723,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  background: '#0A1325',
+                  background: '#1A0709',
                   color: '#F3E5AB',
                   border: '1.5px solid #C6A15B',
                   boxShadow: '0 2px 8px rgba(10, 19, 37, 0.2)'
@@ -3242,7 +2744,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   borderRadius: '6px',
                   border: '1.5px solid #718096',
                   background: '#FFFFFF',
-                  color: '#0A1325',
+                  color: '#1A0709',
                   cursor: 'pointer'
                 }}
               >
@@ -3276,13 +2778,13 @@ _Please contact this client immediately and arrange site inspection / discussion
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid var(--gold-border)', paddingBottom: '10px' }}>
               <div>
                 <span className="architectural-tag" style={{ fontSize: '0.65rem' }}>ADMIN CRM ENTRY</span>
-                <h3 style={{ color: '#0A1325', marginTop: '2px', fontSize: '1.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
+                <h3 style={{ color: '#1A0709', marginTop: '2px', fontSize: '1.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
                   {editingCustId ? 'Edit Customer Record' : 'Add Walk-in / Direct Call Customer'}
                 </h3>
               </div>
               <button
                 onClick={() => setCustomerModalOpen(false)}
-                style={{ background: 'none', border: 'none', fontSize: '1.6rem', color: '#0A1325', cursor: 'pointer' }}
+                style={{ background: 'none', border: 'none', fontSize: '1.6rem', color: '#1A0709', cursor: 'pointer' }}
               >
                 &times;
               </button>
@@ -3290,7 +2792,7 @@ _Please contact this client immediately and arrange site inspection / discussion
 
             <form onSubmit={handleSaveCustomer} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
-                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#0A1325', display: 'block', marginBottom: '4px' }}>
+                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1A0709', display: 'block', marginBottom: '4px' }}>
                   CUSTOMER FULL NAME *
                 </label>
                 <input
@@ -3299,13 +2801,13 @@ _Please contact this client immediately and arrange site inspection / discussion
                   placeholder="e.g. Ramesh Sundaram"
                   value={custForm.name}
                   onChange={(e) => setCustForm({ ...custForm, name: e.target.value })}
-                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#0A1325', boxSizing: 'border-box' }}
+                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#1A0709', boxSizing: 'border-box' }}
                 />
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div>
-                  <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#0A1325', display: 'block', marginBottom: '4px' }}>
+                  <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1A0709', display: 'block', marginBottom: '4px' }}>
                     PHONE NUMBER *
                   </label>
                   <input
@@ -3314,11 +2816,11 @@ _Please contact this client immediately and arrange site inspection / discussion
                     placeholder="+91 98422 00000"
                     value={custForm.phone}
                     onChange={(e) => setCustForm({ ...custForm, phone: e.target.value })}
-                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#0A1325', boxSizing: 'border-box' }}
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#1A0709', boxSizing: 'border-box' }}
                   />
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#0A1325', display: 'block', marginBottom: '4px' }}>
+                  <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1A0709', display: 'block', marginBottom: '4px' }}>
                     EMAIL ADDRESS
                   </label>
                   <input
@@ -3326,13 +2828,13 @@ _Please contact this client immediately and arrange site inspection / discussion
                     placeholder="client@example.com"
                     value={custForm.email}
                     onChange={(e) => setCustForm({ ...custForm, email: e.target.value })}
-                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#0A1325', boxSizing: 'border-box' }}
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#1A0709', boxSizing: 'border-box' }}
                   />
                 </div>
               </div>
 
               <div>
-                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#0A1325', display: 'block', marginBottom: '4px' }}>
+                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1A0709', display: 'block', marginBottom: '4px' }}>
                   REQUIREMENT / PREFERRED PLOT &amp; LOCATION
                 </label>
                 <input
@@ -3340,18 +2842,18 @@ _Please contact this client immediately and arrange site inspection / discussion
                   placeholder="e.g. 1500 Sq.Ft East Facing Plot #14, Kambalapatti"
                   value={custForm.requirement}
                   onChange={(e) => setCustForm({ ...custForm, requirement: e.target.value })}
-                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#0A1325', boxSizing: 'border-box' }}
+                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#1A0709', boxSizing: 'border-box' }}
                 />
               </div>
 
               <div>
-                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#0A1325', display: 'block', marginBottom: '4px' }}>
+                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1A0709', display: 'block', marginBottom: '4px' }}>
                   ASSIGNED STAFF / AGENT
                 </label>
                 <select
                   value={custForm.assignedStaff}
                   onChange={(e) => setCustForm({ ...custForm, assignedStaff: e.target.value })}
-                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', fontWeight: 600, boxSizing: 'border-box', cursor: 'pointer' }}
+                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#1A0709', fontWeight: 600, boxSizing: 'border-box', cursor: 'pointer' }}
                 >
                   {staffRoster.map((s) => {
                     const sName = typeof s === 'string' ? s : s.name;
@@ -3365,7 +2867,7 @@ _Please contact this client immediately and arrange site inspection / discussion
               </div>
 
               <div>
-                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#0A1325', display: 'block', marginBottom: '4px' }}>
+                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1A0709', display: 'block', marginBottom: '4px' }}>
                   ADDITIONAL NOTES / REMARKS
                 </label>
                 <textarea
@@ -3373,7 +2875,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   placeholder="e.g. Visited Kambalapatti site on Sunday. Token amount ₹50,000 paid."
                   value={custForm.notes}
                   onChange={(e) => setCustForm({ ...custForm, notes: e.target.value })}
-                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', fontFamily: 'inherit', color: '#0A1325', boxSizing: 'border-box' }}
+                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', fontFamily: 'inherit', color: '#1A0709', boxSizing: 'border-box' }}
                 />
               </div>
 
@@ -3399,288 +2901,6 @@ _Please contact this client immediately and arrange site inspection / discussion
         </div>
       )}
 
-      {/* UPCOMING PROJECT ADD / EDIT MODAL */}
-      {projectModalOpen && (
-        <div className="admin-modal-overlay" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(4px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div className="admin-modal-card" style={{ background: 'var(--bg-ivory)', border: '1.5px solid var(--gold-border)', borderRadius: 'var(--radius-md)', maxWidth: '640px', width: '100%', padding: '24px 28px', boxShadow: '0 20px 50px rgba(0,0,0,0.4)', position: 'relative', maxHeight: '90vh', overflowY: 'auto' }}>
-            {/* Modal Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid var(--gold-border)', paddingBottom: '10px' }}>
-              <div>
-                <span className="architectural-tag" style={{ fontSize: '0.65rem' }}>UPCOMING TOWNSHIP SPECIFICATIONS</span>
-                <h3 style={{ color: '#0A1325', marginTop: '2px', fontSize: '1.25rem', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>
-                  {editingProjectIdx !== null ? 'Edit Upcoming Project' : 'Add New Upcoming Project'}
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setProjectModalOpen(false)}
-                style={{ background: 'none', border: 'none', fontSize: '1.6rem', color: '#0A1325', cursor: 'pointer' }}
-              >
-                &times;
-              </button>
-            </div>
-
-            <form onSubmit={handleSaveProject} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              {/* Title */}
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
-                  PROJECT TITLE *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={projectForm.title}
-                  onChange={(e) => setProjectForm({ ...projectForm, title: e.target.value })}
-                  placeholder="e.g. SHASHTIKA Grand Horizon"
-                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', boxSizing: 'border-box' }}
-                />
-              </div>
-
-              {/* City and Tag */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
-                    CITY / REGION *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={projectForm.city}
-                    onChange={(e) => setProjectForm({ ...projectForm, city: e.target.value })}
-                    placeholder="e.g. Pollachi or Coimbatore"
-                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', boxSizing: 'border-box' }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
-                    PROJECT CATEGORY TAG *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={projectForm.tag}
-                    onChange={(e) => setProjectForm({ ...projectForm, tag: e.target.value })}
-                    placeholder="e.g. Farm Plots or Residential"
-                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', boxSizing: 'border-box' }}
-                  />
-                </div>
-              </div>
-
-              {/* Badge, Area, Road */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
-                    LAUNCH BADGE *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={projectForm.badge}
-                    onChange={(e) => setProjectForm({ ...projectForm, badge: e.target.value })}
-                    placeholder="e.g. Ready to Launch"
-                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', boxSizing: 'border-box' }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
-                    TOTAL AREA *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={projectForm.area}
-                    onChange={(e) => setProjectForm({ ...projectForm, area: e.target.value })}
-                    placeholder="e.g. 5.9 ACRES"
-                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', boxSizing: 'border-box' }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
-                    ROAD ACCESS *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={projectForm.road}
-                    onChange={(e) => setProjectForm({ ...projectForm, road: e.target.value })}
-                    placeholder="e.g. 40 FT ROADS"
-                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', boxSizing: 'border-box' }}
-                  />
-                </div>
-              </div>
-
-              {/* Approval and Location */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
-                    APPROVAL STATUS
-                  </label>
-                  <input
-                    type="text"
-                    value={projectForm.approval}
-                    onChange={(e) => setProjectForm({ ...projectForm, approval: e.target.value })}
-                    placeholder="e.g. DTCP & RERA Approved Layout"
-                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', boxSizing: 'border-box' }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
-                    LOCATION CORRIDOR
-                  </label>
-                  <input
-                    type="text"
-                    value={projectForm.location}
-                    onChange={(e) => setProjectForm({ ...projectForm, location: e.target.value })}
-                    placeholder="e.g. Pollachi Highway Corridor"
-                    style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.88rem', color: '#0A1325', boxSizing: 'border-box' }}
-                  />
-                </div>
-              </div>
-
-              {/* Image Selection / Upload Section */}
-              <div style={{ border: '1.5px solid var(--gold-border)', borderRadius: '8px', padding: '14px', background: 'rgba(198, 161, 91, 0.08)' }}>
-                <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 800, color: '#0A1325', marginBottom: '8px' }}>
-                  PROJECT PHOTOGRAPH / IMAGE *
-                </label>
-
-                <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-                  {/* Thumbnail Preview */}
-                  <div style={{ width: '110px', height: '80px', borderRadius: '6px', overflow: 'hidden', border: '1.5px solid #C6A15B', background: '#0A1325', flexShrink: 0 }}>
-                    <img
-                      src={projectForm.image || '/Images/Upcoming_Green_Valley.jpg'}
-                      alt="Preview"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      onError={(e) => { e.target.src = '/Images/Upcoming_Green_Valley.jpg'; }}
-                    />
-                  </div>
-
-                  <div style={{ flex: 1, minWidth: '220px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {/* File upload button */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <label
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '6px',
-                          padding: '7px 14px',
-                          fontSize: '0.76rem',
-                          fontWeight: 800,
-                          background: '#0A1325',
-                          color: '#F3E5AB',
-                          border: '1px solid #C6A15B',
-                          borderRadius: '6px',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#F3E5AB" strokeWidth="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
-                        Upload Photo from Device
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageFileUpload}
-                          style={{ display: 'none' }}
-                        />
-                      </label>
-                      <span style={{ fontSize: '0.72rem', color: 'rgba(10, 19, 37, 0.6)' }}>
-                        PNG, JPG or WebP (up to 5MB)
-                      </span>
-                    </div>
-
-                    {/* Or manual URL */}
-                    <div>
-                      <input
-                        type="text"
-                        required
-                        value={projectForm.image}
-                        onChange={(e) => setProjectForm({ ...projectForm, image: e.target.value })}
-                        placeholder="Or enter image URL (e.g. /Images/Upcoming_Green_Valley.jpg)"
-                        style={{ width: '100%', padding: '7px 10px', borderRadius: '4px', border: '1px solid var(--gold-border)', background: '#FFF', fontSize: '0.80rem', color: '#0A1325', boxSizing: 'border-box' }}
-                      />
-                    </div>
-
-                    {/* Quick Image Presets */}
-                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.66rem', fontWeight: 700, color: 'rgba(10, 19, 37, 0.7)' }}>Quick presets:</span>
-                      {[
-                        { label: 'Green Valley', url: '/Images/Upcoming_Green_Valley.jpg' },
-                        { label: 'Heritage Hills', url: '/Images/Upcoming_Heritage_Hills.jpg' },
-                        { label: 'Emerald Palms', url: '/Images/Upcoming_Emerald_Palms.jpg' },
-                        { label: 'Royal Enclave', url: '/Images/Upcoming_Royal_Enclave.jpg' },
-                        { label: 'Luxury Villa', url: '/Images/Hero_Villa.jpg' }
-                      ].map((p, pIdx) => (
-                        <button
-                          key={pIdx}
-                          type="button"
-                          onClick={() => setProjectForm({ ...projectForm, image: p.url })}
-                          style={{
-                            padding: '2px 7px',
-                            fontSize: '0.66rem',
-                            borderRadius: '4px',
-                            border: '1px solid rgba(198, 161, 91, 0.4)',
-                            background: projectForm.image === p.url ? '#C6A15B' : '#FFFDF7',
-                            color: projectForm.image === p.url ? '#0A1325' : '#4A3E38',
-                            cursor: 'pointer',
-                            fontWeight: projectForm.image === p.url ? 800 : 500
-                          }}
-                        >
-                          {p.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Description */}
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
-                  BRIEF SUMMARY DESCRIPTION
-                </label>
-                <textarea
-                  rows="2"
-                  value={projectForm.desc}
-                  onChange={(e) => setProjectForm({ ...projectForm, desc: e.target.value })}
-                  placeholder="101 premium gated agro-residency units with drip irrigation, solar avenue lights, and organic plantation layouts."
-                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.86rem', color: '#0A1325', boxSizing: 'border-box' }}
-                />
-              </div>
-
-              {/* Highlights & Features (one per line) */}
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 800, color: '#0A1325', marginBottom: '4px' }}>
-                  KEY FEATURES &amp; HIGHLIGHTS (One amenity per line)
-                </label>
-                <textarea
-                  rows="4"
-                  value={projectForm.features}
-                  onChange={(e) => setProjectForm({ ...projectForm, features: e.target.value })}
-                  placeholder="DTCP & RERA Approved Layout&#10;40 ft Wide Internal Tar Roads&#10;Solar Powered Street Lighting&#10;Individual Drip Irrigation Connections&#10;24/7 Gated Security & Perimeter Wall"
-                  style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.84rem', fontFamily: 'monospace', color: '#0A1325', boxSizing: 'border-box' }}
-                />
-              </div>
-
-              {/* Form Action Buttons */}
-              <div style={{ marginTop: '10px', display: 'flex', gap: '10px', justifyContent: 'flex-end', borderTop: '1px solid var(--gold-border)', paddingTop: '14px' }}>
-                <button
-                  type="button"
-                  onClick={() => setProjectModalOpen(false)}
-                  className="btn btn-outline-gold"
-                  style={{ fontSize: '0.78rem', padding: '8px 18px', cursor: 'pointer' }}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="btn btn-gold"
-                  style={{ fontSize: '0.78rem', padding: '8px 22px', fontWeight: 800, cursor: 'pointer' }}
-                >
-                  SAVE PROJECT
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

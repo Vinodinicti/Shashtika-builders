@@ -16,25 +16,39 @@ export default function Header({ onOpenNav }) {
     <header
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-[#0A1325]/95 backdrop-blur-md border-b border-gold-primary/80 shadow-[0_4px_20px_rgba(10,19,37,0.7)] py-1.5'
+          ? 'bg-white/95 backdrop-blur-md border-b border-gold-primary/50 shadow-[0_4px_20px_rgba(0,0,0,0.08)] py-1.5'
           : 'bg-transparent border-b-0 shadow-none py-2 sm:py-2.5'
       }`}
     >
       <div className="max-w-[1320px] mx-auto px-4 sm:px-8">
-        <div className="flex items-center justify-between h-[44px]">
+        <div className="flex items-center justify-between min-h-[48px] sm:min-h-[52px]">
           {/* Logo & Brand Identity */}
-          <a href="#" className="flex items-center gap-2.5 no-underline group">
+          <a
+            href="#"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex items-center gap-3 no-underline group py-1"
+          >
             <img
               src="/Images/Shashtika_Emblem.png"
               alt="SHASHTIKA Logo"
-              className="h-[30px] w-auto object-contain rounded border border-gold-primary/50 shadow-[0_2px_8px_rgba(10,19,37,0.5)] transition-transform duration-300 group-hover:scale-105"
+              className="h-[44px] sm:h-[50px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />
             <div className="flex flex-col">
-              <span className="logo-title gold-glow-letters text-[1.18rem] leading-none">
+              <span
+                className={`logo-title text-[1.25rem] sm:text-[1.38rem] leading-none transition-colors duration-200 ${
+                  scrolled
+                    ? 'font-heading font-extrabold text-[#1A0709] tracking-[1.5px]'
+                    : 'gold-glow-letters'
+                }`}
+              >
                 SHASHTIKA
               </span>
-              <span className="font-mono text-[0.52rem] tracking-[1.5px] text-gold-light uppercase mt-0.5">
-                PLOT DEVELOPERS & BUILDERS
+              <span
+                className={`font-mono text-[0.54rem] sm:text-[0.60rem] tracking-[1.5px] uppercase mt-1 transition-colors duration-200 ${
+                  scrolled ? 'text-[#99793B] font-bold' : 'text-gold-light font-bold'
+                }`}
+              >
+                PLOT DEVELOPERS &amp; BUILDERS
               </span>
             </div>
           </a>
@@ -44,11 +58,33 @@ export default function Header({ onOpenNav }) {
             <button
               onClick={onOpenNav}
               aria-label="Open Navigation Menu"
-              className="w-[32px] h-[32px] rounded border border-gold-primary bg-gold-primary/10 hover:bg-gold-primary flex flex-col items-center justify-center gap-[4px] transition-colors duration-200 cursor-pointer group"
+              className={`w-[32px] h-[32px] rounded border border-gold-primary flex flex-col items-center justify-center gap-[4px] transition-colors duration-200 cursor-pointer group ${
+                scrolled
+                  ? 'bg-gold-primary/15 hover:bg-gold-primary'
+                  : 'bg-gold-primary/10 hover:bg-gold-primary'
+              }`}
             >
-              <span className="block w-[17px] h-[1.8px] bg-gold-primary group-hover:bg-[#0A1325] transition-colors" />
-              <span className="block w-[17px] h-[1.8px] bg-gold-primary group-hover:bg-[#0A1325] transition-colors" />
-              <span className="block w-[17px] h-[1.8px] bg-gold-primary group-hover:bg-[#0A1325] transition-colors" />
+              <span
+                className={`block w-[17px] h-[1.8px] transition-colors ${
+                  scrolled
+                    ? 'bg-[#1A0709] group-hover:bg-white'
+                    : 'bg-gold-primary group-hover:bg-[#1A0709]'
+                }`}
+              />
+              <span
+                className={`block w-[17px] h-[1.8px] transition-colors ${
+                  scrolled
+                    ? 'bg-[#1A0709] group-hover:bg-white'
+                    : 'bg-gold-primary group-hover:bg-[#1A0709]'
+                }`}
+              />
+              <span
+                className={`block w-[17px] h-[1.8px] transition-colors ${
+                  scrolled
+                    ? 'bg-[#1A0709] group-hover:bg-white'
+                    : 'bg-gold-primary group-hover:bg-[#1A0709]'
+                }`}
+              />
             </button>
           </div>
         </div>

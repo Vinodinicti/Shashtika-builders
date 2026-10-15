@@ -1,6 +1,32 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CUSTOMER_REVIEWS } from '../data/homeData';
 
+// Helper to render dynamic stars matching individual reviewer ratings
+function renderReviewStars(ratingStr) {
+  const rating = parseFloat(ratingStr) || 5.0;
+  return [1, 2, 3, 4, 5].map((starNum) => {
+    if (rating >= starNum) {
+      return (
+        <span key={starNum} className="star-gold">
+          ★
+        </span>
+      );
+    } else if (rating >= starNum - 0.5) {
+      return (
+        <span key={starNum} className="star-gold star-half" title={`${rating} Stars`}>
+          ★
+        </span>
+      );
+    } else {
+      return (
+        <span key={starNum} className="star-dim" title={`${rating} Stars`}>
+          ★
+        </span>
+      );
+    }
+  });
+}
+
 export default function ReviewsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(2);
@@ -61,13 +87,19 @@ export default function ReviewsSection() {
         
         {/* Section Header */}
         <div className="reviews-header">
-          <span className="architectural-tag centered">— VERIFIED PLOT BUYER TESTIMONIALS —</span>
+          <span className="architectural-tag centered">— VERIFIED CLIENT EXPERIENCES —</span>
           <h2 className="reviews-main-title">
             WHAT OUR CLIENTS SAY ABOUT SHASHTIKA
           </h2>
           <p className="reviews-sub-desc">
-            Real experiences and trust stories from plot buyers and residents across Tamil Nadu.
+            Genuine experiences from plot buyers, home builders, and families across Coimbatore, Chennai, Pollachi &amp; Tamil Nadu.
           </p>
+          <div className="flex items-center justify-center gap-2 mt-3 font-mono text-xs text-gold-dark font-bold tracking-wider">
+            <span className="text-gold-primary">★★★★★</span>
+            <span>4.8 / 5.0 Average Rating</span>
+            <span className="text-espresso-400">•</span>
+            <span className="text-espresso-700">850+ Verified Landowners</span>
+          </div>
         </div>
 
         {/* Reviews Slider Viewport */}
@@ -111,11 +143,7 @@ export default function ReviewsSection() {
 
                       <div className="star-rating-pill">
                         <div className="stars-gold-wrap">
-                          <span className="star-gold">★</span>
-                          <span className="star-gold">★</span>
-                          <span className="star-gold">★</span>
-                          <span className="star-gold">★</span>
-                          <span className="star-gold">★</span>
+                          {renderReviewStars(rev.rating)}
                         </div>
                         <span className="rating-num">{rev.rating || "5.0"}</span>
                       </div>

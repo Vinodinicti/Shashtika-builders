@@ -148,21 +148,177 @@ const galleryProjects = [
   }
 ];
 
+// Curated collection of available real project photographs
+const availableGalleryImages = [
+  {
+    id: 'gal-1',
+    src: '/Images/Hero_Arch.jpg',
+    title: 'Grand Entrance Gate Arch & Palm Boulevard',
+    category: 'arches',
+    categoryLabel: 'ENTRANCE ARCH',
+    location: 'Pollachi Main Road Enclave',
+    desc: 'Majestic 40ft wide gated entrance with perimeter security kiosk and illuminated architectural signage.'
+  },
+  {
+    id: 'gal-2',
+    src: '/Images/Shashtika_Engineered_Roads.jpg',
+    title: '40ft & 30ft Heavy-Duty Asphalt Tar Roads',
+    category: 'roads',
+    categoryLabel: 'TAR ROADS',
+    location: 'Eachanari Bypass Corridor',
+    desc: 'Heavy 4-layer bitumen compaction with concrete road kerbs and underground rainwater runoff lines.'
+  },
+  {
+    id: 'gal-3',
+    src: '/Images/Shashtika_Process_2_DTCP.jpg',
+    title: 'Government DTCP & RERA Approved Blueprints',
+    category: 'planning',
+    categoryLabel: 'TOWN PLANNING',
+    location: 'Kambalampatti, Pollachi',
+    desc: '100% sanctioned layout blueprints with 10% dedicated public park space and wide road corridors.'
+  },
+  {
+    id: 'gal-4',
+    src: '/Images/Hero_Villa.jpg',
+    title: 'Contemporary Luxury Villa Elevation',
+    category: 'villas',
+    categoryLabel: 'LUXURY VILLA',
+    location: 'Kovaipudur Mountain View',
+    desc: 'Custom-designed contemporary residential villa with Western Ghats backdrop and private landscaped lawn.'
+  },
+  {
+    id: 'gal-5',
+    src: '/Images/Shashtika_Process_4_Arch.jpg',
+    title: 'Gated Security Arch & Boundary Enclosure',
+    category: 'arches',
+    categoryLabel: 'GATED SECURITY',
+    location: 'Anaimalai Taluk Enclave',
+    desc: 'Gated community perimeter wall with royal palm landscaping and 24/7 security checkpoint.'
+  },
+  {
+    id: 'gal-6',
+    src: '/Images/Shashtika_Process_3_Infra.jpg',
+    title: 'Underground Stormwater Drainage Network',
+    category: 'roads',
+    categoryLabel: 'CIVIL INFRA',
+    location: 'Coimbatore Regional Corridor',
+    desc: 'Engineered drainage system to prevent waterlogging during monsoon seasons and ensure 30+ year road life.'
+  },
+  {
+    id: 'gal-7',
+    src: '/Images/Shashtika_Process_5_Handover.jpg',
+    title: 'Numbered Concrete Boundary Corner Stones',
+    category: 'construction',
+    categoryLabel: 'HANDOVER',
+    location: 'Kambalampatti Village Layout',
+    desc: 'Clearly planted revenue boundary stones demarcating every individual plot for instant possession.'
+  },
+  {
+    id: 'gal-8',
+    src: '/Images/Shashtika_Heritage_Story.jpg',
+    title: 'Site Engineering & Technical Layout Audit',
+    category: 'planning',
+    categoryLabel: 'SITE AUDIT',
+    location: 'Pollachi Heritage Enclave',
+    desc: 'On-site technical evaluation, groundwater quality testing, and contour mapping by senior civil engineers.'
+  },
+  {
+    id: 'gal-9',
+    src: '/Images/Upcoming_Emerald_Palms.jpg',
+    title: 'Emerald Palms Gated Residential Layout',
+    category: 'villas',
+    categoryLabel: 'RESIDENTIAL',
+    location: 'Kinathukadavu Bypass',
+    desc: 'Scenic plotted enclave nestled amidst coconut groves with 33ft central avenue and sweet groundwater.'
+  },
+  {
+    id: 'gal-10',
+    src: '/Images/Construction_Underway.jpg',
+    title: 'Road Sub-Base Compaction & Kerbing',
+    category: 'construction',
+    categoryLabel: 'CONSTRUCTION',
+    location: 'Pollachi Corridor Layout',
+    desc: 'Mechanical roller compaction of wet-mix macadam stone base prior to asphalt tar paving.'
+  },
+  {
+    id: 'gal-11',
+    src: '/Images/Upcoming_Royal_Enclave.jpg',
+    title: 'Royal Enclave Master Plotted Township',
+    category: 'arches',
+    categoryLabel: 'COMMUNITY',
+    location: 'Coimbatore Airport Corridor',
+    desc: 'Master-planned layout with solar street lighting, underground utilities, and landscaped walkways.'
+  },
+  {
+    id: 'gal-12',
+    src: '/Images/Construction_75_Percent.jpg',
+    title: 'Tar Road Paving & Solar Luminaire Installation',
+    category: 'construction',
+    categoryLabel: 'CONSTRUCTION',
+    location: 'Anaimalai Highway',
+    desc: 'Hot-mix asphalt surfacing and automatic solar street luminaire poles erected across all layout streets.'
+  },
+  {
+    id: 'gal-13',
+    src: '/Images/Shashtika_Legacy_Appreciation.jpg',
+    title: 'Coconut Grove Agro-Residential Farm Layout',
+    category: 'roads',
+    categoryLabel: 'GREEN LAYOUT',
+    location: 'Mahalingapuram, Pollachi',
+    desc: 'Lush greenery, copiously sweet drinking groundwater, and scenic mountain views for tranquil living.'
+  },
+  {
+    id: 'gal-14',
+    src: '/Images/Masterplan_Kambalapatti.png',
+    title: 'Approved DTCP No. 02/2025 Blueprint Plan',
+    category: 'planning',
+    categoryLabel: 'BLUEPRINT',
+    location: 'S.F.No 209/1 & 222/1A1',
+    desc: 'Official 64-plot DTCP approved layout map with 12m Panchayat tar roads and dedicated public park.'
+  },
+  {
+    id: 'gal-15',
+    src: '/Images/Upcoming_Green_Valley.jpg',
+    title: 'Green Valley Foothill Residential Enclave',
+    category: 'villas',
+    categoryLabel: 'FOOTHILL ESTATE',
+    location: 'Kovaipudur Foothills',
+    desc: 'Boutique residential enclave surrounded by scenic hills, cool breeze, and 100% clear parent deeds.'
+  },
+  {
+    id: 'gal-16',
+    src: '/Images/Construction_Key_Handover.jpg',
+    title: 'Plot Possession & Title Deed Handover',
+    category: 'construction',
+    categoryLabel: 'HANDOVER',
+    location: 'Sub-Registrar Office, Pollachi',
+    desc: 'Assisted registration, clear sale deed execution, and individual Patta transfer completed for plot owners.'
+  }
+];
+
 export default function GalleryPage() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [activeCardId, setActiveCardId] = useState(null);
   const [selectedModalProject, setSelectedModalProject] = useState(null);
 
-  // Close modal on Escape key
+  // Photo Gallery Template State
+  const [lightboxIndex, setLightboxIndex] = useState(null);
+
+  // Keyboard navigation for Lightbox and Project Modal
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         setSelectedModalProject(null);
+        setLightboxIndex(null);
+      } else if (e.key === 'ArrowRight' && lightboxIndex !== null) {
+        setLightboxIndex((prev) => (prev + 1) % availableGalleryImages.length);
+      } else if (e.key === 'ArrowLeft' && lightboxIndex !== null) {
+        setLightboxIndex((prev) => (prev - 1 + availableGalleryImages.length) % availableGalleryImages.length);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [lightboxIndex]);
 
   const filteredProjects = galleryProjects.filter(p => {
     if (activeFilter === 'all') return true;
@@ -170,7 +326,6 @@ export default function GalleryPage() {
   });
 
   const handleCardClick = (proj) => {
-    // If mobile or already active, open the full modal
     if (window.innerWidth <= 900) {
       if (activeCardId === proj.id) {
         setSelectedModalProject(proj);
@@ -179,6 +334,13 @@ export default function GalleryPage() {
       }
     } else {
       setSelectedModalProject(proj);
+    }
+  };
+
+  const openLightboxByImgId = (imgId) => {
+    const index = availableGalleryImages.findIndex((item) => item.id === imgId);
+    if (index !== -1) {
+      setLightboxIndex(index);
     }
   };
 
@@ -209,13 +371,13 @@ export default function GalleryPage() {
               <span style={{ color: '#E5D2A6' }}>DEVELOPMENTS</span>
             </h1>
 
-            <p className="hero-subtext">
-              Explore DTCP-approved layouts, entrance arches, 40 FT roads, and luxury villa projects across Coimbatore &amp; Pollachi.
-            </p>
-
             <div className="flex flex-wrap items-center gap-4 mt-6">
               <a
                 href="#gallery-grid-section"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('gallery-grid-section')?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="inline-flex items-center gap-2 px-5 py-3 rounded bg-gold-primary text-espresso-950 font-mono text-[0.78rem] font-extrabold tracking-[1.5px] border border-gold-light hover:bg-gold-light transition-all shadow-[0_6px_20px_rgba(0,0,0,0.4)] cursor-pointer"
               >
                 EXPLORE GALLERY
@@ -368,131 +530,121 @@ export default function GalleryPage() {
       </section>
 
       {/* =========================================================================
-          CIVIL ENGINEERING STANDARDS SHOWCASE (3 DIAGRAMMATIC MOTION CARDS)
+          CONTINUOUS SCROLLING REEL & INTERACTIVE PHOTO GALLERY TEMPLATE
           ========================================================================= */}
       <section className="py-16 md:py-24 bg-[#FFFDF9]" style={{ borderTop: '1px solid var(--gold-border)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="architectural-tag">ENGINEERING STANDARDS</span>
+          
+          {/* Section Heading */}
+          <div className="text-center max-w-3xl mx-auto mb-10">
+            <span className="architectural-tag">VISUAL ARCHIVE &amp; LIVE SITE REEL</span>
             <h2 style={{
               fontFamily: 'var(--font-heading)',
-              fontSize: 'clamp(1.4rem, 2.1vw, 1.85rem)',
-              color: '#0A1325',
+              fontSize: 'clamp(1.5rem, 2.3vw, 2.2rem)',
+              color: '#1A0709',
               marginTop: '6px',
               marginBottom: '10px',
-              fontWeight: 800
+              fontWeight: 800,
+              letterSpacing: '0.5px'
             }}>
-              CIVIL ENGINEERING EXCELLENCE
+              PROJECT DEVELOPMENTS &amp; PHOTO GALLERY
             </h2>
-            <p style={{ color: '#475569', fontSize: '0.92rem', lineHeight: '1.6' }}>
-              Every photograph in our gallery reflects SHASHTIKA's commitment to rigorous civil construction, legal town planning, and environmental aesthetics.
+            <p style={{ color: '#521D24', fontSize: '0.92rem', lineHeight: '1.6' }}>
+              Explore real photographs from our completed and ongoing plotted layouts, grand entrance arches, 40ft blacktop tar roads, underground drainage, and landscape development across Coimbatore &amp; Pollachi.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Card 1: Realistic Road & Infrastructure Showcase */}
-            <div className="diagrammatic-card">
-              <div className="diagrammatic-canvas">
-                <img
-                  src="/Images/Shashtika_Engineered_Roads.jpg"
-                  alt="40ft and 30ft Engineered Tar Roads"
-                  className="realistic-showcase-img"
-                />
-                <div className="realistic-motion-tint" />
-                <div className="realistic-ambient-shimmer" />
-                <div className="realistic-canvas-badge">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>40FT DUAL CARRIAGEWAY</span>
-                </div>
-                <div className="realistic-callout-pill">
-                  <span>|← 40 FT ROADWAY + 6 FT STORM DRAIN →|</span>
-                  <span className="text-emerald-400 font-bold">● ACTIVE</span>
-                </div>
-              </div>
-              <div className="diagrammatic-card-body">
-                <span className="architectural-tag">01. INFRASTRUCTURE</span>
-                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', color: '#0A1325', margin: '10px 0 12px', fontWeight: 700 }}>
-                  40FT &amp; 30FT HEAVY TAR ROADS
-                </h3>
-                <p style={{ fontSize: '0.92rem', color: '#475569', lineHeight: '1.65' }}>
-                  Laying 4-layer asphalt compaction with concrete kerb stones and rainwater runoff channels for 30+ year road longevity.
-                </p>
+          {/* 1. CONTINUOUS DUAL-TRACK AUTO-SCROLLING MARQUEE */}
+          <div className="mb-14">
+            <div className="flex items-center justify-between mb-3 px-1">
+              <span className="font-mono text-xs font-bold text-gold-dark tracking-wider uppercase flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                LIVE SITE PHOTOGRAPHY REEL (AUTO-SCROLLING • HOVER TO PAUSE)
+              </span>
+              <span className="hidden sm:inline font-mono text-xs text-espresso-600">
+                Click any image to enlarge 🔍
+              </span>
+            </div>
+
+            {/* Scrolling Track 1 (Moves Left) */}
+            <div className="gallery-marquee-container mb-4">
+              <div className="gallery-marquee-track-left">
+                {[...availableGalleryImages.slice(0, 8), ...availableGalleryImages.slice(0, 8)].map((item, idx) => (
+                  <div
+                    key={`track1-${item.id}-${idx}`}
+                    className="gallery-marquee-card"
+                    onClick={() => openLightboxByImgId(item.id)}
+                  >
+                    <img src={item.src} alt={item.title} loading="lazy" />
+                    <div className="gallery-marquee-overlay">
+                      <div className="flex justify-between items-start">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#1A0709] text-gold-light border border-gold-primary/50 shadow-xs">
+                          {item.categoryLabel}
+                        </span>
+                        <span className="w-6 h-6 rounded-full bg-gold-primary text-espresso-950 flex items-center justify-center text-xs font-bold shadow-sm">
+                          +
+                        </span>
+                      </div>
+                      <div>
+                        <h4 className="font-heading text-xs font-bold text-cream line-clamp-1 leading-snug">
+                          {item.title}
+                        </h4>
+                        <span className="font-mono text-[10px] text-gold-light/90 block mt-0.5">
+                          📍 {item.location}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Card 2: Realistic Town Planning Blueprint Showcase */}
-            <div className="diagrammatic-card">
-              <div className="diagrammatic-canvas">
-                <img
-                  src="/Images/Shashtika_Process_2_DTCP.jpg"
-                  alt="DTCP and RERA Approved Blueprints"
-                  className="realistic-showcase-img"
-                />
-                <div className="realistic-motion-tint" />
-                <div className="realistic-ambient-shimmer" />
-                <div className="realistic-canvas-badge">
-                  <span className="w-2 h-2 rounded-full bg-gold-primary animate-pulse" />
-                  <span>DTCP / RERA VERIFIED</span>
-                </div>
-                <div className="realistic-callout-pill">
-                  <span>✓ 100% DTCP APPROVED BLUEPRINTS</span>
-                  <span className="text-gold-light font-bold">10% PARK</span>
-                </div>
-              </div>
-              <div className="diagrammatic-card-body">
-                <span className="architectural-tag">02. TOWN PLANNING</span>
-                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', color: '#0A1325', margin: '10px 0 12px', fontWeight: 700 }}>
-                  DTCP &amp; RERA APPROVED BLUEPRINTS
-                </h3>
-                <p style={{ fontSize: '0.92rem', color: '#475569', lineHeight: '1.65' }}>
-                  100% legal title clearance, 10% dedicated open space park reservation, and instant 80% bank loan approval across all layouts.
-                </p>
-              </div>
-            </div>
-
-            {/* Card 3: Realistic Entrance Arch Elevation Showcase */}
-            <div className="diagrammatic-card">
-              <div className="diagrammatic-canvas">
-                <img
-                  src="/Images/Hero_Arch.jpg"
-                  alt="Architectural Entrance Arches"
-                  className="realistic-showcase-img"
-                />
-                <div className="realistic-motion-tint" />
-                <div className="realistic-ambient-shimmer" />
-                <div className="realistic-canvas-badge">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>24/7 GATED SECURITY</span>
-                </div>
-                <div className="realistic-callout-pill">
-                  <span>GRAND ENTRANCE ARCH &amp; PALM AVENUE</span>
-                  <span className="text-emerald-400 font-bold">SECURED</span>
-                </div>
-              </div>
-              <div className="diagrammatic-card-body">
-                <span className="architectural-tag">03. LANDSCAPING</span>
-                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', color: '#0A1325', margin: '10px 0 12px', fontWeight: 700 }}>
-                  ARCHITECTURAL ENTRANCE ARCHES
-                </h3>
-                <p style={{ fontSize: '0.92rem', color: '#475569', lineHeight: '1.65' }}>
-                  Grand entrance gates, 24/7 security kiosks, perimeter compound walling, and royal avenue palm trees.
-                </p>
+            {/* Scrolling Track 2 (Moves Right) */}
+            <div className="gallery-marquee-container">
+              <div className="gallery-marquee-track-right">
+                {[...availableGalleryImages.slice(8, 16), ...availableGalleryImages.slice(8, 16)].map((item, idx) => (
+                  <div
+                    key={`track2-${item.id}-${idx}`}
+                    className="gallery-marquee-card"
+                    onClick={() => openLightboxByImgId(item.id)}
+                  >
+                    <img src={item.src} alt={item.title} loading="lazy" />
+                    <div className="gallery-marquee-overlay">
+                      <div className="flex justify-between items-start">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#1A0709] text-gold-light border border-gold-primary/50 shadow-xs">
+                          {item.categoryLabel}
+                        </span>
+                        <span className="w-6 h-6 rounded-full bg-gold-primary text-espresso-950 flex items-center justify-center text-xs font-bold shadow-sm">
+                          +
+                        </span>
+                      </div>
+                      <div>
+                        <h4 className="font-heading text-xs font-bold text-cream line-clamp-1 leading-snug">
+                          {item.title}
+                        </h4>
+                        <span className="font-mono text-[10px] text-gold-light/90 block mt-0.5">
+                          📍 {item.location}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
           {/* CALL TO ACTION BANNER */}
-          <div className="workflow-cta-banner mt-14">
+          <div className="workflow-cta-banner mt-16 bg-gradient-to-r from-[#1A0709] via-[#2D0E12] to-[#1A0709] border border-gold-primary rounded-xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
             <div>
               <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.45rem', color: '#FFFDF7', marginBottom: '6px', fontWeight: 700 }}>
-                READY TO EXPLORE OUR DEVELOPMENTS IN PERSON?
+                EXPLORE VERIFIED RESIDENTIAL PLOT LAYOUTS
               </h4>
               <p style={{ color: '#E5D2A6', fontSize: '0.92rem' }}>
-                Book a complimentary site visit with our project engineers to inspect plot boundaries and road layouts.
+                View complete DTCP approved layout blueprints, individual plot dimensions, and real-time availability across Coimbatore &amp; Pollachi.
               </p>
             </div>
-            <a href="#quick-enquiry-section" className="btn-gold">
-              SCHEDULE A SITE VISIT
+            <a href="#plots" className="btn-gold whitespace-nowrap">
+              VIEW MASTER PLAN BLUEPRINTS
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
@@ -500,6 +652,101 @@ export default function GalleryPage() {
           </div>
         </div>
       </section>
+
+      {/* =========================================================================
+          FULL-SCREEN HIGH-RESOLUTION LIGHTBOX MODAL
+          ========================================================================= */}
+      {lightboxIndex !== null && availableGalleryImages[lightboxIndex] && (
+        <div
+          className="gallery-lightbox-overlay"
+          onClick={() => setLightboxIndex(null)}
+        >
+          <div
+            className="relative max-w-4xl w-full bg-[#1A0709] rounded-2xl border-2 border-gold-primary shadow-2xl overflow-hidden flex flex-col max-h-[92vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Top Bar with Navigation & Close */}
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-gold-primary/30 bg-[#100405] text-cream">
+              <div className="flex items-center gap-2.5">
+                <span className="px-2.5 py-0.5 rounded text-[11px] font-mono font-bold bg-[#1A0709] text-gold-light border border-gold-primary/50 shadow-xs">
+                  {availableGalleryImages[lightboxIndex].categoryLabel}
+                </span>
+                <span className="font-mono text-xs text-gold-light/80">
+                  {lightboxIndex + 1} / {availableGalleryImages.length}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightboxIndex((prev) => (prev - 1 + availableGalleryImages.length) % availableGalleryImages.length);
+                  }}
+                  className="w-8 h-8 rounded-full border border-gold-border/40 text-cream hover:bg-gold-primary hover:text-espresso-950 flex items-center justify-center transition-all cursor-pointer font-bold"
+                  title="Previous (Left Arrow)"
+                >
+                  ←
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightboxIndex((prev) => (prev + 1) % availableGalleryImages.length);
+                  }}
+                  className="w-8 h-8 rounded-full border border-gold-border/40 text-cream hover:bg-gold-primary hover:text-espresso-950 flex items-center justify-center transition-all cursor-pointer font-bold"
+                  title="Next (Right Arrow)"
+                >
+                  →
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLightboxIndex(null)}
+                  className="w-8 h-8 rounded-full border border-gold-primary text-gold-light hover:bg-gold-primary hover:text-espresso-950 flex items-center justify-center text-lg font-bold transition-all ml-2 cursor-pointer"
+                  title="Close (Esc)"
+                >
+                  &times;
+                </button>
+              </div>
+            </div>
+
+            {/* Lightbox Center Image Wrap */}
+            <div className="relative bg-black flex items-center justify-center overflow-hidden flex-1 min-h-[300px] max-h-[60vh]">
+              <img
+                src={availableGalleryImages[lightboxIndex].src}
+                alt={availableGalleryImages[lightboxIndex].title}
+                className="max-h-[60vh] w-auto max-w-full object-contain mx-auto"
+              />
+            </div>
+
+            {/* Bottom Caption & Action Footer */}
+            <div className="p-4 sm:p-5 bg-gradient-to-b from-[#1A0709] to-[#100405] border-t border-gold-primary/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h3 className="font-heading font-bold text-base sm:text-lg text-cream leading-snug">
+                  {availableGalleryImages[lightboxIndex].title}
+                </h3>
+                <p className="font-body text-xs text-gold-light/80 mt-1 max-w-xl">
+                  {availableGalleryImages[lightboxIndex].desc}
+                </p>
+                <span className="font-mono text-xs text-gold-antique mt-1 block">
+                  📍 {availableGalleryImages[lightboxIndex].location}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2.5 w-full sm:w-auto">
+                <a
+                  href={`https://wa.me/919363599754?text=${encodeURIComponent(`Hello SHASHTIKA, I am enquiring about photograph: "${availableGalleryImages[lightboxIndex].title}" (${availableGalleryImages[lightboxIndex].location}). Please share more project details.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 sm:flex-none px-4 py-2 rounded-lg bg-[#25D366] hover:bg-[#1EBE5D] text-white font-mono text-xs font-bold tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-md cursor-pointer whitespace-nowrap"
+                >
+                  💬 ENQUIRE ON WHATSAPP
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* =========================================================================
           INTERACTIVE PROJECT DETAIL MODAL POPUP
@@ -606,7 +853,7 @@ export default function GalleryPage() {
                   rel="noopener noreferrer"
                   className="btn-gold"
                 >
-                  ENQUIRE ON WHATSAPP →
+                  WHATSAPP ENQUIRY →
                 </a>
               </div>
             </div>

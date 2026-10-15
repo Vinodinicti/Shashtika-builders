@@ -14,77 +14,77 @@ export default function AboutPage() {
   const stages = [
     {
       num: '01',
-      tag: 'LEGAL & SOIL AUDIT',
-      title: 'TITLE VERIFICATION',
+      tag: 'LEGAL AUDIT',
+      title: '30-Year Title Search & Land Audit',
       img: '/Images/Shashtika_Process_1_Title.jpg',
-      desc: 'Conducting 30-year legal title searches, EC verification, parent deed audits, and ground water level analysis before acquiring land.',
-      backTag: 'LEGAL DELIVERABLES',
-      backTitle: 'TITLE & AUDIT SPECS',
+      desc: 'Before purchasing land, our senior legal team audits 30+ years of parent deeds, Encumbrance Certificates (EC), and revenue records (Patta, Chitta, FMB) to ensure 100% dispute-free ownership.',
+      backTag: 'LEGAL CERTAINTY',
+      backTitle: 'WHAT WE VERIFY FOR YOU',
       deliverables: [
-        '30-Year EC & Parent Deed Legal Audit',
-        'Revenue Survey & Boundary Demarcation',
-        'Soil Load-Bearing Capacity Testing',
-        'Groundwater Quality & Level Analysis',
+        '30+ Years Clean Encumbrance Certificate (EC)',
+        'Full Chain of Parent Deeds & Revenue Patta Audit',
+        'Official Field Survey & Boundary Verification',
+        'Zero Mortgages, Court Litigations or Disputes',
       ],
     },
     {
       num: '02',
-      tag: 'TOWN PLANNING',
-      title: 'DTCP & RERA APPROVALS',
+      tag: 'GOVERNMENT APPROVAL',
+      title: 'DTCP Sanction & Master Layout Design',
       img: '/Images/Shashtika_Process_2_DTCP.jpg',
-      desc: 'Architectural layout planning with 40ft/30ft wide roads, 10% open space park reservation, and complete DTCP & RERA approvals.',
-      backTag: 'APPROVAL SPECS',
-      backTitle: 'TOWN PLANNING DELIVERABLES',
+      desc: 'We design practical, Vastu-compliant layouts with wide roads, officially gift 10% land to the local Panchayat for children parks, and secure full DTCP approval before sales begin.',
+      backTag: 'TOWN PLANNING',
+      backTitle: 'OFFICIAL APPROVAL STANDARDS',
       deliverables: [
-        'Official DTCP Master Layout Plan Approval',
-        'RERA Registration Certification',
-        '10% Open Space Park Reservation',
-        'Instant 80% Bank Loan Pre-Approval',
+        'Official DTCP Approved Layout Number (e.g. 02/2025)',
+        'Wide 40ft & 33ft Main Roads + 23ft Cross Roads',
+        '10% Land Gifted to Panchayat for Children Park & Green Space',
+        'Pre-Approved Bank Loans up to 80% with Leading Banks',
       ],
     },
     {
       num: '03',
-      tag: 'INFRASTRUCTURE',
-      title: 'ENGINEERED ROADS & DRAINS',
+      tag: 'CIVIL INFRASTRUCTURE',
+      title: 'Heavy-Duty Tar Roads & Rain Drainage',
       img: '/Images/Shashtika_Process_3_Infra.jpg',
-      desc: 'Laying heavy-duty tar asphalt avenues, concrete kerbs, underground stormwater drainage lines, and rainwater harvest pits.',
-      backTag: 'INFRASTRUCTURE SPECS',
-      backTitle: 'CIVIL ENGINEERING SPECS',
+      desc: 'We lay long-lasting black tar roads over a solid stone base and build underground stormwater drainage channels so rainwater flows away smoothly without waterlogging or road damage.',
+      backTag: 'ROAD & DRAIN SPECS',
+      backTitle: 'DURABLE INFRASTRUCTURE',
       deliverables: [
-        '40ft & 30ft Heavy Tar Asphalt Roads',
-        'Concrete Kerbstone & Paver Channels',
-        'Underground Stormwater Drainage System',
-        'Rainwater Harvesting Recharging Pits',
+        'Durable Blacktop Tar Roads on Heavy Stone Base',
+        'Solid Concrete Road Curbs on Both Sides for Clean Edges',
+        'Underground Stormwater Drainage for Flood-Free Roads',
+        'Rainwater Harvesting Pits to Naturally Recharge Groundwater',
       ],
     },
     {
       num: '04',
-      tag: 'BEAUTIFICATION',
-      title: 'ARCH & GATED ENCLOSURE',
+      tag: 'ESSENTIAL UTILITIES',
+      title: 'Electricity, Sweet Water & Gated Security',
       img: '/Images/Shashtika_Process_4_Arch.jpg',
-      desc: 'Constructing grand architectural entrance arches, perimeter compound walls, security kiosks, solar streetlights, and palm trees.',
-      backTag: 'AMENITY SPECS',
-      backTitle: 'SECURITY & ARCHITECTURE',
+      desc: 'We install a dedicated TANGEDCO electricity transformer, bright automatic streetlights, arrange access to sweet drinking groundwater, and secure the layout with a grand arch and boundary fencing.',
+      backTag: 'SITE UTILITIES',
+      backTitle: 'ESSENTIAL SITE AMENITIES',
       deliverables: [
-        'Grand Architectural Entrance Gate Arch',
-        '24/7 Security Kiosk & Compound Wall',
-        'Solar Streetlights & Night Illumination',
-        'Royal Avenue Palm Tree Landscaping',
+        'Dedicated TANGEDCO Electricity Transformer & Power Lines',
+        'Automatic Streetlights for Bright Night-Time Safety',
+        'Abundant Potable Sweet Groundwater for Household Use',
+        'Grand Entrance Arch, Secure Fencing & Avenue Trees',
       ],
     },
     {
       num: '05',
-      tag: 'HANDOVER & REGISTRATION',
-      title: 'CORNERSTONE HANDOVER',
-      img: '/Images/Cornerstone_Handover.jpg',
-      desc: 'Demarcating plot boundaries with concrete corner markers, facilitating 100% bank loans, and completing hassle-free registration.',
-      backTag: 'REGISTRATION SPECS',
-      backTitle: 'TITLE & REGISTRATION',
+      tag: 'PLOT HANDOVER',
+      title: 'Boundary Stones & Spot Registration',
+      img: '/Images/Shashtika_Process_5_Handover.jpg',
+      desc: 'Every individual plot is demarcated with numbered concrete corner stones. We assist you with complete documentation, bank loan support, and hassle-free registration with individual Patta in your name.',
+      backTag: 'IMMEDIATE OWNERSHIP',
+      backTitle: 'LEGAL HANDOVER TO BUYER',
       deliverables: [
-        'Concrete Plot Corner Marker Demarcation',
-        'Clear Title Deed & Individual Patta',
-        'Hassle-Free Spot Registration Support',
-        'Ready for Immediate Villa Construction',
+        'Numbered Concrete Boundary Stones on All 4 Corners',
+        'Clear Sale Deed & Complete Parent Document Copies',
+        'Hassle-Free Spot Registration at Sub-Registrar Office',
+        'Individual Patta Transfer Support • 100% Ready for Construction',
       ],
     },
   ];
@@ -134,14 +134,14 @@ export default function AboutPage() {
 
             <div className="p-3.5 sm:p-4 pt-0">
               <div className="inline-flex items-center justify-between font-mono text-[10px] font-bold text-gold-dark border-t border-gold-border/50 pt-2 w-full group-hover:text-gold-primary transition-colors">
-                <span>HOVER / TAP TO REVEAL SPECS</span>
+                <span>HOVER / TAP TO REVEAL KEY DELIVERABLES</span>
                 <span className="text-xs">↺</span>
               </div>
             </div>
           </div>
 
           {/* Back Side */}
-          <div className="flip-card-back bg-gradient-to-br from-[#0A1325] via-[#0E1A33] to-[#070D1A] text-cream p-3.5 sm:p-4 rounded-xl border-1.5 border-gold-primary shadow-2xl flex flex-col justify-between">
+          <div className="flip-card-back bg-gradient-to-br from-[#1A0709] via-[#2D0E12] to-[#1A0709] text-cream p-3.5 sm:p-4 rounded-xl border-1.5 border-gold-primary shadow-2xl flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between pb-1.5 mb-2 border-b border-gold-primary/30">
                 <span className="font-heading text-[11px] font-bold text-gold-light bg-gold-primary/20 px-2 py-0.5 rounded border border-gold-primary/50">
@@ -158,7 +158,7 @@ export default function AboutPage() {
 
               <ul className="space-y-1.5 font-mono text-[10.5px] sm:text-[11px] text-cream/95">
                 {stage.deliverables.map((item, dIdx) => (
-                  <li key={dIdx} className="flex items-start gap-1.5 bg-[#070D1A]/60 p-1 rounded border border-gold-primary/20">
+                  <li key={dIdx} className="flex items-start gap-1.5 bg-[#2D0E12]/80 p-1 rounded border border-gold-primary/20">
                     <span className="text-gold-primary font-bold text-xs leading-none mt-0.5">✓</span>
                     <span className="leading-snug">{item}</span>
                   </li>
@@ -174,7 +174,7 @@ export default function AboutPage() {
               }}
               className="w-full mt-2.5 py-1.5 px-3 rounded bg-gold-primary text-espresso-950 font-mono text-[11px] font-extrabold tracking-wider hover:bg-gold-light transition-all text-center cursor-pointer shadow-md active:scale-[0.98]"
             >
-              ENQUIRE STAGE {stage.num} →
+              ENQUIRE STAGE {stage.num} ON WHATSAPP →
             </button>
           </div>
         </div>
@@ -238,17 +238,17 @@ export default function AboutPage() {
                   alt="20 Years SHASHTIKA Architectural Heritage"
                   className="w-full h-[220px] sm:h-[300px] lg:h-[320px] object-cover rounded-xl border border-gold-border/60 group-hover:scale-[1.02] transition-transform duration-500"
                 />
-                <div className="story-heritage-badge relative mt-2.5 sm:mt-0 sm:absolute sm:bottom-5 sm:left-5 sm:right-5 bg-[#0A1325] sm:bg-[#0A1325]/95 backdrop-blur-md p-3 rounded-lg border border-gold-primary/70 text-gold-light shadow-xl">
+                <div className="story-heritage-badge relative mt-2.5 sm:mt-0 sm:absolute sm:bottom-5 sm:left-5 sm:right-5 bg-white sm:bg-white/95 backdrop-blur-md p-3 rounded-lg border-2 border-gold-primary text-[#1A0709] shadow-xl">
                   <div className="flex items-center justify-between gap-2">
                     <div>
-                      <span className="font-mono text-[9px] text-gold-antique uppercase tracking-widest block font-bold">
+                      <span className="font-mono text-[9px] text-[#99793B] uppercase tracking-widest block font-bold">
                         FOUNDED IN 2004 • 20 YEARS HERITAGE
                       </span>
-                      <span className="font-heading text-xs sm:text-sm font-extrabold text-cream tracking-wide">
+                      <span className="font-heading text-xs sm:text-sm font-extrabold text-[#1A0709] tracking-wide">
                         POLLACHI &amp; COIMBATORE CORRIDORS
                       </span>
                     </div>
-                    <span className="px-2.5 py-0.5 rounded bg-[#070D1A] border border-gold-border text-gold-light font-mono text-[9.5px] font-bold flex-shrink-0">
+                    <span className="px-2.5 py-0.5 rounded bg-[#1A0709] border border-gold-primary/50 text-gold-light font-mono text-[9.5px] font-bold flex-shrink-0 shadow-xs">
                       EST. 2004
                     </span>
                   </div>
@@ -273,7 +273,7 @@ export default function AboutPage() {
               {/* Milestone Timeline Cards */}
               <div className="space-y-2 mt-4">
                 <div className="p-2.5 sm:p-3 rounded-lg bg-biscuit-100/70 border border-gold-border/40 hover:border-gold-primary hover:bg-biscuit-100 transition-all flex items-start gap-3 group">
-                  <span className="px-2 py-0.5 rounded bg-[#0A1325] text-gold-light font-mono text-[10.5px] font-extrabold tracking-wider mt-0.5 shadow-xs">
+                  <span className="px-2 py-0.5 rounded bg-[#1A0709] text-gold-light border border-gold-primary/30 font-mono text-[10.5px] font-extrabold tracking-wider mt-0.5 shadow-xs">
                     2004
                   </span>
                   <div>
@@ -287,7 +287,7 @@ export default function AboutPage() {
                 </div>
 
                 <div className="p-2.5 sm:p-3 rounded-lg bg-biscuit-100/70 border border-gold-border/40 hover:border-gold-primary hover:bg-biscuit-100 transition-all flex items-start gap-3 group">
-                  <span className="px-2 py-0.5 rounded bg-[#0A1325] text-gold-light font-mono text-[10.5px] font-extrabold tracking-wider mt-0.5 shadow-xs">
+                  <span className="px-2 py-0.5 rounded bg-[#1A0709] text-gold-light border border-gold-primary/30 font-mono text-[10.5px] font-extrabold tracking-wider mt-0.5 shadow-xs">
                     2015
                   </span>
                   <div>
@@ -301,7 +301,7 @@ export default function AboutPage() {
                 </div>
 
                 <div className="p-2.5 sm:p-3 rounded-lg bg-biscuit-100/70 border border-gold-border/40 hover:border-gold-primary hover:bg-biscuit-100 transition-all flex items-start gap-3 group">
-                  <span className="px-2 py-0.5 rounded bg-[#0A1325] text-gold-light font-mono text-[10.5px] font-extrabold tracking-wider mt-0.5 shadow-xs">
+                  <span className="px-2 py-0.5 rounded bg-[#1A0709] text-gold-light border border-gold-primary/30 font-mono text-[10.5px] font-extrabold tracking-wider mt-0.5 shadow-xs">
                     2024
                   </span>
                   <div>
@@ -610,8 +610,8 @@ export default function AboutPage() {
             <h2 className="font-heading font-extrabold text-xl sm:text-2xl lg:text-3xl text-espresso-950 mt-1.5 mb-2">
               OUR 5-STAGE DEVELOPMENT PROCESS
             </h2>
-            <p className="font-body text-xs sm:text-sm text-espresso-700">
-              How SHASHTIKA transforms raw acreage into legal, fully-engineered, high-appreciation gated plot communities across Tamil Nadu.
+            <p className="font-body text-xs sm:text-sm text-espresso-700 leading-relaxed">
+              How SHASHTIKA transforms raw acreage into legal, fully-engineered, high-appreciation gated plot communities across Tamil Nadu — honest, verified, and transparent at every step.
             </p>
           </div>
 
@@ -632,7 +632,7 @@ export default function AboutPage() {
           </div>
 
           {/* CTA Banner */}
-          <div className="workflow-cta-banner mt-8 sm:mt-10 bg-gradient-to-r from-[#0A1325] via-[#0E1A33] to-[#070D1A] border border-gold-primary rounded-xl p-5 sm:p-6 flex flex-col md:flex-row items-center justify-between gap-5 shadow-xl">
+          <div className="workflow-cta-banner mt-8 sm:mt-10 bg-gradient-to-r from-[#1A0709] via-[#2D0E12] to-[#1A0709] border border-gold-primary rounded-xl p-5 sm:p-6 flex flex-col md:flex-row items-center justify-between gap-5 shadow-xl">
             <div>
               <h4 className="font-heading font-extrabold text-base sm:text-lg text-cream mb-1">
                 READY TO INVEST IN A CLEAR-TITLE PLOT?
@@ -641,15 +641,17 @@ export default function AboutPage() {
                 Explore 64 DTCP-approved plot layouts in Coimbatore &amp; Pollachi with interactive blueprint maps and instant booking details.
               </p>
             </div>
-            <a
-              href="#plots"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gold-primary text-espresso-950 font-mono text-xs font-extrabold tracking-wider hover:bg-gold-light transition-all shadow-md flex-shrink-0 cursor-pointer"
-            >
-              <span>VIEW MASTER PLAN MAP</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </a>
+            <div className="flex flex-wrap items-center gap-3">
+              <a
+                href="#plots"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gold-primary text-espresso-950 font-mono text-xs font-extrabold tracking-wider hover:bg-gold-light transition-all shadow-md flex-shrink-0 cursor-pointer"
+              >
+                <span>VIEW MASTER PLAN MAP</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </a>
+            </div>
           </div>
 
         </div>

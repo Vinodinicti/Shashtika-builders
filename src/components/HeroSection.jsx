@@ -99,7 +99,7 @@ export default function HeroSection({ isLoaded = true, homeNavCount = 0 }) {
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.2 }
     );
 
     observer.observe(bannerRef.current);
@@ -128,10 +128,6 @@ export default function HeroSection({ isLoaded = true, homeNavCount = 0 }) {
         
         {/* Hero Fit Content */}
         <div className="hero-fit-content">
-          <div className="architectural-tag" style={{ marginBottom: '14px', color: '#E5D2A6' }}>
-            PREMIUM PLOTTED CONSTRUCTION
-          </div>
-
           {/* Cormorant Garamond / Cinzel Editorial Headline */}
           <h1 className="hero-headline">
             <span className="gold-hero-badge">TAMILNADU NO 1</span>
@@ -140,10 +136,6 @@ export default function HeroSection({ isLoaded = true, homeNavCount = 0 }) {
             <br />
             <span style={{ color: '#E5D2A6' }}>PLOTS</span>
           </h1>
-
-          <p className="hero-subtext">
-            Pioneering DTCP-approved residential layouts, custom villa building, and commercial construction across Coimbatore & Pollachi with 20 years of trust.
-          </p>
 
           <div className="flex flex-wrap items-center gap-4 mt-6">
             <a

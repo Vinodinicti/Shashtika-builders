@@ -25,7 +25,7 @@ export default function FloatingActionStack() {
         </svg>
 
         {/* Hover Tooltip */}
-        <span className="floating-tooltip absolute right-12 px-2.5 py-1 rounded bg-[#0A1325] border border-gold-border/60 text-gold-light text-[10px] font-mono tracking-wider whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg">
+        <span className="floating-tooltip absolute right-12 px-2.5 py-1 rounded bg-[#1A0709] border border-gold-border/60 text-white text-[10px] font-mono tracking-wider whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg">
           Call Helpline
         </span>
       </a>
@@ -50,7 +50,7 @@ export default function FloatingActionStack() {
         </svg>
 
         {/* Hover Tooltip */}
-        <span className="floating-tooltip absolute right-12 px-2.5 py-1 rounded bg-[#0A1325] border border-gold-border/60 text-gold-light text-[10px] font-mono tracking-wider whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg">
+        <span className="floating-tooltip absolute right-12 px-2.5 py-1 rounded bg-[#1A0709] border border-gold-border/60 text-white text-[10px] font-mono tracking-wider whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg">
           Chat on WhatsApp
         </span>
       </a>

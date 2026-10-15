@@ -14,6 +14,7 @@ export const PROJECT_METADATA = {
   sfNumbers: "S.F.NO-209/1, 222/1A1 & 222/2A1B1",
   approvalNo: "ம.வ / கோ.உ.தி.மு. எண் : 02/2025",
   totalPlots: 64,
+  totalArea: "78,574 SQ.FT (1 ACRE 80 CENTS)",
   roads: {
     panchayatNorth: "நிலையான 12.00 மீட்டர் அகல பஞ்சாயத்து தார் சாலை",
     panchayatWest: "நிலையான 12.00 மீட்டர் அகல பஞ்சாயத்து தார் சாலை",
@@ -25,6 +26,25 @@ export const PROJECT_METADATA = {
     park: "பொது உபயோகம் (Children Park & Open Space)",
     eb: "TANGEDCO (Electricity Substation & Transformer Reserve)",
     powerLineNotice: "மனுதாரர் சொந்த செலவில் மாற்றியமைக்கப்பட வேண்டிய குறைந்த அழுத்த மின்கம்பி பாதை"
+  },
+  locationHighlights: {
+    title: "Kambalampatti Layout Highlights",
+    subtitle: "Anaimalai Taluk Corridor, Coimbatore District",
+    image: "/Images/Isha_Yoga_Coimbatore.jpg",
+    imageCaption: "Near Isha Yoga Centre & Velliangiri Foothills",
+    tag: "LOCATION & AMENITIES",
+    points: [
+      "Near Isha Yoga Centre & Velliangiri Foothills (Direct Scenic Route)",
+      "15 minutes to Aliyar Dam & Pollachi Bus Terminal",
+      "20 minutes to Topslip & Anaimalai Tiger Reserve",
+      "12 minutes to Masaniamman Temple, Anaimalai",
+      "40 FT (12.00m) and 33 FT (10.00m) wide blacktop Panchayat tar roads",
+      "Dedicated Children Play Park and Open Reserve (Public Purpose)",
+      "TANGEDCO 3-phase power transformer and street lighting",
+      "Copious sweet groundwater with individual borewell feasibility",
+      "100% DTCP Approved (No: 02/2025) with clear parent documents",
+      "Ready for immediate registration and individual patta transfer"
+    ]
   }
 };
 

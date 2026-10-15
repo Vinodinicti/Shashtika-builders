@@ -204,26 +204,22 @@ export default function ContactPage() {
         {/* Main Container - Exact matching max-w-[1320px] and alignment as Home, Plots & Gallery Hero */}
         <div className="max-w-[1320px] mx-auto px-4 sm:px-8 w-full flex flex-col justify-center h-full relative z-[3] flex-1">
           <div className="hero-fit-content">
-            <div className="architectural-tag" style={{ marginBottom: '14px', color: '#E5D2A6' }}>
-              PROPERTY &amp; SITE VISIT ENQUIRIES
-            </div>
-
             <h1 className="hero-headline">
               <span className="gold-hero-badge">CONTACT SHASHTIKA</span><br />
               <span style={{ color: '#E5D2A6' }}>LET'S BUILD</span><br />
               <span style={{ color: '#E5D2A6' }}>YOUR FUTURE</span>
             </h1>
 
-            <p className="hero-subtext">
-              Connect with our property advisors in Coimbatore &amp; Pollachi to schedule site visits or discuss DTCP plot layouts.
-            </p>
-
             <div className="flex flex-wrap items-center gap-4 mt-6">
               <a
                 href="#enquiry-form-section"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('enquiry-form-section')?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="inline-flex items-center gap-2 px-5 py-3 rounded bg-gold-primary text-espresso-950 font-mono text-[0.78rem] font-extrabold tracking-[1.5px] border border-gold-light hover:bg-gold-light transition-all shadow-[0_6px_20px_rgba(0,0,0,0.4)] cursor-pointer"
               >
-                BOOK SITE VISIT
+                SEND ENQUIRY ↓
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M19 9l-7 7-7-7" />
                 </svg>
@@ -233,6 +229,12 @@ export default function ContactPage() {
                 className="inline-flex items-center gap-2 px-5 py-3 rounded border-[1.8px] border-gold-primary text-cream font-mono text-[0.78rem] font-extrabold tracking-[1.5px] bg-gold-primary/20 backdrop-blur-md hover:bg-gold-primary hover:text-espresso-950 transition-all shadow-[0_4px_18px_rgba(0,0,0,0.4)] cursor-pointer"
               >
                 VIEW PLOTS MAP
+              </a>
+              <a
+                href="#"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded bg-transparent border-[1.8px] border-gold-primary text-gold-light font-mono text-[0.78rem] font-extrabold tracking-[1.5px] hover:bg-gold-primary hover:text-espresso-950 transition-all shadow-md cursor-pointer"
+              >
+                RETURN HOME
               </a>
             </div>
           </div>

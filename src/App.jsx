@@ -5,7 +5,6 @@ import NavigationDrawer from './components/NavigationDrawer';
 import HeroSection from './components/HeroSection';
 import MarqueeBanner from './components/MarqueeBanner';
 import LocationMasterplansSection from './components/LocationMasterplansSection';
-import UpcomingProjectsSection from './components/UpcomingProjectsSection';
 import ConstructionSection from './components/ConstructionSection';
 import WhyChooseSection from './components/WhyChooseSection';
 import ReviewsSection from './components/ReviewsSection';
@@ -24,7 +23,7 @@ export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [currentRoute, setCurrentRoute] = useState(() => {
     const hash = window.location.hash.toLowerCase();
-    if (hash.includes('plots')) return 'plots';
+    if (hash.includes('plot')) return 'plots';
     if (hash.includes('about')) return 'about';
     if (hash.includes('gallery')) return 'gallery';
     if (hash.includes('contact')) return 'contact';
@@ -37,7 +36,7 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.toLowerCase();
-      if (hash.includes('plots')) {
+      if (hash.includes('plot')) {
         setCurrentRoute('plots');
         window.scrollTo(0, 0);
       } else if (hash.includes('about')) {
@@ -55,6 +54,17 @@ export default function App() {
       } else {
         setCurrentRoute('home');
         setHomeNavCount((prev) => prev + 1);
+        if (hash === '' || hash === '#' || hash === '#home') {
+          window.scrollTo(0, 0);
+        } else {
+          const targetId = hash.replace('#', '');
+          const el = document.getElementById(targetId);
+          if (el) {
+            setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 50);
+          } else {
+            window.scrollTo(0, 0);
+          }
+        }
       }
     };
     window.addEventListener('hashchange', handleHashChange);
@@ -79,7 +89,9 @@ export default function App() {
       {/* Route-based Render: Plots Page vs About Page vs Gallery Page vs Contact Page vs Admin Page vs Home Page */}
       {currentRoute === 'plots' ? (
         <main>
-          <PlotsPage />
+          <ErrorBoundary>
+            <PlotsPage />
+          </ErrorBoundary>
         </main>
       ) : currentRoute === 'about' ? (
         <main>
@@ -112,9 +124,6 @@ export default function App() {
 
             {/* 4 Regional Location Master Plans & Popup Inspector */}
             <LocationMasterplansSection />
-
-            {/* Upcoming Projects (3D Orbit Showcase) */}
-            <UpcomingProjectsSection />
 
             {/* Current Construction Details (Continuous Track) */}
             <ConstructionSection />

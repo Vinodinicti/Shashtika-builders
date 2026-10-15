@@ -49,34 +49,41 @@
     padding-bottom: 6px !important;
   }
 
-  /* Scrolled Header with Visible Royal Blue Theme on Mobile */
-  header.bg-\[\#0A1325\]\/95,
-  header[class*="bg-\[#0A1325\]"] {
-    background: linear-gradient(180deg, rgba(16, 33, 68, 0.97) 0%, rgba(10, 21, 44, 0.97) 100%) !important;
-    box-shadow: 0 4px 20px rgba(10, 21, 44, 0.7) !important;
-    border-bottom: 1px solid rgba(198, 161, 91, 0.6) !important;
+  /* Scrolled Header with Clean Luxury White Theme on Mobile */
+  header.bg-white,
+  header.bg-white\/95,
+  header[class*="bg-white"],
+  header[class*="bg-\[#1A0709\]"] {
+    background: #FFFFFF !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+    border-bottom: 1px solid rgba(198, 161, 91, 0.45) !important;
   }
 
   header .h-\[44px\],
-  header .h-\[56px\] {
-    height: 38px !important;
+  header .h-\[56px\],
+  header [class*="min-h-"] {
+    min-height: 46px !important;
+    height: auto !important;
   }
 
   /* Brand Logo & Typography in Header */
   header .logo-title {
-    font-size: 1.05rem !important;
+    font-size: 1.15rem !important;
     letter-spacing: 1.2px !important;
     line-height: 1.1 !important;
   }
 
   header .font-mono.tracking-\[1\.5px\],
   header .font-mono.tracking-\[2px\] {
-    font-size: 0.48rem !important;
+    font-size: 0.52rem !important;
     letter-spacing: 1px !important;
   }
 
   header img {
-    height: 26px !important;
+    height: 40px !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
   }
 
   /* Hamburger Menu Button */
@@ -88,16 +95,16 @@
     border-color: var(--gold-primary) !important;
   }
 
-  /* Navigation Drawer Panel - Visible Deep Royal Sapphire Blue */
+  /* Navigation Drawer Panel - Crisp Clean White Theme */
   .nav-drawer-panel {
     width: 52vw !important;
     min-width: 195px !important;
     max-width: 240px !important;
     padding: 16px 12px !important;
     padding-bottom: max(20px, env(safe-area-inset-bottom, 20px)) !important;
-    background: linear-gradient(180deg, #12254C 0%, #0C1733 100%) !important;
-    border-left: 1.5px solid rgba(198, 161, 91, 0.5) !important;
-    box-shadow: -15px 0 45px rgba(10, 21, 44, 0.9) !important;
+    background: #FFFFFF !important;
+    border-left: 2px solid rgba(198, 161, 91, 0.6) !important;
+    box-shadow: -15px 0 45px rgba(26, 7, 9, 0.18) !important;
   }
 
   .nav-drawer-panel nav a {
@@ -114,18 +121,21 @@
 
 @media (max-width: 420px) {
   header .logo-title {
-    font-size: 0.98rem !important;
+    font-size: 1.05rem !important;
     letter-spacing: 0.8px !important;
   }
 
   header .font-mono.tracking-\[1\.5px\],
   header .font-mono.tracking-\[2px\] {
-    font-size: 0.44rem !important;
+    font-size: 0.48rem !important;
     letter-spacing: 0.6px !important;
   }
 
   header img {
-    height: 24px !important;
+    height: 36px !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
   }
 }
 
@@ -163,28 +173,26 @@
    Contact, Admin & About heroes, exactly like Desktop view.
    -------------------------------------------------------------------------- */
 @media (max-width: 991px) {
-  /* 4.1 Master Hero Section Containers */
+  /* 4.1 Master Hero Section Containers — Proportional & Uncrowded */
   .hero-100vh-section {
-    min-height: 100svh !important;
+    min-height: auto !important;
     height: auto !important;
-    min-height: 100dvh !important;
-    padding-top: max(84px, calc(env(safe-area-inset-top, 0px) + 72px)) !important;
-    padding-bottom: max(20px, calc(env(safe-area-inset-bottom, 0px) + 16px)) !important;
+    padding-top: max(60px, calc(env(safe-area-inset-top, 0px) + 50px)) !important;
+    padding-bottom: 22px !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: space-between !important;
+    justify-content: flex-start !important;
     position: relative !important;
     overflow: hidden !important;
   }
 
   .plots-hero-section,
-  .gallery-hero-compact,
-  .contact-hero-section {
-    min-height: 520px !important;
-    min-height: 68svh !important;
+  .gallery-hero-compact {
+    min-height: 380px !important;
+    min-height: 50svh !important;
     height: auto !important;
-    padding-top: max(88px, calc(env(safe-area-inset-top, 0px) + 76px)) !important;
-    padding-bottom: 36px !important;
+    padding-top: max(64px, calc(env(safe-area-inset-top, 0px) + 54px)) !important;
+    padding-bottom: 24px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -193,16 +201,16 @@
   }
 
   .admin-hero-section {
-    min-height: 260px !important;
-    padding-top: max(84px, calc(env(safe-area-inset-top, 0px) + 72px)) !important;
-    padding-bottom: 24px !important;
+    min-height: 240px !important;
+    padding-top: max(64px, calc(env(safe-area-inset-top, 0px) + 54px)) !important;
+    padding-bottom: 20px !important;
     display: flex !important;
     align-items: center !important;
     position: relative !important;
     overflow: hidden !important;
   }
 
-  /* 4.2 Background Images Framing & Full Visibility across All Pages */
+  /* 4.2 Background Images Framing — Perfectly Centered & Un-Zoomed Like Desktop */
   .hero-full-image,
   .plots-full-image,
   .gallery-hero-bg-img,
@@ -216,6 +224,7 @@
     background-repeat: no-repeat !important;
     opacity: 1 !important;
     z-index: 1 !important;
+    transform: none !important;
   }
 
   .hero-bg-slide {
@@ -224,40 +233,54 @@
     width: 100% !important;
     height: 100% !important;
     background-size: cover !important;
-    background-position: 70% center !important;
+    background-position: center center !important;
     opacity: 0;
-    filter: brightness(1.05) contrast(1.04) !important;
-    transition: opacity 1.8s ease-in-out, transform 1.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    transform: scale(1.02) !important;
+    filter: brightness(1.02) contrast(1.02) !important;
+    transition: opacity 1.8s ease-in-out !important;
+    transform: none !important;
   }
 
   .hero-bg-slide.active {
     opacity: 1 !important;
-    transform: scale(1) !important;
+    transform: none !important;
+  }
+
+  /* Slide 1: Grand Entrance Arch — Centered on the Arch & Sunset Vista */
+  .hero-slide-1 {
+    background-position: center 36% !important;
+  }
+
+  /* Slide 2: Modern Luxury Villa — Centered on the Villa Facade */
+  .hero-slide-2 {
+    background-position: center 42% !important;
   }
 
   .plots-full-image {
-    background-position: 65% center !important;
-    filter: brightness(1.05) contrast(1.04) !important;
+    background-position: center center !important;
+    filter: brightness(1.02) contrast(1.02) !important;
     opacity: 1 !important;
+    transform: none !important;
   }
 
   .gallery-hero-bg-img {
-    background-position: 70% center !important;
-    filter: brightness(1.05) contrast(1.04) !important;
+    background-position: center 36% !important;
+    filter: brightness(1.02) contrast(1.02) !important;
     opacity: 1 !important;
+    transform: none !important;
   }
 
   .contact-hero-bg-img {
-    background-position: 65% center !important;
-    filter: brightness(1.05) contrast(1.04) !important;
+    background-position: center center !important;
+    filter: brightness(1.02) contrast(1.02) !important;
     opacity: 1 !important;
+    transform: none !important;
   }
 
   .admin-hero-bg-img {
     background-position: center center !important;
-    filter: brightness(1.05) contrast(1.04) !important;
+    filter: brightness(1.02) contrast(1.02) !important;
     opacity: 1 !important;
+    transform: none !important;
   }
 
   /* 4.3 High-Contrast Dark Luxury Gradient Confined ONLY to Left Fonts Area */
@@ -406,59 +429,74 @@
     width: 38px !important;
   }
 
-  /* 4.6 Frosted Glass Statistics Banner (Identical Luxury Card Design to Desktop) */
+  /* 4.6 Frosted Glass Statistics Banner (Solid Gold Gradient Box with Dark Royal Typography) */
   .hero-stats-banner {
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 8px !important;
+    grid-template-columns: repeat(6, 1fr) !important;
+    gap: 6px !important;
     width: 100% !important;
     max-width: 100% !important;
     margin-top: 18px !important;
-    margin-bottom: 6px !important;
+    margin-bottom: 0 !important;
     background: transparent !important;
     border: none !important;
     padding: 0 !important;
     box-shadow: none !important;
   }
 
+  .hero-stats-banner .stat-card:nth-child(1),
+  .hero-stats-banner .stat-card:nth-child(2),
+  .hero-stats-banner .stat-card:nth-child(3) {
+    grid-column: span 2 !important;
+  }
+
+  .hero-stats-banner .stat-card:nth-child(4),
+  .hero-stats-banner .stat-card:nth-child(5) {
+    grid-column: span 3 !important;
+  }
+
   .hero-stats-banner .stat-card {
     width: 100% !important;
-    height: 54px !important;
+    height: 52px !important;
     padding: 4px 6px !important;
-    background: linear-gradient(135deg, #DEBA70 0%, #C6A15B 50%, #B88F40 100%) !important;
-    border: 1px solid #E5D2A6 !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid #C6A15B !important;
     border-radius: 6px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    box-shadow: 0 6px 18px rgba(10, 19, 37, 0.28), 0 2px 5px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.45) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
     position: relative !important;
     overflow: hidden !important;
   }
 
-  .hero-stats-banner .stat-card::before {
+  .hero-stats-banner .stat-card::before,
+  .hero-stats-banner .stat-card::after {
     display: none !important;
   }
 
   .hero-stats-banner .stat-number {
-    font-size: 1.22rem !important;
+    font-size: 1.25rem !important;
     line-height: 1 !important;
-    color: #0C2554 !important;
     font-weight: 800 !important;
     font-family: var(--font-heading) !important;
     margin-bottom: 2px !important;
     font-variant-numeric: tabular-nums !important;
     letter-spacing: 0.5px !important;
+    color: #DC2626 !important;
+    -webkit-text-fill-color: #DC2626 !important;
+    background: none !important;
     position: relative !important;
     z-index: 3 !important;
   }
 
   .hero-stats-banner .stat-label {
-    font-size: 0.55rem !important;
-    letter-spacing: 1px !important;
+    font-size: 0.52rem !important;
+    letter-spacing: 0.8px !important;
     text-transform: uppercase !important;
-    color: #0C2554 !important;
+    color: #1E293B !important;
+    -webkit-text-fill-color: #1E293B !important;
     font-family: var(--font-mono) !important;
     font-weight: 800 !important;
     text-align: center !important;
@@ -466,12 +504,17 @@
     white-space: nowrap !important;
     position: relative !important;
     z-index: 3 !important;
+    text-shadow: none !important;
   }
 
   /* Gallery Hero Stats Banner on Mobile (4 cards in 2x2 grid) */
   .gallery-hero-compact .hero-stats-banner {
     grid-template-columns: repeat(2, 1fr) !important;
     max-width: 440px !important;
+  }
+
+  .gallery-hero-compact .hero-stats-banner .stat-card {
+    grid-column: span 1 !important;
   }
 
   /* Admin Hero Header on Mobile */
@@ -488,15 +531,6 @@
 }
 
 @media (max-width: 480px) {
-  .hero-stats-banner {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-
-  .hero-stats-banner .stat-card:nth-child(5):last-child {
-    grid-column: span 2 !important;
-    max-width: 60% !important;
-    margin: 0 auto !important;
-  }
 
   .hero-fit-content .flex.flex-wrap.items-center.gap-4 a,
   .hero-fit-content .flex.flex-wrap.gap-4.items-center a {
@@ -863,9 +897,10 @@
   footer {
     padding-top: 36px !important;
     padding-bottom: max(84px, calc(env(safe-area-inset-bottom, 0px) + 64px)) !important;
-    background: #070D1A !important;
-    border-top: 1.5px solid rgba(198, 161, 91, 0.7) !important;
-    box-shadow: 0 -12px 35px rgba(7, 13, 26, 0.7) !important;
+    background: #FFFFFF !important;
+    border-top: 2px solid rgba(198, 161, 91, 0.5) !important;
+    box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.06) !important;
+    color: #1A0709 !important;
   }
 
   footer .max-w-7xl {
@@ -887,24 +922,32 @@
     grid-column: span 2 !important;
     order: 1 !important;
     padding-bottom: 18px !important;
-    border-bottom: 1px solid rgba(198, 161, 91, 0.22) !important;
+    border-bottom: 1px solid rgba(198, 161, 91, 0.25) !important;
   }
 
-  footer .gold-glow-letters {
+  footer .gold-glow-letters,
+  footer .footer-brand-title {
     font-size: 1.5rem !important;
     letter-spacing: 1.5px !important;
+    color: #1A0709 !important;
+    -webkit-text-fill-color: #1A0709 !important;
+    text-shadow: none !important;
   }
 
-  footer .font-mono.tracking-\[2px\] {
+  footer .font-mono.tracking-\[2px\],
+  footer .footer-brand-sub {
     font-size: 0.6rem !important;
     letter-spacing: 1.5px !important;
     margin-bottom: 8px !important;
+    color: #99793B !important;
+    font-weight: 700 !important;
   }
 
-  footer p.font-body {
+  footer p.font-body,
+  footer .footer-brand-desc {
     font-size: 0.78rem !important;
     line-height: 1.55 !important;
-    color: rgba(239, 230, 216, 0.85) !important;
+    color: #4A3E3D !important;
     margin-bottom: 12px !important;
   }
 
@@ -916,11 +959,13 @@
     border: none !important;
   }
 
-  .footer-col-links h4 {
+  .footer-col-links h4,
+  .footer-col-title {
     font-size: 0.74rem !important;
     letter-spacing: 1.5px !important;
     margin-bottom: 12px !important;
-    color: #E5D2A6 !important;
+    color: #1A0709 !important;
+    font-weight: 800 !important;
   }
 
   .footer-nav-list {
@@ -937,7 +982,7 @@
     align-items: center !important;
     gap: 6px !important;
     font-size: 0.82rem !important;
-    color: #FAF7F2 !important;
+    color: #4A3E3D !important;
     padding: 2px 0 !important;
     background: transparent !important;
     border: none !important;
@@ -956,7 +1001,7 @@
 
   .footer-nav-list li a:active,
   .footer-nav-list li a:hover {
-    color: #E5D2A6 !important;
+    color: #99793B !important;
     transform: translateX(3px) !important;
     background: transparent !important;
     border-color: transparent !important;
@@ -977,7 +1022,8 @@
     font-size: 0.74rem !important;
     letter-spacing: 1.5px !important;
     margin-bottom: 12px !important;
-    color: #E5D2A6 !important;
+    color: #1A0709 !important;
+    font-weight: 800 !important;
   }
 
   .footer-contact-desc {
@@ -996,14 +1042,14 @@
     width: 38px !important;
     height: 38px !important;
     border-radius: 50% !important;
-    background: #0F1C36 !important;
-    border: 1px solid rgba(198, 161, 91, 0.45) !important;
+    background: #FAF7F2 !important;
+    border: 1.5px solid rgba(198, 161, 91, 0.5) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    color: #E5D2A6 !important;
+    color: #1A0709 !important;
     transition: all 0.25s ease !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
     text-decoration: none !important;
   }
 
@@ -1014,20 +1060,21 @@
 
   .footer-contact-icons a:active {
     transform: scale(0.94) !important;
-    border-color: #E5D2A6 !important;
+    border-color: #99793B !important;
   }
 
   .footer-helpline-box {
     margin-top: 12px !important;
     padding-top: 8px !important;
     font-size: 0.68rem !important;
-    border-top: 1px solid rgba(198, 161, 91, 0.22) !important;
+    border-top: 1px solid rgba(198, 161, 91, 0.25) !important;
     width: 100% !important;
+    color: #6B5E59 !important;
   }
 
   .footer-helpline-box a {
     font-size: 0.74rem !important;
-    color: #E5D2A6 !important;
+    color: #1A0709 !important;
     font-weight: 700 !important;
     display: block !important;
     margin-top: 2px !important;
@@ -1953,9 +2000,9 @@
    17. ADMIN PAGE — MOBILE VIEW MANAGEMENT (AdminPage.jsx)
    ========================================================================== */
 @media (max-width: 991px) {
-  /* Admin Page Backgrounds on Mobile — Deep Regal Midnight Blue */
+  /* Admin Page Backgrounds on Mobile — Deep Espresso Brown */
   .admin-login-overlay {
-    background: radial-gradient(circle at center, #142852 0%, #0D1C3C 65%, #081226 100%) !important;
+    background: radial-gradient(circle at center, #2D0E12 0%, #1A0709 65%, #100405 100%) !important;
   }
 
   .admin-login-card {
@@ -1963,23 +2010,23 @@
     padding: 24px 18px !important;
     margin: 0 auto !important;
     border-radius: 14px !important;
-    background: linear-gradient(145deg, #112246 0%, #0A1732 100%) !important;
-    border: 1.5px solid rgba(198, 161, 91, 0.45) !important;
-    box-shadow: 0 16px 40px rgba(8, 18, 38, 0.75), 0 0 20px rgba(198, 161, 91, 0.25) !important;
+    background: #FFFDF9 !important;
+    border: 1.5px solid rgba(198, 161, 91, 0.6) !important;
+    box-shadow: 0 16px 40px rgba(26, 7, 9, 0.45), 0 0 20px rgba(198, 161, 91, 0.25) !important;
   }
 
   .admin-login-card h2 {
     font-size: 1.45rem !important;
     margin-bottom: 2px !important;
-    color: #FFFDF8 !important;
+    color: #1A0709 !important;
   }
 
   .admin-login-card p {
-    color: rgba(229, 210, 166, 0.85) !important;
+    color: #521D24 !important;
   }
 
   .admin-login-card label {
-    color: #E5D2A6 !important;
+    color: #1A0709 !important;
   }
 
   .admin-login-card input {
@@ -1987,9 +2034,9 @@
     min-height: 48px !important;
     border-radius: 8px !important;
     padding: 12px 14px !important;
-    background: #081328 !important;
-    border: 1.5px solid rgba(198, 161, 91, 0.4) !important;
-    color: #FFFDF8 !important;
+    background: #FAF7F2 !important;
+    border: 1.5px solid rgba(198, 161, 91, 0.6) !important;
+    color: #1A0709 !important;
   }
 
   .admin-login-card button[type="submit"] {
@@ -1997,22 +2044,22 @@
     font-size: 0.82rem !important;
     letter-spacing: 1.2px !important;
     padding: 14px 18px !important;
-    background: linear-gradient(135deg, #142C56 0%, #0D1B38 100%) !important;
+    background: #1A0709 !important;
     border-color: #C6A15B !important;
-    color: #F8E7C4 !important;
+    color: #FFFFFF !important;
   }
 
   /* Admin Dashboard Main Page on Mobile */
   .admin-portal-page {
-    background-color: #0A1730 !important;
+    background-color: #FAF7F2 !important;
     background-image: 
-      radial-gradient(circle at 50% 15%, rgba(22, 48, 100, 0.45) 0%, transparent 70%),
+      radial-gradient(circle at 50% 15%, rgba(198, 161, 91, 0.12) 0%, transparent 70%),
       linear-gradient(rgba(198, 161, 91, 0.04) 1px, transparent 1px),
       linear-gradient(90deg, rgba(198, 161, 91, 0.04) 1px, transparent 1px) !important;
   }
 
   .admin-header-bar {
-    background: linear-gradient(180deg, #12254C 0%, #0C1935 100%) !important;
+    background: linear-gradient(180deg, #1A0709 0%, #2D0E12 100%) !important;
     border-bottom: 1.5px solid rgba(198, 161, 91, 0.5) !important;
   }
 
@@ -2345,8 +2392,9 @@
   footer {
     padding-top: 24px !important;
     padding-bottom: 20px !important;
-    background: linear-gradient(180deg, #112347 0%, #0B172E 100%) !important;
-    border-top-color: rgba(198, 161, 91, 0.6) !important;
+    background: #FFFFFF !important;
+    border-top-color: rgba(198, 161, 91, 0.5) !important;
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.06) !important;
   }
 
   .footer-main-grid {
@@ -2368,25 +2416,30 @@
   .footer-brand-title {
     font-size: 1.25rem !important;
     letter-spacing: 1px !important;
+    color: #1A0709 !important;
+    -webkit-text-fill-color: #1A0709 !important;
   }
 
   .footer-brand-sub {
     font-size: 8.5px !important;
     margin-bottom: 6px !important;
     letter-spacing: 1.2px !important;
+    color: #99793B !important;
   }
 
   .footer-brand-desc {
     font-size: 0.72rem !important;
     line-height: 1.4 !important;
     margin-bottom: 8px !important;
+    color: #4A3E3D !important;
   }
 
   .footer-cert-badge {
     padding: 3px 8px !important;
     font-size: 8.5px !important;
     letter-spacing: 0.5px !important;
-    background: #142A54 !important;
+    background: #FAF7F2 !important;
+    color: #1A0709 !important;
     border-color: rgba(198, 161, 91, 0.45) !important;
   }
 
@@ -2395,6 +2448,7 @@
     font-size: 0.68rem !important;
     margin-bottom: 6px !important;
     letter-spacing: 1px !important;
+    color: #1A0709 !important;
   }
 
   .footer-nav-list {
@@ -2413,6 +2467,7 @@
     font-size: 0.75rem !important;
     padding: 2px 0 !important;
     display: inline-block !important;
+    color: #4A3E3D !important;
   }
 
   /* Col 3: Direct Contact */
@@ -2420,6 +2475,7 @@
     font-size: 0.72rem !important;
     line-height: 1.4 !important;
     margin-bottom: 8px !important;
+    color: #4A3E3D !important;
   }
 
   .footer-contact-icons {
@@ -2431,8 +2487,9 @@
     height: 34px !important;
     min-width: 34px !important;
     min-height: 34px !important;
-    background: #142A54 !important;
+    background: #FAF7F2 !important;
     border-color: rgba(198, 161, 91, 0.45) !important;
+    color: #1A0709 !important;
   }
 
   .footer-contact-icons a svg {
@@ -2491,23 +2548,23 @@
   }
 
   .floating-tooltip {
-    background: #0E1E3C !important;
+    background: #1A0709 !important;
     border-color: rgba(198, 161, 91, 0.5) !important;
   }
 }
 
 /* ==========================================================================
-   20. LOADING SCREEN — VISIBLE ROYAL BLUE THEME ON MOBILE
+   20. LOADING SCREEN — VISIBLE ESPRESSO THEME ON MOBILE
    ========================================================================== */
 @media (max-width: 768px) {
-  .fixed.inset-0.z-50[style*="#0A1325"],
-  div[style*="backgroundColor: rgb(10, 19, 37)"] {
-    background-color: #0E1D3B !important;
+  .fixed.inset-0.z-50[style*="#1A0709"],
+  div[style*="backgroundColor: rgb(26, 7, 9)"] {
+    background-color: #1A0709 !important;
     background-image: 
       radial-gradient(circle at center, rgba(198, 161, 91, 0.18) 0%, transparent 65%),
       linear-gradient(rgba(198, 161, 91, 0.07) 1px, transparent 1px),
       linear-gradient(90deg, rgba(198, 161, 91, 0.07) 1px, transparent 1px),
-      radial-gradient(circle at center, #152C58 0%, #0E1D3B 55%, #070F20 100%) !important;
+      radial-gradient(circle at center, #2D0E12 0%, #1A0709 55%, #100405 100%) !important;
   }
 }
 
