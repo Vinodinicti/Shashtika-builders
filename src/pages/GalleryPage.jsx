@@ -390,8 +390,8 @@ export default function GalleryPage() {
             </div>
           </div>
 
-          {/* FULL WIDTH ANIMATED EDITORIAL STATISTICS BANNER */}
-          <div className="hero-stats-banner" style={{ maxWidth: '680px', gridTemplateColumns: 'repeat(4, 1fr)', marginTop: '28px' }}>
+          {/* FULL WIDTH ANIMATED EDITORIAL STATISTICS BANNER (DESKTOP) */}
+          <div className="hero-stats-banner desktop-hero-stats" style={{ maxWidth: '680px', gridTemplateColumns: 'repeat(4, 1fr)', marginTop: '28px' }}>
             <div className="stat-card">
               <span className="stat-number">6</span>
               <span className="stat-label">Master Projects</span>
@@ -411,6 +411,30 @@ export default function GalleryPage() {
           </div>
         </div>
       </section>
+
+      {/* MOBILE GALLERY STATS (Brought down below hero image on mobile view alone) */}
+      <div className="mobile-hero-stats-section mobile-gallery-stats">
+        <div className="max-w-[1320px] mx-auto px-4 sm:px-8">
+          <div className="hero-stats-banner mobile-hero-stats mobile-gallery-stats-grid">
+            <div className="stat-card">
+              <span className="stat-number">6</span>
+              <span className="stat-label">Master Projects</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-number">228+</span>
+              <span className="stat-label">DTCP Plots</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-number">40 FT</span>
+              <span className="stat-label">Asphalt Roads</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-number">100%</span>
+              <span className="stat-label">Legal Clear</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* =========================================================================
           GALLERY GRID & CLASSIFYING FILTER SECTION

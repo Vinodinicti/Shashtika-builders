@@ -107,7 +107,8 @@ export default function HeroSection({ isLoaded = true, homeNavCount = 0 }) {
   }, [startCounters]);
 
   return (
-    <section className="hero-100vh-section hero-section">
+    <>
+      <section className="hero-100vh-section hero-section">
       {/* Full Entrance Arch & Villa Background Image Slides Edge-to-Edge */}
       <div className="hero-full-image">
         <div
@@ -173,22 +174,42 @@ export default function HeroSection({ isLoaded = true, homeNavCount = 0 }) {
           </div>
         </div>
 
-        {/* FULL 100% WIDTH ANIMATED EDITORIAL STATISTICS BANNER */}
-        <div ref={bannerRef} className="hero-stats-banner">
-          {HERO_STATS.map((stat, idx) => (
-            <div key={idx} className="stat-card" style={{ animationDelay: `${(idx + 1) * 0.1}s` }}>
-              <span className="stat-number">
-                {counts[idx]}
-                {stat.suffix}
-              </span>
-              <span className="stat-label">
-                {stat.label}
-              </span>
-            </div>
-          ))}
-        </div>
+          {/* FULL 100% WIDTH ANIMATED EDITORIAL STATISTICS BANNER (DESKTOP) */}
+          <div ref={bannerRef} className="hero-stats-banner desktop-hero-stats">
+            {HERO_STATS.map((stat, idx) => (
+              <div key={idx} className="stat-card" style={{ animationDelay: `${(idx + 1) * 0.1}s` }}>
+                <span className="stat-number">
+                  {counts[idx]}
+                  {stat.suffix}
+                </span>
+                <span className="stat-label">
+                  {stat.label}
+                </span>
+              </div>
+            ))}
+          </div>
 
+        </div>
+      </section>
+
+      {/* MOBILE HERO STATS (Brought down below hero image on mobile view alone) */}
+      <div className="mobile-hero-stats-section">
+        <div className="max-w-[1320px] mx-auto px-4 sm:px-8">
+          <div className="hero-stats-banner mobile-hero-stats">
+            {HERO_STATS.map((stat, idx) => (
+              <div key={`mob-${idx}`} className="stat-card">
+                <span className="stat-number">
+                  {counts[idx]}
+                  {stat.suffix}
+                </span>
+                <span className="stat-label">
+                  {stat.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-    </section>
+    </>
   );
 }

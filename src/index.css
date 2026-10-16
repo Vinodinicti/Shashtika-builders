@@ -460,32 +460,14 @@ body {
   color: #0F172A;
 }
 
-@media (max-width: 1023px) {
+.mobile-hero-stats-section {
+  display: none;
+}
+
+@media (max-width: 991px) {
   .hero-stats-banner.desktop-hero-stats,
   .desktop-hero-stats {
     display: none !important;
-  }
-  .mobile-hero-stats-wrap {
-    display: block !important;
-  }
-  .hero-stats-banner.mobile-hero-stats {
-    max-width: 100%;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin-top: 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero-stats-banner.mobile-hero-stats {
-    max-width: 100%;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-  .hero-stats-banner.mobile-hero-stats .stat-card:nth-child(5):last-child {
-    grid-column: span 2;
-    max-width: 65%;
-    margin: 0 auto;
   }
 }
 

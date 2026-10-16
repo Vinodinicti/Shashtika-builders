@@ -216,29 +216,32 @@
 @media (max-width: 991px) {
   /* 4.1 Master Hero Section Containers — Proportional & Uncrowded */
   .hero-100vh-section {
-    min-height: auto !important;
+    min-height: 380px !important;
+    min-height: 52svh !important;
     height: auto !important;
-    padding-top: max(60px, calc(env(safe-area-inset-top, 0px) + 50px)) !important;
-    padding-bottom: 22px !important;
+    padding-top: max(72px, calc(env(safe-area-inset-top, 0px) + 62px)) !important;
+    padding-bottom: 28px !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: flex-start !important;
+    justify-content: center !important;
     position: relative !important;
     overflow: hidden !important;
+    border-bottom: 2px solid rgba(198, 161, 91, 0.45) !important;
   }
 
   .plots-hero-section,
   .gallery-hero-compact {
-    min-height: 380px !important;
-    min-height: 50svh !important;
+    min-height: 340px !important;
+    min-height: 48svh !important;
     height: auto !important;
-    padding-top: max(64px, calc(env(safe-area-inset-top, 0px) + 54px)) !important;
-    padding-bottom: 24px !important;
+    padding-top: max(70px, calc(env(safe-area-inset-top, 0px) + 60px)) !important;
+    padding-bottom: 26px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     position: relative !important;
     overflow: hidden !important;
+    border-bottom: 2px solid rgba(198, 161, 91, 0.45) !important;
   }
 
   .admin-hero-section {
@@ -470,14 +473,32 @@
     width: 38px !important;
   }
 
-  /* 4.6 Frosted Glass Statistics Banner (Solid Gold Gradient Box with Dark Royal Typography) */
+  /* 4.6 Frosted Glass Statistics Banner (Desktop inside Hero / Mobile brought DOWN below Hero) */
+  .desktop-hero-stats {
+    display: none !important;
+  }
+
+  .mobile-hero-stats-section {
+    display: block !important;
+    width: 100% !important;
+    background: #FAF7F2 !important;
+    padding: 14px 12px 14px !important;
+    border-bottom: 1.5px solid rgba(198, 161, 91, 0.4) !important;
+    position: relative !important;
+    z-index: 10 !important;
+  }
+
+  .mobile-hero-stats-section .hero-stats-banner {
+    margin-top: 0 !important;
+  }
+
   .hero-stats-banner {
     display: grid !important;
     grid-template-columns: repeat(6, 1fr) !important;
     gap: 6px !important;
     width: 100% !important;
     max-width: 100% !important;
-    margin-top: 18px !important;
+    margin-top: 0 !important;
     margin-bottom: 0 !important;
     background: transparent !important;
     border: none !important;
@@ -549,11 +570,14 @@
   }
 
   /* Gallery Hero Stats Banner on Mobile (4 cards in 2x2 grid) */
+  .mobile-gallery-stats .hero-stats-banner,
   .gallery-hero-compact .hero-stats-banner {
     grid-template-columns: repeat(2, 1fr) !important;
     max-width: 440px !important;
+    margin: 0 auto !important;
   }
 
+  .mobile-gallery-stats .hero-stats-banner .stat-card,
   .gallery-hero-compact .hero-stats-banner .stat-card {
     grid-column: span 1 !important;
   }
