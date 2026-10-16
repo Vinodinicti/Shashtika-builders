@@ -3300,11 +3300,9 @@ _Please contact this client immediately and arrange site inspection / discussion
                     <span style={{ fontSize: '0.80rem', fontWeight: 700, color: 'rgba(26, 7, 9, 0.7)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                       Showing {filteredAdminGalleryImages.length} of {allAdminGalleryImages.length} Photographs
                     </span>
-                    {customGalleryImages.length > 0 && (
-                      <span style={{ fontSize: '0.78rem', color: '#047857', fontWeight: 700 }}>
-                        ★ {customGalleryImages.length} Custom Site Photos Active
-                      </span>
-                    )}
+                    <span style={{ fontSize: '0.78rem', color: '#047857', fontWeight: 700 }}>
+                      ✓ All {allAdminGalleryImages.length} photos editable & removable
+                    </span>
                   </div>
 
                   {filteredAdminGalleryImages.length === 0 ? (
