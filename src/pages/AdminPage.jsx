@@ -315,7 +315,7 @@ export default function AdminPage() {
   // Add new photo form
   const [galleryForm, setGalleryForm] = useState({
     title: '',
-    category: 'arches',
+    category: 'ENTRANCE ARCH',
     location: 'Kambalampatti, Pollachi',
     desc: '',
     src: ''
@@ -327,8 +327,8 @@ export default function AdminPage() {
   const [editForm, setEditForm] = useState({
     id: '',
     title: '',
-    category: 'arches',
-    categoryLabel: '',
+    category: 'ENTRANCE ARCH',
+    categoryLabel: 'ENTRANCE ARCH',
     location: '',
     desc: '',
     src: ''
@@ -388,12 +388,16 @@ export default function AdminPage() {
       return;
     }
 
+    const rawCategory = galleryForm.category.trim();
+    const catSlug = rawCategory.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'general';
+    const catLabel = rawCategory ? rawCategory.toUpperCase() : (CATEGORY_LABELS[catSlug] || 'PROJECT UPDATE');
+
     const newPhoto = {
       id: `gal-${Date.now()}`,
       src: finalSrc,
       title: galleryForm.title.trim(),
-      category: galleryForm.category,
-      categoryLabel: CATEGORY_LABELS[galleryForm.category] || 'PROJECT UPDATE',
+      category: catSlug,
+      categoryLabel: catLabel,
       location: galleryForm.location.trim() || 'Pollachi & Coimbatore Corridor',
       desc: galleryForm.desc.trim() || 'Live on-site layout progress update captured by SHASHTIKA site team.',
       dateAdded: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
@@ -407,7 +411,7 @@ export default function AdminPage() {
       setGalleryPreview('');
       setGalleryForm({
         title: '',
-        category: 'arches',
+        category: 'ENTRANCE ARCH',
         location: 'Kambalampatti, Pollachi',
         desc: '',
         src: ''
@@ -423,11 +427,12 @@ export default function AdminPage() {
   // Open Edit Photo Modal
   const handleOpenEditPhoto = (photo) => {
     setEditingPhoto(photo);
+    const existingLabel = photo.categoryLabel || CATEGORY_LABELS[photo.category] || photo.category || 'ENTRANCE ARCH';
     setEditForm({
       id: photo.id,
       title: photo.title || '',
-      category: photo.category || 'arches',
-      categoryLabel: photo.categoryLabel || CATEGORY_LABELS[photo.category] || 'PROJECT UPDATE',
+      category: existingLabel,
+      categoryLabel: existingLabel,
       location: photo.location || '',
       desc: photo.desc || '',
       src: photo.src || ''
@@ -471,14 +476,18 @@ export default function AdminPage() {
       return;
     }
 
+    const rawCat = editForm.category.trim();
+    const catSlug = rawCat.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'general';
+    const catLabel = rawCat ? rawCat.toUpperCase() : (CATEGORY_LABELS[catSlug] || 'PROJECT UPDATE');
+
     try {
       const updated = galleryList.map((item) => {
         if (item.id === editingPhoto.id) {
           return {
             ...item,
             title: editForm.title.trim(),
-            category: editForm.category,
-            categoryLabel: editForm.categoryLabel.trim() || CATEGORY_LABELS[editForm.category] || 'PROJECT UPDATE',
+            category: catSlug,
+            categoryLabel: catLabel,
             location: editForm.location.trim() || 'Pollachi & Coimbatore Corridor',
             desc: editForm.desc.trim(),
             src: finalSrc,
@@ -1679,7 +1688,7 @@ _Please contact this client immediately and arrange site inspection / discussion
             <div className="admin-content-panels">
               {/* PANEL 1: AI LEAD INTELLIGENCE */}
               {activeTab === 'ai-leads' && (
-                <div style={{ background: 'var(--bg-cream)', border: '1.8px solid var(--gold-primary)', borderRadius: 'var(--radius-md)', padding: '28px', boxShadow: '0 12px 35px rgba(26, 7, 9, 0.12), 0 0 20px rgba(198, 161, 91, 0.18)', position: 'relative', overflow: 'hidden' }}>
+                <div className="admin-content-panel" style={{ background: 'var(--bg-cream)', border: '1.8px solid var(--gold-primary)', borderRadius: 'var(--radius-md)', padding: '28px', boxShadow: '0 12px 35px rgba(26, 7, 9, 0.12), 0 0 20px rgba(198, 161, 91, 0.18)', position: 'relative', overflow: 'hidden' }}>
                   {/* TOP METALLIC GOLD ACCENT STRIP */}
                   <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, #A9823A, #C6A15B, #E5D2A6, #C6A15B, #A9823A)' }} />
 
@@ -2174,7 +2183,7 @@ _Please contact this client immediately and arrange site inspection / discussion
 
               {/* PANEL 2: PLOT MANAGEMENT TABLE */}
               {activeTab === 'plot-management' && (
-                <div style={{ background: 'var(--bg-ivory)', border: '1.5px solid var(--gold-border)', borderRadius: 'var(--radius-md)', padding: '28px', boxShadow: 'var(--shadow-soft)' }}>
+                <div className="admin-content-panel" style={{ background: 'var(--bg-ivory)', border: '1.5px solid var(--gold-border)', borderRadius: 'var(--radius-md)', padding: '28px', boxShadow: 'var(--shadow-soft)' }}>
                   <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '20px' }}>
                     <div>
                       <span className="architectural-tag">LIVE LAYOUT INVENTORY CONTROL</span>
@@ -2195,7 +2204,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   </div>
 
                   {/* Location Selector Tabs */}
-                  <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' }}>
+                  <div className="admin-location-tabs" style={{ display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' }}>
                     <button
                       type="button"
                       onClick={() => {
@@ -2425,7 +2434,7 @@ _Please contact this client immediately and arrange site inspection / discussion
 
               {/* PANEL 3: CUSTOMER DETAILS TABLE */}
               {activeTab === 'customer-tracker' && (
-                <div style={{ background: 'var(--bg-ivory)', border: '1.5px solid var(--gold-border)', borderRadius: 'var(--radius-md)', padding: '28px', boxShadow: 'var(--shadow-soft)' }}>
+                <div className="admin-content-panel" style={{ background: 'var(--bg-ivory)', border: '1.5px solid var(--gold-border)', borderRadius: 'var(--radius-md)', padding: '28px', boxShadow: 'var(--shadow-soft)' }}>
                   <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1.5px solid var(--gold-border)' }}>
                     <div>
                       <span className="architectural-tag">CENTRALIZED CLIENT REGISTRY</span>
@@ -2857,7 +2866,7 @@ _Please contact this client immediately and arrange site inspection / discussion
 
               {/* PANEL 4: PROJECT DEVELOPMENTS & PHOTO GALLERY */}
               {activeTab === 'gallery-manager' && (
-                <div style={{ background: 'var(--bg-cream)', border: '1.8px solid var(--gold-primary)', borderRadius: 'var(--radius-md)', padding: '28px', boxShadow: '0 12px 35px rgba(26, 7, 9, 0.12), 0 0 20px rgba(198, 161, 91, 0.18)', position: 'relative', overflow: 'hidden' }}>
+                <div className="admin-content-panel" style={{ background: 'var(--bg-cream)', border: '1.8px solid var(--gold-primary)', borderRadius: 'var(--radius-md)', padding: '28px', boxShadow: '0 12px 35px rgba(26, 7, 9, 0.12), 0 0 20px rgba(198, 161, 91, 0.18)', position: 'relative', overflow: 'hidden' }}>
                   {/* TOP METALLIC GOLD ACCENT STRIP */}
                   <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, #A9823A, #C6A15B, #E5D2A6, #C6A15B, #A9823A)' }} />
 
@@ -3009,7 +3018,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                   )}
 
                   {/* UPLOAD NEW SITE PHOTO CARD */}
-                  <div style={{ background: '#FFFFFF', border: '1.5px solid var(--gold-border)', borderRadius: 'var(--radius-md)', padding: '24px', marginBottom: '28px', boxShadow: '0 4px 16px rgba(0,0,0,0.04)' }}>
+                  <div className="admin-gallery-upload-card" style={{ background: '#FFFFFF', border: '1.5px solid var(--gold-border)', borderRadius: 'var(--radius-md)', padding: '24px', marginBottom: '28px', boxShadow: '0 4px 16px rgba(0,0,0,0.04)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '18px', paddingBottom: '12px', borderBottom: '1.2px solid rgba(198, 161, 91, 0.25)' }}>
                       <div style={{ width: '32px', height: '32px', borderRadius: '6px', background: 'var(--gold-primary)', color: '#1A0709', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
@@ -3021,7 +3030,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                     </div>
 
                     <form onSubmit={handleAddGalleryPhoto}>
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '22px', alignItems: 'start' }}>
+                      <div className="admin-gallery-upload-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '22px', alignItems: 'start' }}>
                         {/* LEFT COLUMN: FILE DROPZONE & PREVIEW */}
                         <div>
                           <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#1A0709', marginBottom: '8px', letterSpacing: '0.3px' }}>
@@ -3133,8 +3142,12 @@ _Please contact this client immediately and arrange site inspection / discussion
                               <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#1A0709', marginBottom: '6px' }}>
                                 CATEGORY *
                               </label>
-                              <select
+                              <input
+                                type="text"
+                                required
+                                list="admin-category-suggestions"
                                 value={galleryForm.category}
+                                placeholder="e.g. ENTRANCE ARCH, TAR ROADS..."
                                 onChange={(e) => setGalleryForm((p) => ({ ...p, category: e.target.value }))}
                                 style={{
                                   width: '100%',
@@ -3147,13 +3160,17 @@ _Please contact this client immediately and arrange site inspection / discussion
                                   outline: 'none',
                                   fontWeight: 600
                                 }}
-                              >
-                                <option value="arches">ENTRANCE ARCH</option>
-                                <option value="roads">TAR ROADS</option>
-                                <option value="construction">CONSTRUCTION</option>
-                                <option value="villas">LUXURY VILLA</option>
-                                <option value="planning">TOWN PLANNING</option>
-                              </select>
+                              />
+                              <datalist id="admin-category-suggestions">
+                                <option value="ENTRANCE ARCH" />
+                                <option value="TAR ROADS" />
+                                <option value="CONSTRUCTION" />
+                                <option value="LUXURY VILLA" />
+                                <option value="TOWN PLANNING" />
+                                <option value="CHILDREN PARK" />
+                                <option value="SOLAR STREET LIGHTS" />
+                                <option value="CLUB HOUSE" />
+                              </datalist>
                             </div>
 
                             <div>
@@ -3324,10 +3341,11 @@ _Please contact this client immediately and arrange site inspection / discussion
                       <p style={{ color: 'rgba(26, 7, 9, 0.6)', fontSize: '0.86rem', margin: 0 }}>Try clearing your search query or switching categories.</p>
                     </div>
                   ) : (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
+                    <div className="admin-gallery-photos-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
                       {filteredAdminGalleryImages.map((photo) => (
                         <div
                           key={photo.id}
+                          className="admin-gallery-photo-card"
                           style={{
                             background: '#FFFFFF',
                             border: photo.isCustom ? '1.8px solid #10B981' : '1.2px solid rgba(198, 161, 91, 0.35)',
@@ -4078,9 +4096,13 @@ _Please contact this client immediately and arrange site inspection / discussion
                   <label style={{ display: 'block', fontSize: '0.80rem', fontWeight: 700, color: '#1A0709', marginBottom: '6px' }}>
                     CATEGORY *
                   </label>
-                  <select
+                  <input
+                    type="text"
+                    required
+                    list="admin-category-edit-suggestions"
                     value={editForm.category}
-                    onChange={(e) => setEditForm({ ...editForm, category: e.target.value, categoryLabel: CATEGORY_LABELS[e.target.value] || e.target.value })}
+                    placeholder="e.g. ENTRANCE ARCH, TAR ROADS..."
+                    onChange={(e) => setEditForm({ ...editForm, category: e.target.value, categoryLabel: e.target.value.toUpperCase() })}
                     style={{
                       width: '100%',
                       padding: '9px 12px',
@@ -4091,13 +4113,17 @@ _Please contact this client immediately and arrange site inspection / discussion
                       color: '#1A0709',
                       fontWeight: 600
                     }}
-                  >
-                    <option value="arches">ENTRANCE ARCH</option>
-                    <option value="roads">TAR ROADS</option>
-                    <option value="construction">CONSTRUCTION</option>
-                    <option value="villas">LUXURY VILLA</option>
-                    <option value="planning">TOWN PLANNING</option>
-                  </select>
+                  />
+                  <datalist id="admin-category-edit-suggestions">
+                    <option value="ENTRANCE ARCH" />
+                    <option value="TAR ROADS" />
+                    <option value="CONSTRUCTION" />
+                    <option value="LUXURY VILLA" />
+                    <option value="TOWN PLANNING" />
+                    <option value="CHILDREN PARK" />
+                    <option value="SOLAR STREET LIGHTS" />
+                    <option value="CLUB HOUSE" />
+                  </datalist>
                 </div>
 
                 <div>
