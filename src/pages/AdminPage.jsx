@@ -2857,12 +2857,9 @@ _Please contact this client immediately and arrange site inspection / discussion
                       <div className="architectural-tag" style={{ marginBottom: '8px', color: 'var(--gold-antique)', fontWeight: 700 }}>
                         PROJECT DEVELOPMENTS &amp; PHOTO GALLERY
                       </div>
-                      <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.4rem, 2.5vw, 2.0rem)', color: '#1A0709', fontWeight: 800, letterSpacing: '0.5px', marginBottom: '8px' }}>
+                      <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.4rem, 2.5vw, 2.0rem)', color: '#1A0709', fontWeight: 800, letterSpacing: '0.5px', margin: 0 }}>
                         Project Developments &amp; Photo Gallery Manager
                       </h3>
-                      <p style={{ fontSize: '0.92rem', color: 'rgba(10, 19, 37, 0.75)', lineHeight: 1.6, fontWeight: 500 }}>
-                        Upload real-time site photos, entrance arches, tar roads, layout progress, and villa construction images. Uploaded photos are instantly visible to visitors in the public Gallery Page under <strong>PROJECT DEVELOPMENTS &amp; PHOTO GALLERY</strong> with live auto-scrolling reels and full-screen lightbox.
-                      </p>
                     </div>
 
                     <div className="admin-action-toolbar" style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', marginTop: '6px' }}>
