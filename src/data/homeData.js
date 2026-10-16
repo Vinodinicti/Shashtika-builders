@@ -32,7 +32,7 @@ export function generateMasterplanSVG(prefix, highwayName, boulevardName) {
         if (isBlockC && r === 2 && c >= 4) {
           if (c === 4 && r === 2) {
             blockSvg += `<rect x="${x}" y="${y}" width="${3 * dx - 5}" height="${h}" fill="#A8664B" stroke="#2D0E12" rx="4"/>`;
-            blockSvg += `<text x="${x + (3 * dx - 5) / 2}" y="${y + 25}" font-family="'Space Mono', monospace" font-size="9" fill="#FAF7F2" text-anchor="middle" font-weight="bold">🏛️ CENTRAL PARK & CLUBHOUSE</text>`;
+            blockSvg += `<text x="${x + (3 * dx - 5) / 2}" y="${y + 25}" font-family="'Space Mono', monospace" font-size="9" fill="#FAF7F2" text-anchor="middle" font-weight="bold">CENTRAL PARK & CLUBHOUSE</text>`;
           }
           continue;
         }

@@ -78,7 +78,7 @@ export default function Footer() {
                   href="https://wa.me/919363599754?text=Hello%20SHASHTIKA,%20I%20want%20to%20enquire%20about%20plots"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[#FAF7F2] border border-gold-border/60 text-[#1A0709] hover:bg-emerald-600 hover:text-white hover:border-emerald-500 flex items-center justify-center transition-all duration-300 shadow-sm hover:scale-105"
+                  className="w-10 h-10 rounded-full bg-[#FAF7F2] border border-gold-border/60 text-[#1A0709] hover:bg-[#1A0709] hover:text-[#E5D2A6] hover:border-gold-primary flex items-center justify-center transition-all duration-300 shadow-sm hover:scale-105"
                   title="Chat on WhatsApp (+91 93635 99754)"
                   aria-label="Chat on WhatsApp"
                 >

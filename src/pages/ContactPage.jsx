@@ -285,13 +285,13 @@ export default function ContactPage() {
                   rel="noopener noreferrer"
                   className="contact-detail-card p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-center gap-3 hover:border-gold-primary transition-colors no-underline group"
                 >
-                  <div className="w-9 h-9 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                  <div className="w-9 h-9 rounded-full bg-[#1A0709] text-gold-light border border-gold-border/60 flex items-center justify-center shrink-0 shadow-sm group-hover:bg-[#2D0E12] group-hover:border-gold-primary group-hover:scale-105 transition-all">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12.031 0C5.385 0 0 5.386 0 12.031c0 2.124.553 4.197 1.604 6.02L0 24l6.155-1.614A11.968 11.968 0 0 0 12.03 24c6.645 0 12.03-5.385 12.03-12.031C24.06 5.386 18.675 0 12.031 0zm.012 22.012c-1.808 0-3.585-.486-5.143-1.408l-.369-.219-3.817 1.001 1.019-3.721-.241-.383A9.99 9.99 0 0 1 2.012 12.03c0-5.524 4.496-10.02 10.031-10.02 5.524 0 10.02 4.496 10.02 10.02 0 5.536-4.496 10.012-10.02 10.012zm5.503-7.519c-.302-.152-1.785-.881-2.062-.981-.277-.101-.479-.152-.68.152-.202.302-.782.981-.959 1.183-.176.201-.353.226-.655.075-1.745-.875-2.894-1.559-4.04-3.535-.302-.52.302-.482.864-1.608.101-.201.05-.378-.025-.529-.075-.152-.68-1.636-.932-2.24-.244-.588-.493-.508-.68-.518-.176-.009-.378-.009-.58-.009-.201 0-.528.075-.804.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.92 1.233 3.122.151.201 2.128 3.25 5.156 4.558 2.164.935 2.809.845 3.791.7.636-.094 1.785-.73 2.037-1.435.252-.705.252-1.309.176-1.435-.076-.125-.278-.201-.58-.352z" />
                     </svg>
                   </div>
                   <div className="min-w-0 flex-1">
-                    <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-[#128C7E] uppercase font-bold block">
+                    <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-gold-antique uppercase font-bold block">
                       WHATSAPP DIRECT
                     </span>
                     <span className="font-bold text-[#1A0709] group-hover:text-gold-primary transition-colors text-[0.88rem] sm:text-sm block mt-0.5">

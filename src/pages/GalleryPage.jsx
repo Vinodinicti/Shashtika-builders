@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { DEFAULT_GALLERY_IMAGES, loadCustomGalleryImages } from '../data/galleryData';
+import { DEFAULT_GALLERY_IMAGES, loadMasterGalleryImages } from '../data/galleryData';
 
 // Project Database identical to the original archive
 const galleryProjects = [
@@ -154,13 +154,13 @@ export default function GalleryPage() {
   const [activeCardId, setActiveCardId] = useState(null);
   const [selectedModalProject, setSelectedModalProject] = useState(null);
 
-  // Photo Gallery Template State & Real-Time Sync with Admin Uploads
+  // Photo Gallery Template State & Real-Time Sync with Admin Uploads & Edits
   const [lightboxIndex, setLightboxIndex] = useState(null);
-  const [customImages, setCustomImages] = useState(() => loadCustomGalleryImages());
+  const [allGalleryImages, setAllGalleryImages] = useState(() => loadMasterGalleryImages());
 
   useEffect(() => {
     const handleGallerySync = () => {
-      setCustomImages(loadCustomGalleryImages());
+      setAllGalleryImages(loadMasterGalleryImages());
     };
     window.addEventListener('shashtika_gallery_updated', handleGallerySync);
     window.addEventListener('storage', handleGallerySync);
@@ -169,11 +169,6 @@ export default function GalleryPage() {
       window.removeEventListener('storage', handleGallerySync);
     };
   }, []);
-
-  // Combine custom uploaded images with default catalog
-  const allGalleryImages = useMemo(() => {
-    return [...customImages, ...DEFAULT_GALLERY_IMAGES];
-  }, [customImages]);
 
   // Keyboard navigation for Lightbox and Project Modal
   useEffect(() => {

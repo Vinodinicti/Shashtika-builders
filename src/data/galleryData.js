@@ -165,31 +165,63 @@ export const DEFAULT_GALLERY_IMAGES = [
   }
 ];
 
-export const STORAGE_KEY_GALLERY = 'shashtika_custom_gallery_images';
+export const STORAGE_KEY_GALLERY = 'shashtika_gallery_master_list';
 
-export function loadCustomGalleryImages() {
-  if (typeof window === 'undefined') return [];
+export function loadMasterGalleryImages() {
+  if (typeof window === 'undefined') return DEFAULT_GALLERY_IMAGES;
   try {
     const raw = localStorage.getItem(STORAGE_KEY_GALLERY);
-    if (!raw) return [];
+    if (!raw) {
+      // Migrate from legacy custom images if present
+      const legacyRaw = localStorage.getItem('shashtika_custom_gallery_images');
+      if (legacyRaw) {
+        try {
+          const legacyCustom = JSON.parse(legacyRaw);
+          if (Array.isArray(legacyCustom) && legacyCustom.length > 0) {
+            const merged = [...legacyCustom, ...DEFAULT_GALLERY_IMAGES];
+            localStorage.setItem(STORAGE_KEY_GALLERY, JSON.stringify(merged));
+            return merged;
+          }
+        } catch (e) {}
+      }
+      // Initialize with default images (all editable)
+      localStorage.setItem(STORAGE_KEY_GALLERY, JSON.stringify(DEFAULT_GALLERY_IMAGES));
+      return DEFAULT_GALLERY_IMAGES;
+    }
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : DEFAULT_GALLERY_IMAGES;
   } catch (e) {
-    console.error('Error loading custom gallery images:', e);
-    return [];
+    console.error('Error loading master gallery images:', e);
+    return DEFAULT_GALLERY_IMAGES;
   }
 }
 
-export function saveCustomGalleryImages(images) {
+export function saveMasterGalleryImages(images) {
   if (typeof window === 'undefined') return;
   try {
     localStorage.setItem(STORAGE_KEY_GALLERY, JSON.stringify(images));
     window.dispatchEvent(new Event('shashtika_gallery_updated'));
   } catch (e) {
-    console.error('Error saving custom gallery images:', e);
+    console.error('Error saving master gallery images:', e);
     throw e;
   }
 }
+
+export function resetMasterGalleryImages() {
+  if (typeof window === 'undefined') return DEFAULT_GALLERY_IMAGES;
+  try {
+    localStorage.setItem(STORAGE_KEY_GALLERY, JSON.stringify(DEFAULT_GALLERY_IMAGES));
+    window.dispatchEvent(new Event('shashtika_gallery_updated'));
+    return DEFAULT_GALLERY_IMAGES;
+  } catch (e) {
+    console.error('Error resetting gallery images:', e);
+    return DEFAULT_GALLERY_IMAGES;
+  }
+}
+
+// Backwards compatibility aliases
+export const loadCustomGalleryImages = loadMasterGalleryImages;
+export const saveCustomGalleryImages = saveMasterGalleryImages;
 
 // Compress uploaded client images so they fit efficiently into localStorage without quota issues
 export function compressImageFile(file, maxWidth = 1200, maxHeight = 900, quality = 0.8) {
