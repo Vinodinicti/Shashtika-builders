@@ -59,40 +59,49 @@
     border-bottom: 1px solid rgba(198, 161, 91, 0.45) !important;
   }
 
-  header .h-\[44px\],
-  header .h-\[56px\],
   header [class*="min-h-"] {
-    min-height: 46px !important;
-    height: auto !important;
+    min-height: 44px !important;
+  }
+
+  /* Brand Logo Emblem */
+  header .header-brand-logo,
+  header a img {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    max-width: 38px !important;
+    aspect-ratio: 1 / 1 !important;
+    object-fit: contain !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    flex-shrink: 0 !important;
   }
 
   /* Brand Logo & Typography in Header */
   header .logo-title {
-    font-size: 1.15rem !important;
-    letter-spacing: 1.2px !important;
+    font-size: 1.12rem !important;
+    letter-spacing: 1.1px !important;
+    line-height: 1 !important;
+    display: block !important;
+  }
+
+  header .font-mono.tracking-\[1px\],
+  header .font-mono.tracking-\[1\.5px\],
+  header .font-mono.tracking-\[2px\] {
+    font-size: 0.46rem !important;
+    letter-spacing: 0.8px !important;
     line-height: 1.1 !important;
   }
 
-  header .font-mono.tracking-\[1\.5px\],
-  header .font-mono.tracking-\[2px\] {
-    font-size: 0.52rem !important;
-    letter-spacing: 1px !important;
-  }
-
-  header img {
-    height: 40px !important;
-    border: none !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-  }
-
-  /* Hamburger Menu Button */
+  /* Hamburger Menu Button with Generous Mobile Touch Target */
   header button[aria-label="Open Navigation Menu"] {
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
-    background: rgba(198, 161, 91, 0.15) !important;
-    border-color: var(--gold-primary) !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
   }
 
   /* Navigation Drawer Panel - Crisp Clean White Theme */
@@ -120,22 +129,54 @@
 }
 
 @media (max-width: 420px) {
-  header .logo-title {
-    font-size: 1.05rem !important;
-    letter-spacing: 0.8px !important;
+  header .header-brand-logo,
+  header a img {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
   }
 
+  header .logo-title {
+    font-size: 1.02rem !important;
+    letter-spacing: 0.8px !important;
+    line-height: 1 !important;
+  }
+
+  header .font-mono.tracking-\[1px\],
   header .font-mono.tracking-\[1\.5px\],
   header .font-mono.tracking-\[2px\] {
-    font-size: 0.48rem !important;
-    letter-spacing: 0.6px !important;
+    font-size: 0.44rem !important;
+    letter-spacing: 0.5px !important;
   }
 
-  header img {
+  header button[aria-label="Open Navigation Menu"] {
+    width: 36px !important;
     height: 36px !important;
-    border: none !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  header .header-brand-logo,
+  header a img {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+  }
+
+  header .logo-title {
+    font-size: 0.92rem !important;
+    letter-spacing: 0.4px !important;
+  }
+
+  header .font-mono.tracking-\[1px\],
+  header .font-mono.tracking-\[1\.5px\],
+  header .font-mono.tracking-\[2px\] {
+    font-size: 0.38rem !important;
+    letter-spacing: 0.3px !important;
   }
 }
 
