@@ -1918,80 +1918,109 @@
 @media (max-width: 991px) {
   /* Contact Hero: Compact Height to Avoid Long Push */
   .contact-hero-section {
-    min-height: 290px !important;
-    padding-top: max(60px, calc(env(safe-area-inset-top, 0px) + 52px)) !important;
-    padding-bottom: 20px !important;
+    min-height: 340px !important;
+    min-height: 48svh !important;
+    height: auto !important;
+    padding-top: max(70px, calc(env(safe-area-inset-top, 0px) + 60px)) !important;
+    padding-bottom: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    overflow: hidden !important;
+    border-bottom: 2px solid rgba(198, 161, 91, 0.45) !important;
   }
 
   .contact-hero-section .hero-headline {
-    font-size: 1.55rem !important;
+    font-size: 1.65rem !important;
     line-height: 1.15 !important;
   }
 
   .contact-hero-section .hero-subtext {
-    font-size: 0.78rem !important;
+    font-size: 0.80rem !important;
     line-height: 1.4 !important;
     margin-top: 6px !important;
   }
 
   /* Main Contact Section Spacing */
   #contact-main-section {
-    padding-top: 16px !important;
-    padding-bottom: 24px !important;
+    padding-top: 24px !important;
+    padding-bottom: 40px !important;
   }
 
   .contact-grid {
     grid-template-columns: 1fr !important;
-    gap: 16px !important;
+    gap: 20px !important;
   }
 
   .contact-info-box,
   .contact-form-box {
-    padding: 16px 14px !important;
-    border-radius: 12px !important;
+    padding: 20px 16px !important;
+    border-radius: 14px !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid rgba(198, 161, 91, 0.4) !important;
+    box-shadow: 0 4px 20px rgba(26, 7, 9, 0.05) !important;
   }
 
   .contact-info-box h3 {
-    font-size: 1.12rem !important;
+    font-size: 1.22rem !important;
     line-height: 1.25 !important;
-    margin-bottom: 4px !important;
+    margin-bottom: 6px !important;
   }
 
   .contact-info-box p {
-    font-size: 0.78rem !important;
-    line-height: 1.4 !important;
-    margin-bottom: 12px !important;
+    font-size: 0.82rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 16px !important;
   }
 
-  /* 2x2 Contact Assistance Grid */
+  /* Contact Assistance Cards (Clean Vertical Flow with Full Text Readability) */
   .contact-details-grid {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
   }
 
   .contact-detail-card {
-    padding: 8px 10px !important;
-    border-radius: 8px !important;
+    padding: 10px 14px !important;
+    border-radius: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    background: #FAF7F2 !important;
+    border: 1px solid rgba(198, 161, 91, 0.35) !important;
+  }
+
+  .contact-detail-card .min-w-0 {
+    flex: 1 1 auto !important;
+  }
+
+  .contact-detail-card a,
+  .contact-detail-card span {
+    white-space: normal !important;
+    text-overflow: unset !important;
+    overflow: visible !important;
   }
 
   /* 2 & 2 Enquiry Form Inputs */
   .contact-form-box h2 {
-    font-size: 1.15rem !important;
-    line-height: 1.2 !important;
+    font-size: 1.24rem !important;
+    line-height: 1.25 !important;
   }
 
   .contact-form-box p {
-    font-size: 0.76rem !important;
-    line-height: 1.35 !important;
-    margin-bottom: 12px !important;
+    font-size: 0.80rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 14px !important;
   }
 
   .contact-form-box .form-label,
   #contact-form .form-label {
-    font-size: 0.58rem !important;
-    letter-spacing: 0.8px !important;
-    margin-bottom: 3px !important;
+    font-size: 0.64rem !important;
+    letter-spacing: 1px !important;
+    margin-bottom: 5px !important;
+    font-weight: 700 !important;
+    color: #1A0709 !important;
   }
 
   .contact-form-box input,
@@ -2000,25 +2029,32 @@
   #contact-form input,
   #contact-form select,
   #contact-form textarea {
-    padding: 7px 10px !important;
-    min-height: 38px !important;
-    font-size: 0.80rem !important;
-    border-radius: 6px !important;
+    padding: 10px 14px !important;
+    min-height: 44px !important;
+    font-size: 16px !important; /* 16px strictly prevents iOS Safari auto-zoom */
+    border-radius: 8px !important;
+    background: #FAF7F2 !important;
+    border: 1px solid rgba(198, 161, 91, 0.45) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    color: #1A0709 !important;
   }
 
   .contact-form-box textarea,
   #contact-form textarea {
-    min-height: 52px !important;
+    min-height: 72px !important;
+    padding-top: 10px !important;
   }
 
   .contact-form-box button[type="submit"],
   #contact-form button[type="submit"] {
     width: 100% !important;
-    padding: 10px 16px !important;
-    font-size: 0.80rem !important;
-    min-height: 40px !important;
-    letter-spacing: 1px !important;
-    border-radius: 6px !important;
+    padding: 13px 20px !important;
+    font-size: 0.86rem !important;
+    min-height: 46px !important;
+    letter-spacing: 1.2px !important;
+    border-radius: 8px !important;
+    font-weight: 800 !important;
   }
 
   .direct-helpline-strip {

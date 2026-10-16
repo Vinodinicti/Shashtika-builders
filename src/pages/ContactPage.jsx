@@ -260,19 +260,19 @@ export default function ContactPage() {
                 Have questions about DTCP layouts, pricing, or custom villa construction? Our dedicated property advisors are ready to assist you.
               </p>
 
-              <div className="contact-details-grid grid grid-cols-2 gap-2 sm:gap-3 font-body text-sm text-[#1A0709]">
+              <div className="contact-details-grid grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 font-body text-sm text-[#1A0709]">
                 {/* Phone Helpline */}
-                <div className="contact-detail-card p-2.5 sm:p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-start gap-2 sm:gap-2.5">
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm mt-0.5">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <div className="contact-detail-card p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                     </svg>
                   </div>
-                  <div className="min-w-0">
-                    <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-gold-antique uppercase font-bold block truncate">
+                  <div className="min-w-0 flex-1">
+                    <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-gold-antique uppercase font-bold block">
                       CALL HELPLINE
                     </span>
-                    <a href="tel:+919363599754" className="font-bold text-[#1A0709] hover:text-gold-primary transition-colors text-[0.8rem] sm:text-sm block mt-0.5 truncate">
+                    <a href="tel:+919363599754" className="font-bold text-[#1A0709] hover:text-gold-primary transition-colors text-[0.88rem] sm:text-sm block mt-0.5">
                       +91 93635 99754
                     </a>
                   </div>
@@ -283,55 +283,55 @@ export default function ContactPage() {
                   href="https://wa.me/919363599754?text=Hello%20SHASHTIKA,%20I%20am%20interested%20in%20plots/construction"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="contact-detail-card p-2.5 sm:p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-start gap-2 sm:gap-2.5 hover:border-gold-primary transition-colors no-underline"
+                  className="contact-detail-card p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-center gap-3 hover:border-gold-primary transition-colors no-underline group"
                 >
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <div className="w-9 h-9 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
                     </svg>
                   </div>
-                  <div className="min-w-0">
-                    <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-[#128C7E] uppercase font-bold block truncate">
-                      WHATSAPP CHAT
+                  <div className="min-w-0 flex-1">
+                    <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-[#128C7E] uppercase font-bold block">
+                      WHATSAPP DIRECT
                     </span>
-                    <span className="font-bold text-[#1A0709] text-[0.8rem] sm:text-sm block mt-0.5 truncate">
+                    <span className="font-bold text-[#1A0709] group-hover:text-gold-primary transition-colors text-[0.88rem] sm:text-sm block mt-0.5">
                       Chat with Us →
                     </span>
                   </div>
                 </a>
 
                 {/* Email Address */}
-                <div className="contact-detail-card p-2.5 sm:p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-start gap-2 sm:gap-2.5">
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm mt-0.5">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <div className="contact-detail-card p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect width="20" height="16" x="2" y="4" rx="2"/>
                       <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
                     </svg>
                   </div>
-                  <div className="min-w-0">
-                    <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-gold-antique uppercase font-bold block truncate">
-                      EMAIL INQUIRIES
+                  <div className="min-w-0 flex-1">
+                    <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-gold-antique uppercase font-bold block">
+                      EMAIL ADVISORY
                     </span>
-                    <a href="mailto:contact@shashtika.com" className="font-bold text-[#1A0709] hover:text-gold-primary transition-colors text-[0.74rem] sm:text-xs block mt-0.5 truncate">
+                    <a href="mailto:contact@shashtika.com" className="font-bold text-[#1A0709] hover:text-gold-primary transition-colors text-[0.82rem] sm:text-xs block mt-0.5 break-all">
                       contact@shashtika.com
                     </a>
                   </div>
                 </div>
 
                 {/* Advisory Hours */}
-                <div className="contact-detail-card p-2.5 sm:p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-start gap-2 sm:gap-2.5">
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm mt-0.5">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <div className="contact-detail-card p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <circle cx="12" cy="12" r="10"/>
                       <polyline points="12 6 12 12 16 14"/>
                     </svg>
                   </div>
-                  <div className="min-w-0">
-                    <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-gold-antique uppercase font-bold block truncate">
-                      ADVISORY HOURS
+                  <div className="min-w-0 flex-1">
+                    <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-gold-antique uppercase font-bold block">
+                      OFFICE HOURS
                     </span>
-                    <span className="font-bold text-[#1A0709] text-[0.74rem] sm:text-xs block mt-0.5 truncate">
-                      9:00 AM – 7:30 PM
+                    <span className="font-bold text-[#1A0709] text-[0.82rem] sm:text-xs block mt-0.5">
+                      9:00 AM – 7:30 PM (Daily)
                     </span>
                   </div>
                 </div>
@@ -376,7 +376,7 @@ export default function ContactPage() {
 
               <form id="contact-form" onSubmit={handleSubmit}>
                 {/* 2 & 2 Pair 1: Full Name & Phone Number */}
-                <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-2 sm:mb-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
                   <div className="form-group mb-0">
                     <label className="form-label">FULL NAME *</label>
                     <input
@@ -385,7 +385,7 @@ export default function ContactPage() {
                       value={formData.name}
                       onChange={handleChange}
                       className="form-input"
-                      placeholder="e.g. Ramesh"
+                      placeholder="e.g. Ramesh Kumar"
                       required
                     />
                   </div>
@@ -398,14 +398,14 @@ export default function ContactPage() {
                       value={formData.phone}
                       onChange={handleChange}
                       className="form-input"
-                      placeholder="98765 43210"
+                      placeholder="e.g. 98765 43210"
                       required
                     />
                   </div>
                 </div>
 
                 {/* 2 & 2 Pair 2: Email & Preferred Location */}
-                <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-2 sm:mb-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
                   <div className="form-group mb-0">
                     <label className="form-label">EMAIL ADDRESS</label>
                     <input
@@ -414,7 +414,7 @@ export default function ContactPage() {
                       value={formData.email}
                       onChange={handleChange}
                       className="form-input"
-                      placeholder="ramesh@gmail.com"
+                      placeholder="e.g. ramesh@gmail.com"
                     />
                   </div>
 
@@ -427,15 +427,15 @@ export default function ContactPage() {
                       className="form-select"
                       required
                     >
-                      <option value="Coimbatore">Coimbatore</option>
-                      <option value="Pollachi">Pollachi</option>
-                      <option value="Both Locations">Both</option>
+                      <option value="Coimbatore">Coimbatore Layouts</option>
+                      <option value="Pollachi">Pollachi Layouts</option>
+                      <option value="Both Locations">Both Coimbatore &amp; Pollachi</option>
                     </select>
                   </div>
                 </div>
 
                 {/* 2 & 2 Pair 3: Buying Purpose & Timeline */}
-                <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-2 sm:mb-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
                   <div className="form-group mb-0">
                     <label className="form-label">PURPOSE *</label>
                     <select
@@ -445,10 +445,10 @@ export default function ContactPage() {
                       className="form-select"
                       required
                     >
-                      <option value="Residential Construction">Residential Villa</option>
-                      <option value="Investment & Appreciation">Investment ROI</option>
+                      <option value="Residential Construction">Residential Villa Construction</option>
+                      <option value="Investment & Appreciation">Investment &amp; Land Appreciation</option>
                       <option value="Commercial / Office">Commercial Space</option>
-                      <option value="Farm Plot Retreat">Farm House</option>
+                      <option value="Farm Plot Retreat">Farm House Retreat</option>
                     </select>
                   </div>
 
@@ -461,16 +461,16 @@ export default function ContactPage() {
                       className="form-select"
                       required
                     >
-                      <option value="Within 15 Days (Immediate)">Immediate (15 Days)</option>
+                      <option value="Within 15 Days (Immediate)">Within 15 Days (Immediate)</option>
                       <option value="1 to 3 Months">1 to 3 Months</option>
                       <option value="3 to 6 Months">3 to 6 Months</option>
-                      <option value="6+ Months / Planning">6+ Months</option>
+                      <option value="6+ Months / Planning">6+ Months / Planning</option>
                     </select>
                   </div>
                 </div>
 
                 {/* 2 & 2 Pair 4: Estimated Budget & Plot of Interest */}
-                <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-2 sm:mb-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
                   <div className="form-group mb-0">
                     <label className="form-label">BUDGET *</label>
                     <select
@@ -480,10 +480,10 @@ export default function ContactPage() {
                       className="form-select"
                       required
                     >
-                      <option value="Below ₹25 Lakhs">&lt; ₹25 Lakhs</option>
-                      <option value="₹25 Lakhs - ₹50 Lakhs">₹25L – ₹50L</option>
-                      <option value="₹50 Lakhs - ₹1 Crore">₹50L – ₹1Cr</option>
-                      <option value="Above ₹1 Crore">&gt; ₹1 Crore</option>
+                      <option value="Below ₹25 Lakhs">Below ₹25 Lakhs</option>
+                      <option value="₹25 Lakhs - ₹50 Lakhs">₹25 Lakhs – ₹50 Lakhs</option>
+                      <option value="₹50 Lakhs - ₹1 Crore">₹50 Lakhs – ₹1 Crore</option>
+                      <option value="Above ₹1 Crore">Above ₹1 Crore</option>
                     </select>
                   </div>
 
@@ -495,13 +495,13 @@ export default function ContactPage() {
                       value={formData.plot}
                       onChange={handleChange}
                       className="form-input"
-                      placeholder="e.g. Plot #104"
+                      placeholder="e.g. Plot #104 / Kambalampatti"
                     />
                   </div>
                 </div>
 
                 {/* Additional Specifications / Notes */}
-                <div className="form-group mb-3">
+                <div className="form-group mb-4">
                   <label className="form-label">SPECIFICATIONS / NOTES</label>
                   <textarea
                     name="message"
@@ -509,7 +509,7 @@ export default function ContactPage() {
                     onChange={handleChange}
                     className="form-textarea"
                     rows="2"
-                    placeholder="Facing preferences, corner plot requirement, etc..."
+                    placeholder="Facing preferences (East/North), corner plot requirement, etc..."
                   />
                 </div>
 
@@ -517,7 +517,7 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="btn-primary w-full justify-center text-center cursor-pointer disabled:opacity-50"
+                  className="btn-primary w-full justify-center text-center cursor-pointer disabled:opacity-50 py-3 sm:py-3.5"
                   style={{ width: '100%' }}
                 >
                   {submitting ? 'PROCESSING ENQUIRY...' : 'SUBMIT ENQUIRY'}
