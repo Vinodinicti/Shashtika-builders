@@ -1539,8 +1539,8 @@ _Please contact this client immediately and arrange site inspection / discussion
         {/* Main Container - Exact matching max-w-[1320px] and alignment as Home, Plots, Contact & Gallery Hero */}
         <div className="max-w-[1320px] mx-auto px-4 sm:px-8 w-full flex flex-col justify-center h-full relative z-[3] flex-1">
           <div className="hero-fit-content w-full">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div>
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 w-full">
+              <div className="flex-1 max-w-[700px]">
                 <h1 className="hero-headline" style={{ margin: 0 }}>
                   <span className="gold-hero-badge">ADMIN PORTAL</span>
                   <br />
@@ -1553,19 +1553,29 @@ _Please contact this client immediately and arrange site inspection / discussion
                 </p>
               </div>
 
-              {/* Quick Header Buttons */}
-              <div className="flex items-center gap-3 flex-wrap">
+              {/* Quick Header Buttons in Right Corner */}
+              <div className="admin-hero-right-buttons">
                 <a
                   href="#plots"
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded border-[1.8px] border-gold-primary text-cream font-mono text-[0.78rem] font-extrabold tracking-[1.5px] bg-gold-primary/20 backdrop-blur-md hover:bg-gold-primary hover:text-espresso-950 transition-all shadow-[0_4px_18px_rgba(0,0,0,0.4)] cursor-pointer"
+                  className="admin-hero-btn-preview"
                 >
-                  PREVIEW LIVE PLOTS MAP
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
+                    <line x1="8" y1="2" x2="8" y2="18" />
+                    <line x1="16" y1="6" x2="16" y2="22" />
+                  </svg>
+                  <span>PREVIEW LIVE PLOTS MAP</span>
                 </a>
                 <button
                   onClick={handleAdminLogout}
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded border-[1.8px] border-[#d9534f] text-[#ffb3b0] font-mono text-[0.78rem] font-extrabold tracking-[1.5px] bg-[#d9534f]/20 backdrop-blur-md hover:bg-[#d9534f] hover:text-white transition-all shadow-[0_4px_18px_rgba(0,0,0,0.4)] cursor-pointer"
+                  className="admin-hero-btn-logout"
                 >
-                  LOG OUT
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
+                  <span>LOG OUT</span>
                 </button>
               </div>
             </div>
