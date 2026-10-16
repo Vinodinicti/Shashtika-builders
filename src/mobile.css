@@ -252,7 +252,9 @@
   }
 
   .plots-hero-section,
-  .gallery-hero-compact {
+  .gallery-hero-compact,
+  .contact-hero-section,
+  .admin-hero-section {
     min-height: 340px !important;
     min-height: 48svh !important;
     height: auto !important;
@@ -264,16 +266,6 @@
     position: relative !important;
     overflow: hidden !important;
     border-bottom: 2px solid rgba(198, 161, 91, 0.45) !important;
-  }
-
-  .admin-hero-section {
-    min-height: 240px !important;
-    padding-top: max(64px, calc(env(safe-area-inset-top, 0px) + 54px)) !important;
-    padding-bottom: 20px !important;
-    display: flex !important;
-    align-items: center !important;
-    position: relative !important;
-    overflow: hidden !important;
   }
 
   /* 4.2 Background Images Framing — Perfectly Centered & Un-Zoomed Like Desktop */

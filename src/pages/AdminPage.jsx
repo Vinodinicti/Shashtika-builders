@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { PLOTS_DATA, PROJECT_METADATA } from '../data/plotsKambalapattiData';
 import { KINATHUKADAVU_PLOTS_DATA, KINATHUKADAVU_METADATA } from '../data/plotsKinathukadavuData';
+import {
+  DEFAULT_GALLERY_IMAGES,
+  GALLERY_CATEGORIES,
+  CATEGORY_LABELS,
+  loadCustomGalleryImages,
+  saveCustomGalleryImages,
+  compressImageFile
+} from '../data/galleryData';
 
 // Default Staff Roster with Names and WhatsApp Mobile Numbers
 const DEFAULT_STAFF_ROSTER = [
@@ -294,6 +302,134 @@ export default function AdminPage() {
     stage: 'INQUIRY',
     notes: ''
   });
+
+  // Project Developments & Photo Gallery State
+  const [customGalleryImages, setCustomGalleryImages] = useState(() => loadCustomGalleryImages());
+  const [galleryFilter, setGalleryFilter] = useState('all');
+  const [gallerySearchQuery, setGallerySearchQuery] = useState('');
+  const [galleryUploading, setGalleryUploading] = useState(false);
+  const [galleryUploadSuccess, setGalleryUploadSuccess] = useState('');
+  const [galleryUploadError, setGalleryUploadError] = useState('');
+  const [galleryForm, setGalleryForm] = useState({
+    title: '',
+    category: 'arches',
+    location: 'Kambalampatti, Pollachi',
+    desc: '',
+    src: ''
+  });
+  const [galleryPreview, setGalleryPreview] = useState('');
+  const [adminGalleryLightboxImg, setAdminGalleryLightboxImg] = useState(null);
+
+  // Sync custom gallery images across tabs / windows
+  useEffect(() => {
+    const handleGallerySync = () => {
+      setCustomGalleryImages(loadCustomGalleryImages());
+    };
+    window.addEventListener('shashtika_gallery_updated', handleGallerySync);
+    window.addEventListener('storage', handleGallerySync);
+    return () => {
+      window.removeEventListener('shashtika_gallery_updated', handleGallerySync);
+      window.removeEventListener('storage', handleGallerySync);
+    };
+  }, []);
+
+  const handleGalleryFileChange = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setGalleryUploadError('Please select a valid image file (JPEG, PNG, WebP).');
+      return;
+    }
+
+    setGalleryUploading(true);
+    setGalleryUploadError('');
+    try {
+      const compressedDataUrl = await compressImageFile(file, 1200, 900, 0.82);
+      setGalleryPreview(compressedDataUrl);
+      setGalleryForm((prev) => ({ ...prev, src: compressedDataUrl }));
+    } catch (err) {
+      console.error('Image compression failed:', err);
+      setGalleryUploadError('Failed to process image. You can also paste an image URL directly.');
+    } finally {
+      setGalleryUploading(false);
+    }
+  };
+
+  const handleAddGalleryPhoto = (e) => {
+    e.preventDefault();
+    const finalSrc = galleryPreview || galleryForm.src.trim();
+    if (!finalSrc) {
+      setGalleryUploadError('Please choose a photo file or provide an image URL.');
+      return;
+    }
+    if (!galleryForm.title.trim()) {
+      setGalleryUploadError('Please enter a title for this site photo.');
+      return;
+    }
+
+    const newPhoto = {
+      id: `gal-custom-${Date.now()}`,
+      src: finalSrc,
+      title: galleryForm.title.trim(),
+      category: galleryForm.category,
+      categoryLabel: CATEGORY_LABELS[galleryForm.category] || 'PROJECT UPDATE',
+      location: galleryForm.location.trim() || 'Pollachi & Coimbatore Corridor',
+      desc: galleryForm.desc.trim() || 'Live on-site layout progress update captured by SHASHTIKA site team.',
+      dateAdded: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+      isCustom: true
+    };
+
+    try {
+      const updated = [newPhoto, ...customGalleryImages];
+      saveCustomGalleryImages(updated);
+      setCustomGalleryImages(updated);
+      setGalleryPreview('');
+      setGalleryForm({
+        title: '',
+        category: 'arches',
+        location: 'Kambalampatti, Pollachi',
+        desc: '',
+        src: ''
+      });
+      setGalleryUploadError('');
+      setGalleryUploadSuccess(`Photo "${newPhoto.title}" uploaded! It is now live on the public Gallery page.`);
+      setTimeout(() => setGalleryUploadSuccess(''), 6000);
+    } catch (err) {
+      setGalleryUploadError('Storage quota exceeded. Please remove older photos or use smaller files.');
+    }
+  };
+
+  const handleDeleteGalleryPhoto = (photoId, photoTitle) => {
+    if (window.confirm(`Are you sure you want to remove "${photoTitle}" from the public gallery?`)) {
+      const updated = customGalleryImages.filter((img) => img.id !== photoId);
+      saveCustomGalleryImages(updated);
+      setCustomGalleryImages(updated);
+      setGalleryUploadSuccess(`Photo "${photoTitle}" deleted.`);
+      setTimeout(() => setGalleryUploadSuccess(''), 4000);
+    }
+  };
+
+  const allAdminGalleryImages = useMemo(() => {
+    return [
+      ...customGalleryImages.map((img) => ({ ...img, isCustom: true })),
+      ...DEFAULT_GALLERY_IMAGES.map((img) => ({ ...img, isCustom: false }))
+    ];
+  }, [customGalleryImages]);
+
+  const filteredAdminGalleryImages = useMemo(() => {
+    return allAdminGalleryImages.filter((item) => {
+      const matchCat = galleryFilter === 'all' || item.category === galleryFilter;
+      const q = gallerySearchQuery.toLowerCase().trim();
+      if (!q) return matchCat;
+      const matchSearch =
+        (item.title && item.title.toLowerCase().includes(q)) ||
+        (item.location && item.location.toLowerCase().includes(q)) ||
+        (item.desc && item.desc.toLowerCase().includes(q)) ||
+        (item.categoryLabel && item.categoryLabel.toLowerCase().includes(q));
+      return matchCat && matchSearch;
+    });
+  }, [allAdminGalleryImages, galleryFilter, gallerySearchQuery]);
 
   // Persist State to localStorage
   useEffect(() => {
@@ -1290,45 +1426,44 @@ _Please contact this client immediately and arrange site inspection / discussion
     >
       {/* HOMEPAGE-ALIGNED HERO SECTION FOR ADMIN PORTAL */}
       <section className="admin-hero-section">
+        {/* Full Edge-to-Edge Background Image */}
         <div className="admin-hero-bg-img" />
+
+        {/* Rich Luxury Dark Vignette Overlay */}
         <div className="admin-hero-overlay" />
 
-        <div className="max-w-[1320px] mx-auto px-4 sm:px-8 w-full relative z-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-              <div className="architectural-tag" style={{ marginBottom: '14px', color: 'var(--gold-antique)' }}>
-                ADMINISTRATION &amp; DYNAMIC STATE CONTROL
+        {/* Main Container - Exact matching max-w-[1320px] and alignment as Home, Plots, Contact & Gallery Hero */}
+        <div className="max-w-[1320px] mx-auto px-4 sm:px-8 w-full flex flex-col justify-center h-full relative z-[3] flex-1">
+          <div className="hero-fit-content w-full">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div>
+                <h1 className="hero-headline" style={{ margin: 0 }}>
+                  <span className="gold-hero-badge">ADMIN PORTAL</span>
+                  <br />
+                  <span style={{ color: '#E5D2A6' }}>MANAGEMENT</span>
+                  <br />
+                  <span style={{ color: '#E5D2A6' }}>&amp; LEAD INTELLIGENCE</span>
+                </h1>
+                <p className="hero-description-block" style={{ marginTop: '12px', maxWidth: '640px', color: 'rgba(255, 253, 247, 0.85)', fontSize: '0.92rem' }}>
+                  Real-time DTCP inventory state control, customer enquiries, plot bookings, and AI-powered lead scoring dashboard.
+                </p>
               </div>
 
-              <h1 className="hero-headline" style={{ margin: 0 }}>
-                <span className="gold-hero-badge">ADMIN PORTAL</span>
-                <br />
-                <span style={{ color: '#E5D2A6', fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: 800 }}>
-                  MANAGEMENT
-                </span>
-                <br />
-                <span style={{ color: '#E5D2A6', fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: 800 }}>
-                  &amp; LEAD INTELLIGENCE
-                </span>
-              </h1>
-            </div>
-
-            {/* Quick Header Buttons */}
-            <div className="flex items-center gap-3 flex-wrap">
-              <a
-                href="#plots"
-                className="btn btn-outline-gold"
-                style={{ fontSize: '0.75rem', padding: '8px 16px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-              >
-                PREVIEW LIVE PLOTS MAP
-              </a>
-              <button
-                onClick={handleAdminLogout}
-                className="btn btn-outline-gold"
-                style={{ fontSize: '0.75rem', padding: '8px 16px', background: 'rgba(217, 83, 79, 0.2)', borderColor: '#d9534f', color: '#ffb3b0', cursor: 'pointer' }}
-              >
-                LOG OUT
-              </button>
+              {/* Quick Header Buttons */}
+              <div className="flex items-center gap-3 flex-wrap">
+                <a
+                  href="#plots"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded border-[1.8px] border-gold-primary text-cream font-mono text-[0.78rem] font-extrabold tracking-[1.5px] bg-gold-primary/20 backdrop-blur-md hover:bg-gold-primary hover:text-espresso-950 transition-all shadow-[0_4px_18px_rgba(0,0,0,0.4)] cursor-pointer"
+                >
+                  PREVIEW LIVE PLOTS MAP
+                </a>
+                <button
+                  onClick={handleAdminLogout}
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded border-[1.8px] border-[#d9534f] text-[#ffb3b0] font-mono text-[0.78rem] font-extrabold tracking-[1.5px] bg-[#d9534f]/20 backdrop-blur-md hover:bg-[#d9534f] hover:text-white transition-all shadow-[0_4px_18px_rgba(0,0,0,0.4)] cursor-pointer"
+                >
+                  LOG OUT
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1402,6 +1537,25 @@ _Please contact this client immediately and arrange site inspection / discussion
                   <div className="tab-btn-text">
                     <span className="tab-btn-title">Customer Details</span>
                     <span className="tab-btn-sub">Centralized Client Registry ({customers.length})</span>
+                  </div>
+                </button>
+
+                {/* BUTTON 4: PROJECT DEVELOPMENTS & PHOTO GALLERY */}
+                <button
+                  type="button"
+                  className={`admin-nav-tab-btn ${activeTab === 'gallery-manager' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('gallery-manager')}
+                >
+                  <div className="tab-btn-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <polyline points="21 15 16 10 5 21" />
+                    </svg>
+                  </div>
+                  <div className="tab-btn-text">
+                    <span className="tab-btn-title">Photo Gallery</span>
+                    <span className="tab-btn-sub">Project Developments ({allAdminGalleryImages.length})</span>
                   </div>
                 </button>
               </nav>
@@ -2237,6 +2391,33 @@ _Please contact this client immediately and arrange site inspection / discussion
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A0709" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                         ADD NEW CUSTOMER RECORD
                       </button>
+
+                      <button
+                        onClick={() => setActiveTab('gallery-manager')}
+                        style={{
+                          fontSize: '0.80rem',
+                          padding: '10px 18px',
+                          fontWeight: 800,
+                          borderRadius: '6px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          background: '#800000',
+                          color: '#FFFFFF',
+                          border: '1.5px solid #C6A15B',
+                          boxShadow: '0 4px 14px rgba(128, 0, 0, 0.25)',
+                          cursor: 'pointer',
+                          letterSpacing: '0.4px',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.4">
+                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                          <circle cx="8.5" cy="8.5" r="1.5" />
+                          <polyline points="21 15 16 10 5 21" />
+                        </svg>
+                        PHOTO GALLERY ({allAdminGalleryImages.length})
+                      </button>
                     </div>
                   </div>
 
@@ -2557,6 +2738,601 @@ _Please contact this client immediately and arrange site inspection / discussion
                       </tbody>
                     </table>
                   </div>
+                </div>
+              )}
+
+              {/* PANEL 4: PROJECT DEVELOPMENTS & PHOTO GALLERY */}
+              {activeTab === 'gallery-manager' && (
+                <div style={{ background: 'var(--bg-cream)', border: '1.8px solid var(--gold-primary)', borderRadius: 'var(--radius-md)', padding: '28px', boxShadow: '0 12px 35px rgba(26, 7, 9, 0.12), 0 0 20px rgba(198, 161, 91, 0.18)', position: 'relative', overflow: 'hidden' }}>
+                  {/* TOP METALLIC GOLD ACCENT STRIP */}
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, #A9823A, #C6A15B, #E5D2A6, #C6A15B, #A9823A)' }} />
+
+                  {/* HEADER AREA */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: '20px', marginBottom: '24px', paddingBottom: '20px', borderBottom: '1px solid rgba(198, 161, 91, 0.3)' }}>
+                    <div style={{ maxWidth: '780px' }}>
+                      <div className="architectural-tag" style={{ marginBottom: '8px', color: 'var(--gold-antique)', fontWeight: 700 }}>
+                        PROJECT DEVELOPMENTS &amp; PHOTO GALLERY
+                      </div>
+                      <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.4rem, 2.5vw, 2.0rem)', color: '#1A0709', fontWeight: 800, letterSpacing: '0.5px', marginBottom: '8px' }}>
+                        Project Developments &amp; Photo Gallery Manager
+                      </h3>
+                      <p style={{ fontSize: '0.92rem', color: 'rgba(10, 19, 37, 0.75)', lineHeight: 1.6, fontWeight: 500 }}>
+                        Upload real-time site photos, entrance arches, tar roads, layout progress, and villa construction images. Uploaded photos are instantly visible to visitors in the public Gallery Page under <strong>PROJECT DEVELOPMENTS &amp; PHOTO GALLERY</strong> with live auto-scrolling reels and full-screen lightbox.
+                      </p>
+                    </div>
+
+                    <div className="admin-action-toolbar" style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', marginTop: '6px' }}>
+                      <a
+                        href="/gallery"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          fontSize: '0.80rem',
+                          padding: '10px 18px',
+                          fontWeight: 800,
+                          borderRadius: '6px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          background: '#1A0709',
+                          color: '#F3E5AB',
+                          border: '1.5px solid #C6A15B',
+                          boxShadow: '0 4px 14px rgba(10, 19, 37, 0.35)',
+                          cursor: 'pointer',
+                          letterSpacing: '0.4px',
+                          textDecoration: 'none',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C6A15B" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></svg>
+                        VIEW PUBLIC GALLERY PAGE ↗
+                      </a>
+
+                      <button
+                        onClick={() => setActiveTab('customer-tracker')}
+                        style={{
+                          fontSize: '0.80rem',
+                          padding: '10px 18px',
+                          fontWeight: 800,
+                          borderRadius: '6px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          background: 'rgba(255, 255, 255, 0.9)',
+                          color: '#1A0709',
+                          border: '1.5px solid rgba(198, 161, 91, 0.6)',
+                          cursor: 'pointer',
+                          letterSpacing: '0.4px'
+                        }}
+                      >
+                        CUSTOMER DETAILS
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* QUICK STATS CHIPS */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px', marginBottom: '24px' }}>
+                    <div style={{ background: '#FFFFFF', border: '1.5px solid rgba(198, 161, 91, 0.35)', borderRadius: '8px', padding: '14px 18px', display: 'flex', alignItems: 'center', gap: '14px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+                      <div style={{ width: '42px', height: '42px', borderRadius: '8px', background: 'rgba(198, 161, 91, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#A9823A', flexShrink: 0 }}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '0.70rem', fontWeight: 800, color: 'rgba(26, 7, 9, 0.6)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Total Live Photos</div>
+                        <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#1A0709', fontFamily: 'var(--font-heading)', lineHeight: 1.1 }}>{allAdminGalleryImages.length}</div>
+                      </div>
+                    </div>
+
+                    <div style={{ background: '#FFFFFF', border: '1.5px solid rgba(16, 185, 129, 0.4)', borderRadius: '8px', padding: '14px 18px', display: 'flex', alignItems: 'center', gap: '14px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+                      <div style={{ width: '42px', height: '42px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#059669', flexShrink: 0 }}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '0.70rem', fontWeight: 800, color: '#047857', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Admin Custom Uploads</div>
+                        <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#065F46', fontFamily: 'var(--font-heading)', lineHeight: 1.1 }}>{customGalleryImages.length}</div>
+                      </div>
+                    </div>
+
+                    <div style={{ background: '#FFFFFF', border: '1.5px solid rgba(198, 161, 91, 0.35)', borderRadius: '8px', padding: '14px 18px', display: 'flex', alignItems: 'center', gap: '14px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+                      <div style={{ width: '42px', height: '42px', borderRadius: '8px', background: 'rgba(26, 7, 9, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1A0709', flexShrink: 0 }}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 17 12 22 22 17" /><polyline points="2 12 12 17 22 12" /></svg>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '0.70rem', fontWeight: 800, color: 'rgba(26, 7, 9, 0.6)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Predefined Catalog</div>
+                        <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#1A0709', fontFamily: 'var(--font-heading)', lineHeight: 1.1 }}>{DEFAULT_GALLERY_IMAGES.length}</div>
+                      </div>
+                    </div>
+
+                    <div style={{ background: '#FFFFFF', border: '1.5px solid rgba(198, 161, 91, 0.35)', borderRadius: '8px', padding: '14px 18px', display: 'flex', alignItems: 'center', gap: '14px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+                      <div style={{ width: '42px', height: '42px', borderRadius: '8px', background: 'rgba(128, 0, 0, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#800000', flexShrink: 0 }}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" /><line x1="4" y1="22" x2="4" y2="15" /></svg>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '0.70rem', fontWeight: 800, color: 'rgba(26, 7, 9, 0.6)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Active Pillars</div>
+                        <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#800000', fontFamily: 'var(--font-heading)', lineHeight: 1.1 }}>5 Categories</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* NOTIFICATIONS */}
+                  {galleryUploadSuccess && (
+                    <div style={{ background: 'rgba(16, 185, 129, 0.12)', border: '1.5px solid #059669', color: '#065F46', padding: '12px 18px', borderRadius: '8px', marginBottom: '20px', fontWeight: 600, fontSize: '0.88rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                        <span>{galleryUploadSuccess}</span>
+                      </div>
+                      <button type="button" onClick={() => setGalleryUploadSuccess('')} style={{ background: 'none', border: 'none', color: '#065F46', fontSize: '1.2rem', cursor: 'pointer', lineHeight: 1 }}>&times;</button>
+                    </div>
+                  )}
+
+                  {galleryUploadError && (
+                    <div style={{ background: 'rgba(220, 38, 38, 0.12)', border: '1.5px solid #DC2626', color: '#991B1B', padding: '12px 18px', borderRadius: '8px', marginBottom: '20px', fontWeight: 600, fontSize: '0.88rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="2.5"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
+                        <span>{galleryUploadError}</span>
+                      </div>
+                      <button type="button" onClick={() => setGalleryUploadError('')} style={{ background: 'none', border: 'none', color: '#991B1B', fontSize: '1.2rem', cursor: 'pointer', lineHeight: 1 }}>&times;</button>
+                    </div>
+                  )}
+
+                  {/* UPLOAD NEW SITE PHOTO CARD */}
+                  <div style={{ background: '#FFFFFF', border: '1.5px solid var(--gold-border)', borderRadius: 'var(--radius-md)', padding: '24px', marginBottom: '28px', boxShadow: '0 4px 16px rgba(0,0,0,0.04)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '18px', paddingBottom: '12px', borderBottom: '1.2px solid rgba(198, 161, 91, 0.25)' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '6px', background: 'var(--gold-primary)', color: '#1A0709', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
+                      </div>
+                      <div>
+                        <h4 style={{ margin: 0, fontSize: '1.15rem', color: '#1A0709', fontFamily: 'var(--font-heading)', fontWeight: 800 }}>Upload New Site Photo</h4>
+                        <span style={{ fontSize: '0.78rem', color: 'rgba(26, 7, 9, 0.65)' }}>Directly publish new progress photographs to the public photo gallery</span>
+                      </div>
+                    </div>
+
+                    <form onSubmit={handleAddGalleryPhoto}>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '22px', alignItems: 'start' }}>
+                        {/* LEFT COLUMN: FILE DROPZONE & PREVIEW */}
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#1A0709', marginBottom: '8px', letterSpacing: '0.3px' }}>
+                            PHOTO FILE (LOCAL DEVICE / CAMERA) *
+                          </label>
+
+                          {galleryPreview ? (
+                            <div style={{ position: 'relative', border: '2px solid var(--gold-primary)', borderRadius: '8px', overflow: 'hidden', background: '#1A0709', maxHeight: '240px' }}>
+                              <img
+                                src={galleryPreview}
+                                alt="Preview"
+                                style={{ width: '100%', height: '240px', objectFit: 'cover', display: 'block' }}
+                              />
+                              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(26, 7, 9, 0.85)', padding: '8px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span style={{ fontSize: '0.74rem', color: '#F3E5AB', fontWeight: 600 }}>Optimized for Web (~120KB)</span>
+                                <button
+                                  type="button"
+                                  onClick={() => { setGalleryPreview(''); setGalleryForm((p) => ({ ...p, src: '' })); }}
+                                  style={{ background: '#DC2626', color: '#FFFFFF', border: 'none', borderRadius: '4px', padding: '4px 8px', fontSize: '0.72rem', fontWeight: 700, cursor: 'pointer' }}
+                                >
+                                  Remove Photo
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div
+                              style={{
+                                border: '2px dashed var(--gold-primary)',
+                                borderRadius: '8px',
+                                background: 'rgba(198, 161, 91, 0.06)',
+                                padding: '26px 16px',
+                                textAlign: 'center',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease',
+                                position: 'relative'
+                              }}
+                            >
+                              <input
+                                type="file"
+                                accept="image/jpeg,image/png,image/webp"
+                                onChange={handleGalleryFileChange}
+                                style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer', width: '100%', height: '100%' }}
+                              />
+                              <div style={{ width: '48px', height: '48px', margin: '0 auto 10px', borderRadius: '50%', background: 'rgba(198, 161, 91, 0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#A9823A' }}>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>
+                              </div>
+                              <div style={{ fontSize: '0.90rem', fontWeight: 700, color: '#1A0709', marginBottom: '4px' }}>
+                                {galleryUploading ? 'Compressing Image...' : 'Click to Browse or Drag Photo Here'}
+                              </div>
+                              <div style={{ fontSize: '0.75rem', color: 'rgba(26, 7, 9, 0.65)' }}>
+                                JPG, PNG, WEBP (Auto-optimized client side)
+                              </div>
+                            </div>
+                          )}
+
+                          <div style={{ marginTop: '12px' }}>
+                            <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: 'rgba(26, 7, 9, 0.7)', marginBottom: '4px' }}>
+                              OR Enter Direct Image URL / Static Path:
+                            </label>
+                            <input
+                              type="text"
+                              value={galleryForm.src}
+                              placeholder="e.g. /Images/Hero_Arch.jpg or https://..."
+                              onChange={(e) => {
+                                setGalleryForm((p) => ({ ...p, src: e.target.value }));
+                              }}
+                              style={{
+                                width: '100%',
+                                padding: '9px 12px',
+                                fontSize: '0.84rem',
+                                borderRadius: '6px',
+                                border: '1.2px solid rgba(198, 161, 91, 0.4)',
+                                background: '#FFFFFF',
+                                color: '#1A0709',
+                                outline: 'none'
+                              }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* RIGHT COLUMN: METADATA FIELDS */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                          <div>
+                            <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#1A0709', marginBottom: '6px' }}>
+                              PHOTO TITLE *
+                            </label>
+                            <input
+                              type="text"
+                              required
+                              value={galleryForm.title}
+                              placeholder="e.g. 40ft Main Tar Road Bitumen Paving & Kerbs"
+                              onChange={(e) => setGalleryForm((p) => ({ ...p, title: e.target.value }))}
+                              style={{
+                                width: '100%',
+                                padding: '10px 14px',
+                                fontSize: '0.88rem',
+                                borderRadius: '6px',
+                                border: '1.5px solid rgba(198, 161, 91, 0.5)',
+                                background: '#FFFFFF',
+                                color: '#1A0709',
+                                outline: 'none',
+                                fontWeight: 600
+                              }}
+                            />
+                          </div>
+
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px' }}>
+                            <div>
+                              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#1A0709', marginBottom: '6px' }}>
+                                CATEGORY *
+                              </label>
+                              <select
+                                value={galleryForm.category}
+                                onChange={(e) => setGalleryForm((p) => ({ ...p, category: e.target.value }))}
+                                style={{
+                                  width: '100%',
+                                  padding: '10px 14px',
+                                  fontSize: '0.86rem',
+                                  borderRadius: '6px',
+                                  border: '1.5px solid rgba(198, 161, 91, 0.5)',
+                                  background: '#FFFFFF',
+                                  color: '#1A0709',
+                                  outline: 'none',
+                                  fontWeight: 600
+                                }}
+                              >
+                                <option value="arches">ENTRANCE ARCH</option>
+                                <option value="roads">TAR ROADS</option>
+                                <option value="construction">CONSTRUCTION</option>
+                                <option value="villas">LUXURY VILLA</option>
+                                <option value="planning">TOWN PLANNING</option>
+                              </select>
+                            </div>
+
+                            <div>
+                              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#1A0709', marginBottom: '6px' }}>
+                                SITE LOCATION
+                              </label>
+                              <input
+                                type="text"
+                                value={galleryForm.location}
+                                placeholder="e.g. Kambalampatti, Pollachi"
+                                onChange={(e) => setGalleryForm((p) => ({ ...p, location: e.target.value }))}
+                                style={{
+                                  width: '100%',
+                                  padding: '10px 14px',
+                                  fontSize: '0.86rem',
+                                  borderRadius: '6px',
+                                  border: '1.5px solid rgba(198, 161, 91, 0.5)',
+                                  background: '#FFFFFF',
+                                  color: '#1A0709',
+                                  outline: 'none',
+                                  fontWeight: 500
+                                }}
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#1A0709', marginBottom: '6px' }}>
+                              SHORT DESCRIPTION / REMARKS
+                            </label>
+                            <textarea
+                              rows={3}
+                              value={galleryForm.desc}
+                              placeholder="e.g. 4-layer asphalt compaction with underground stormwater drainage lines completed by on-site civil team."
+                              onChange={(e) => setGalleryForm((p) => ({ ...p, desc: e.target.value }))}
+                              style={{
+                                width: '100%',
+                                padding: '10px 14px',
+                                fontSize: '0.86rem',
+                                borderRadius: '6px',
+                                border: '1.5px solid rgba(198, 161, 91, 0.5)',
+                                background: '#FFFFFF',
+                                color: '#1A0709',
+                                outline: 'none',
+                                resize: 'vertical',
+                                fontFamily: 'inherit'
+                              }}
+                            />
+                          </div>
+
+                          <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginTop: '6px' }}>
+                            <button
+                              type="submit"
+                              disabled={galleryUploading || (!galleryPreview && !galleryForm.src.trim()) || !galleryForm.title.trim()}
+                              style={{
+                                padding: '12px 24px',
+                                fontSize: '0.86rem',
+                                fontWeight: 800,
+                                borderRadius: '6px',
+                                background: 'linear-gradient(135deg, #C6A15B 0%, #AA7C11 100%)',
+                                color: '#1A0709',
+                                border: '1.5px solid #8C6B28',
+                                boxShadow: '0 4px 14px rgba(198, 161, 91, 0.35)',
+                                cursor: 'pointer',
+                                letterSpacing: '0.4px',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                opacity: (galleryUploading || (!galleryPreview && !galleryForm.src.trim()) || !galleryForm.title.trim()) ? 0.5 : 1
+                              }}
+                            >
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A0709" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                              {galleryUploading ? 'PROCESSING...' : 'UPLOAD TO PUBLIC GALLERY'}
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setGalleryForm({ title: '', category: 'arches', location: 'Kambalampatti, Pollachi', desc: '', src: '' });
+                                setGalleryPreview('');
+                                setGalleryUploadError('');
+                              }}
+                              style={{
+                                padding: '12px 18px',
+                                fontSize: '0.84rem',
+                                fontWeight: 700,
+                                borderRadius: '6px',
+                                background: 'transparent',
+                                color: 'rgba(26, 7, 9, 0.7)',
+                                border: '1.2px solid rgba(26, 7, 9, 0.25)',
+                                cursor: 'pointer'
+                              }}
+                            >
+                              Reset
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+
+                  {/* GALLERY SEARCH & CATEGORY FILTER BAR */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '14px', marginBottom: '20px', background: 'rgba(198, 161, 91, 0.08)', padding: '14px 18px', borderRadius: 'var(--radius-md)', border: '1px solid var(--gold-border)' }}>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+                      {GALLERY_CATEGORIES.map((cat) => (
+                        <button
+                          key={cat.value}
+                          type="button"
+                          className={`public-table-chip ${galleryFilter === cat.value ? 'active' : ''}`}
+                          onClick={() => setGalleryFilter(cat.value)}
+                        >
+                          {cat.label}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div style={{ position: 'relative', minWidth: '260px' }}>
+                      <input
+                        type="text"
+                        placeholder="Search photos by title, location..."
+                        value={gallerySearchQuery}
+                        onChange={(e) => setGallerySearchQuery(e.target.value)}
+                        style={{
+                          width: '100%',
+                          padding: '9px 14px 9px 36px',
+                          fontSize: '0.84rem',
+                          borderRadius: '6px',
+                          border: '1.2px solid var(--gold-border)',
+                          background: '#FFFFFF',
+                          color: '#1A0709',
+                          outline: 'none'
+                        }}
+                      />
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(26, 7, 9, 0.5)" strokeWidth="2.2" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }}>
+                        <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+                      </svg>
+                      {gallerySearchQuery && (
+                        <button
+                          type="button"
+                          onClick={() => setGallerySearchQuery('')}
+                          style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: '1rem' }}
+                        >
+                          &times;
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* GALLERY PHOTOS GRID */}
+                  <div style={{ marginBottom: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '0.80rem', fontWeight: 700, color: 'rgba(26, 7, 9, 0.7)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      Showing {filteredAdminGalleryImages.length} of {allAdminGalleryImages.length} Photographs
+                    </span>
+                    {customGalleryImages.length > 0 && (
+                      <span style={{ fontSize: '0.78rem', color: '#047857', fontWeight: 700 }}>
+                        ★ {customGalleryImages.length} Custom Site Photos Active
+                      </span>
+                    )}
+                  </div>
+
+                  {filteredAdminGalleryImages.length === 0 ? (
+                    <div style={{ textAlign: 'center', padding: '60px 20px', background: '#FFFFFF', borderRadius: '8px', border: '1px dashed var(--gold-border)' }}>
+                      <div style={{ fontSize: '2.4rem', marginBottom: '8px' }}>📷</div>
+                      <h4 style={{ color: '#1A0709', margin: '0 0 6px', fontFamily: 'var(--font-heading)' }}>No Photos Found</h4>
+                      <p style={{ color: 'rgba(26, 7, 9, 0.6)', fontSize: '0.86rem', margin: 0 }}>Try clearing your search query or switching categories.</p>
+                    </div>
+                  ) : (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
+                      {filteredAdminGalleryImages.map((photo) => (
+                        <div
+                          key={photo.id}
+                          style={{
+                            background: '#FFFFFF',
+                            border: photo.isCustom ? '1.8px solid #10B981' : '1.2px solid rgba(198, 161, 91, 0.35)',
+                            borderRadius: '10px',
+                            overflow: 'hidden',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            boxShadow: photo.isCustom ? '0 6px 18px rgba(16, 185, 129, 0.15)' : '0 4px 12px rgba(0,0,0,0.04)',
+                            transition: 'all 0.2s ease',
+                            position: 'relative'
+                          }}
+                        >
+                          {/* IMAGE THUMBNAIL */}
+                          <div style={{ position: 'relative', height: '180px', overflow: 'hidden', background: '#1A0709', cursor: 'pointer' }} onClick={() => setAdminGalleryLightboxImg(photo)}>
+                            <img
+                              src={photo.src}
+                              alt={photo.title}
+                              loading="lazy"
+                              style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s ease' }}
+                            />
+                            {/* CATEGORY BADGE */}
+                            <span
+                              style={{
+                                position: 'absolute',
+                                top: '10px',
+                                left: '10px',
+                                background: '#1A0709',
+                                color: 'var(--gold-light)',
+                                border: '1px solid rgba(198, 161, 91, 0.5)',
+                                padding: '3px 8px',
+                                borderRadius: '4px',
+                                fontSize: '0.68rem',
+                                fontWeight: 800,
+                                letterSpacing: '0.5px'
+                              }}
+                            >
+                              {photo.categoryLabel || CATEGORY_LABELS[photo.category] || photo.category}
+                            </span>
+
+                            {/* CUSTOM OR DEFAULT BADGE */}
+                            {photo.isCustom ? (
+                              <span
+                                style={{
+                                  position: 'absolute',
+                                  top: '10px',
+                                  right: '10px',
+                                  background: '#065F46',
+                                  color: '#FFFFFF',
+                                  border: '1px solid #10B981',
+                                  padding: '3px 8px',
+                                  borderRadius: '4px',
+                                  fontSize: '0.68rem',
+                                  fontWeight: 800,
+                                  letterSpacing: '0.5px',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '4px'
+                                }}
+                              >
+                                ★ CUSTOM
+                              </span>
+                            ) : (
+                              <span
+                                style={{
+                                  position: 'absolute',
+                                  top: '10px',
+                                  right: '10px',
+                                  background: 'rgba(26, 7, 9, 0.75)',
+                                  color: 'rgba(255, 255, 255, 0.8)',
+                                  padding: '3px 8px',
+                                  borderRadius: '4px',
+                                  fontSize: '0.65rem',
+                                  fontWeight: 600
+                                }}
+                              >
+                                CATALOG
+                              </span>
+                            )}
+                          </div>
+
+                          {/* BODY */}
+                          <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                            <h5 style={{ margin: '0 0 6px', fontSize: '0.94rem', color: '#1A0709', fontFamily: 'var(--font-heading)', fontWeight: 800, lineHeight: 1.3 }}>
+                              {photo.title}
+                            </h5>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', color: '#8C6B28', fontWeight: 600, marginBottom: '8px' }}>
+                              <span>📍</span>
+                              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{photo.location}</span>
+                            </div>
+                            <p style={{ margin: '0 0 14px', fontSize: '0.80rem', color: 'rgba(26, 7, 9, 0.7)', lineHeight: 1.5, flexGrow: 1, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                              {photo.desc}
+                            </p>
+
+                            {/* CARD FOOTER */}
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '10px', borderTop: '1px solid rgba(198, 161, 91, 0.2)', marginTop: 'auto' }}>
+                              <button
+                                type="button"
+                                onClick={() => setAdminGalleryLightboxImg(photo)}
+                                style={{
+                                  fontSize: '0.75rem',
+                                  fontWeight: 700,
+                                  color: '#1A0709',
+                                  background: 'rgba(198, 161, 91, 0.15)',
+                                  border: '1px solid rgba(198, 161, 91, 0.4)',
+                                  borderRadius: '4px',
+                                  padding: '5px 10px',
+                                  cursor: 'pointer'
+                                }}
+                              >
+                                Preview 🔍
+                              </button>
+
+                              {photo.isCustom ? (
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteGalleryPhoto(photo.id, photo.title)}
+                                  style={{
+                                    fontSize: '0.75rem',
+                                    fontWeight: 700,
+                                    color: '#DC2626',
+                                    background: 'rgba(220, 38, 38, 0.08)',
+                                    border: '1px solid rgba(220, 38, 38, 0.3)',
+                                    borderRadius: '4px',
+                                    padding: '5px 10px',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '4px'
+                                  }}
+                                >
+                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" /></svg>
+                                  Delete
+                                </button>
+                              ) : (
+                                <span style={{ fontSize: '0.70rem', color: 'rgba(26, 7, 9, 0.45)', fontStyle: 'italic' }}>Protected Default</span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -2897,6 +3673,96 @@ _Please contact this client immediately and arrange site inspection / discussion
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ADMIN PHOTO GALLERY LIGHTBOX MODAL */}
+      {adminGalleryLightboxImg && (
+        <div
+          className="admin-modal-overlay"
+          onClick={() => setAdminGalleryLightboxImg(null)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(10, 19, 37, 0.88)',
+            backdropFilter: 'blur(8px)',
+            zIndex: 9999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '24px'
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: '#1A0709',
+              border: '2px solid var(--gold-primary)',
+              borderRadius: '12px',
+              maxWidth: '850px',
+              width: '100%',
+              overflow: 'hidden',
+              boxShadow: '0 25px 60px rgba(0,0,0,0.6)',
+              position: 'relative'
+            }}
+          >
+            <div style={{ position: 'relative', background: '#000000', maxHeight: '65vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+              <img
+                src={adminGalleryLightboxImg.src}
+                alt={adminGalleryLightboxImg.title}
+                style={{ width: '100%', maxHeight: '65vh', objectFit: 'contain' }}
+              />
+              <button
+                type="button"
+                onClick={() => setAdminGalleryLightboxImg(null)}
+                style={{
+                  position: 'absolute',
+                  top: '12px',
+                  right: '12px',
+                  background: 'rgba(26, 7, 9, 0.85)',
+                  border: '1.5px solid var(--gold-primary)',
+                  color: 'var(--gold-light)',
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '50%',
+                  fontSize: '1.4rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  lineHeight: 1
+                }}
+              >
+                &times;
+              </button>
+            </div>
+
+            <div style={{ padding: '20px 24px', background: '#1A0709', color: '#FFFFFF' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '14px', marginBottom: '8px' }}>
+                <div>
+                  <span style={{ display: 'inline-block', background: 'var(--gold-primary)', color: '#1A0709', fontWeight: 800, fontSize: '0.70rem', padding: '3px 8px', borderRadius: '4px', textTransform: 'uppercase', marginBottom: '6px' }}>
+                    {adminGalleryLightboxImg.categoryLabel || CATEGORY_LABELS[adminGalleryLightboxImg.category] || adminGalleryLightboxImg.category}
+                  </span>
+                  <h4 style={{ margin: 0, fontSize: '1.2rem', fontFamily: 'var(--font-heading)', color: 'var(--gold-light)', fontWeight: 800 }}>
+                    {adminGalleryLightboxImg.title}
+                  </h4>
+                </div>
+                {adminGalleryLightboxImg.isCustom && (
+                  <span style={{ background: '#065F46', color: '#FFFFFF', border: '1px solid #10B981', padding: '4px 10px', borderRadius: '4px', fontSize: '0.72rem', fontWeight: 700 }}>
+                    ★ Custom Upload
+                  </span>
+                )}
+              </div>
+
+              <div style={{ fontSize: '0.82rem', color: '#C6A15B', marginBottom: '8px', fontWeight: 600 }}>
+                📍 {adminGalleryLightboxImg.location}
+              </div>
+
+              <p style={{ fontSize: '0.86rem', color: 'rgba(255, 255, 255, 0.8)', margin: 0, lineHeight: 1.5 }}>
+                {adminGalleryLightboxImg.desc}
+              </p>
+            </div>
           </div>
         </div>
       )}

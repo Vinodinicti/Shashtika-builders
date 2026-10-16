@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { DEFAULT_GALLERY_IMAGES, loadCustomGalleryImages } from '../data/galleryData';
 
 // Project Database identical to the original archive
 const galleryProjects = [
@@ -148,161 +149,31 @@ const galleryProjects = [
   }
 ];
 
-// Curated collection of available real project photographs
-const availableGalleryImages = [
-  {
-    id: 'gal-1',
-    src: '/Images/Hero_Arch.jpg',
-    title: 'Grand Entrance Gate Arch & Palm Boulevard',
-    category: 'arches',
-    categoryLabel: 'ENTRANCE ARCH',
-    location: 'Pollachi Main Road Enclave',
-    desc: 'Majestic 40ft wide gated entrance with perimeter security kiosk and illuminated architectural signage.'
-  },
-  {
-    id: 'gal-2',
-    src: '/Images/Shashtika_Engineered_Roads.jpg',
-    title: '40ft & 30ft Heavy-Duty Asphalt Tar Roads',
-    category: 'roads',
-    categoryLabel: 'TAR ROADS',
-    location: 'Eachanari Bypass Corridor',
-    desc: 'Heavy 4-layer bitumen compaction with concrete road kerbs and underground rainwater runoff lines.'
-  },
-  {
-    id: 'gal-3',
-    src: '/Images/Shashtika_Process_2_DTCP.jpg',
-    title: 'Government DTCP & RERA Approved Blueprints',
-    category: 'planning',
-    categoryLabel: 'TOWN PLANNING',
-    location: 'Kambalampatti, Pollachi',
-    desc: '100% sanctioned layout blueprints with 10% dedicated public park space and wide road corridors.'
-  },
-  {
-    id: 'gal-4',
-    src: '/Images/Hero_Villa.jpg',
-    title: 'Contemporary Luxury Villa Elevation',
-    category: 'villas',
-    categoryLabel: 'LUXURY VILLA',
-    location: 'Kovaipudur Mountain View',
-    desc: 'Custom-designed contemporary residential villa with Western Ghats backdrop and private landscaped lawn.'
-  },
-  {
-    id: 'gal-5',
-    src: '/Images/Shashtika_Process_4_Arch.jpg',
-    title: 'Gated Security Arch & Boundary Enclosure',
-    category: 'arches',
-    categoryLabel: 'GATED SECURITY',
-    location: 'Anaimalai Taluk Enclave',
-    desc: 'Gated community perimeter wall with royal palm landscaping and 24/7 security checkpoint.'
-  },
-  {
-    id: 'gal-6',
-    src: '/Images/Shashtika_Process_3_Infra.jpg',
-    title: 'Underground Stormwater Drainage Network',
-    category: 'roads',
-    categoryLabel: 'CIVIL INFRA',
-    location: 'Coimbatore Regional Corridor',
-    desc: 'Engineered drainage system to prevent waterlogging during monsoon seasons and ensure 30+ year road life.'
-  },
-  {
-    id: 'gal-7',
-    src: '/Images/Shashtika_Process_5_Handover.jpg',
-    title: 'Numbered Concrete Boundary Corner Stones',
-    category: 'construction',
-    categoryLabel: 'HANDOVER',
-    location: 'Kambalampatti Village Layout',
-    desc: 'Clearly planted revenue boundary stones demarcating every individual plot for instant possession.'
-  },
-  {
-    id: 'gal-8',
-    src: '/Images/Shashtika_Heritage_Story.jpg',
-    title: 'Site Engineering & Technical Layout Audit',
-    category: 'planning',
-    categoryLabel: 'SITE AUDIT',
-    location: 'Pollachi Heritage Enclave',
-    desc: 'On-site technical evaluation, groundwater quality testing, and contour mapping by senior civil engineers.'
-  },
-  {
-    id: 'gal-9',
-    src: '/Images/Upcoming_Emerald_Palms.jpg',
-    title: 'Emerald Palms Gated Residential Layout',
-    category: 'villas',
-    categoryLabel: 'RESIDENTIAL',
-    location: 'Kinathukadavu Bypass',
-    desc: 'Scenic plotted enclave nestled amidst coconut groves with 33ft central avenue and sweet groundwater.'
-  },
-  {
-    id: 'gal-10',
-    src: '/Images/Construction_Underway.jpg',
-    title: 'Road Sub-Base Compaction & Kerbing',
-    category: 'construction',
-    categoryLabel: 'CONSTRUCTION',
-    location: 'Pollachi Corridor Layout',
-    desc: 'Mechanical roller compaction of wet-mix macadam stone base prior to asphalt tar paving.'
-  },
-  {
-    id: 'gal-11',
-    src: '/Images/Upcoming_Royal_Enclave.jpg',
-    title: 'Royal Enclave Master Plotted Township',
-    category: 'arches',
-    categoryLabel: 'COMMUNITY',
-    location: 'Coimbatore Airport Corridor',
-    desc: 'Master-planned layout with solar street lighting, underground utilities, and landscaped walkways.'
-  },
-  {
-    id: 'gal-12',
-    src: '/Images/Construction_75_Percent.jpg',
-    title: 'Tar Road Paving & Solar Luminaire Installation',
-    category: 'construction',
-    categoryLabel: 'CONSTRUCTION',
-    location: 'Anaimalai Highway',
-    desc: 'Hot-mix asphalt surfacing and automatic solar street luminaire poles erected across all layout streets.'
-  },
-  {
-    id: 'gal-13',
-    src: '/Images/Shashtika_Legacy_Appreciation.jpg',
-    title: 'Coconut Grove Agro-Residential Farm Layout',
-    category: 'roads',
-    categoryLabel: 'GREEN LAYOUT',
-    location: 'Mahalingapuram, Pollachi',
-    desc: 'Lush greenery, copiously sweet drinking groundwater, and scenic mountain views for tranquil living.'
-  },
-  {
-    id: 'gal-14',
-    src: '/Images/Masterplan_Kambalapatti.png',
-    title: 'Approved DTCP No. 02/2025 Blueprint Plan',
-    category: 'planning',
-    categoryLabel: 'BLUEPRINT',
-    location: 'S.F.No 209/1 & 222/1A1',
-    desc: 'Official 64-plot DTCP approved layout map with 12m Panchayat tar roads and dedicated public park.'
-  },
-  {
-    id: 'gal-15',
-    src: '/Images/Upcoming_Green_Valley.jpg',
-    title: 'Green Valley Foothill Residential Enclave',
-    category: 'villas',
-    categoryLabel: 'FOOTHILL ESTATE',
-    location: 'Kovaipudur Foothills',
-    desc: 'Boutique residential enclave surrounded by scenic hills, cool breeze, and 100% clear parent deeds.'
-  },
-  {
-    id: 'gal-16',
-    src: '/Images/Construction_Key_Handover.jpg',
-    title: 'Plot Possession & Title Deed Handover',
-    category: 'construction',
-    categoryLabel: 'HANDOVER',
-    location: 'Sub-Registrar Office, Pollachi',
-    desc: 'Assisted registration, clear sale deed execution, and individual Patta transfer completed for plot owners.'
-  }
-];
-
 export default function GalleryPage() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [activeCardId, setActiveCardId] = useState(null);
   const [selectedModalProject, setSelectedModalProject] = useState(null);
 
-  // Photo Gallery Template State
+  // Photo Gallery Template State & Real-Time Sync with Admin Uploads
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [customImages, setCustomImages] = useState(() => loadCustomGalleryImages());
+
+  useEffect(() => {
+    const handleGallerySync = () => {
+      setCustomImages(loadCustomGalleryImages());
+    };
+    window.addEventListener('shashtika_gallery_updated', handleGallerySync);
+    window.addEventListener('storage', handleGallerySync);
+    return () => {
+      window.removeEventListener('shashtika_gallery_updated', handleGallerySync);
+      window.removeEventListener('storage', handleGallerySync);
+    };
+  }, []);
+
+  // Combine custom uploaded images with default catalog
+  const allGalleryImages = useMemo(() => {
+    return [...customImages, ...DEFAULT_GALLERY_IMAGES];
+  }, [customImages]);
 
   // Keyboard navigation for Lightbox and Project Modal
   useEffect(() => {
@@ -311,14 +182,14 @@ export default function GalleryPage() {
         setSelectedModalProject(null);
         setLightboxIndex(null);
       } else if (e.key === 'ArrowRight' && lightboxIndex !== null) {
-        setLightboxIndex((prev) => (prev + 1) % availableGalleryImages.length);
+        setLightboxIndex((prev) => (prev + 1) % allGalleryImages.length);
       } else if (e.key === 'ArrowLeft' && lightboxIndex !== null) {
-        setLightboxIndex((prev) => (prev - 1 + availableGalleryImages.length) % availableGalleryImages.length);
+        setLightboxIndex((prev) => (prev - 1 + allGalleryImages.length) % allGalleryImages.length);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [lightboxIndex]);
+  }, [lightboxIndex, allGalleryImages.length]);
 
   const filteredProjects = galleryProjects.filter(p => {
     if (activeFilter === 'all') return true;
@@ -338,7 +209,7 @@ export default function GalleryPage() {
   };
 
   const openLightboxByImgId = (imgId) => {
-    const index = availableGalleryImages.findIndex((item) => item.id === imgId);
+    const index = allGalleryImages.findIndex((item) => item.id === imgId);
     if (index !== -1) {
       setLightboxIndex(index);
     }
@@ -582,73 +453,82 @@ export default function GalleryPage() {
                 LIVE SITE PHOTOGRAPHY REEL (AUTO-SCROLLING • HOVER TO PAUSE)
               </span>
               <span className="hidden sm:inline font-mono text-xs text-espresso-600">
-                Click any image to enlarge 🔍
+                Click any image to enlarge
               </span>
             </div>
 
             {/* Scrolling Track 1 (Moves Left) */}
             <div className="gallery-marquee-container mb-4">
               <div className="gallery-marquee-track-left">
-                {[...availableGalleryImages.slice(0, 8), ...availableGalleryImages.slice(0, 8)].map((item, idx) => (
-                  <div
-                    key={`track1-${item.id}-${idx}`}
-                    className="gallery-marquee-card"
-                    onClick={() => openLightboxByImgId(item.id)}
-                  >
-                    <img src={item.src} alt={item.title} loading="lazy" />
-                    <div className="gallery-marquee-overlay">
-                      <div className="flex justify-between items-start">
-                        <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#1A0709] text-gold-light border border-gold-primary/50 shadow-xs">
-                          {item.categoryLabel}
-                        </span>
-                        <span className="w-6 h-6 rounded-full bg-gold-primary text-espresso-950 flex items-center justify-center text-xs font-bold shadow-sm">
-                          +
-                        </span>
-                      </div>
-                      <div>
-                        <h4 className="font-heading text-xs font-bold text-cream line-clamp-1 leading-snug">
-                          {item.title}
-                        </h4>
-                        <span className="font-mono text-[10px] text-gold-light/90 block mt-0.5">
-                          📍 {item.location}
-                        </span>
+                {(() => {
+                  const half = Math.ceil(allGalleryImages.length / 2);
+                  const firstHalf = allGalleryImages.slice(0, half);
+                  return [...firstHalf, ...firstHalf].map((item, idx) => (
+                    <div
+                      key={`track1-${item.id}-${idx}`}
+                      className="gallery-marquee-card"
+                      onClick={() => openLightboxByImgId(item.id)}
+                    >
+                      <img src={item.src} alt={item.title} loading="lazy" />
+                      <div className="gallery-marquee-overlay">
+                        <div className="flex justify-between items-start">
+                          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#1A0709] text-gold-light border border-gold-primary/50 shadow-xs">
+                            {item.categoryLabel}
+                          </span>
+                          <span className="w-6 h-6 rounded-full bg-gold-primary text-espresso-950 flex items-center justify-center text-xs font-bold shadow-sm">
+                            +
+                          </span>
+                        </div>
+                        <div>
+                          <h4 className="font-heading text-xs font-bold text-cream line-clamp-1 leading-snug">
+                            {item.title}
+                          </h4>
+                          <span className="font-mono text-[10px] text-gold-light/90 flex items-center gap-1 mt-0.5">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-gold-primary shrink-0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            {item.location}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ));
+                })()}
               </div>
             </div>
 
             {/* Scrolling Track 2 (Moves Right) */}
             <div className="gallery-marquee-container">
               <div className="gallery-marquee-track-right">
-                {[...availableGalleryImages.slice(8, 16), ...availableGalleryImages.slice(8, 16)].map((item, idx) => (
-                  <div
-                    key={`track2-${item.id}-${idx}`}
-                    className="gallery-marquee-card"
-                    onClick={() => openLightboxByImgId(item.id)}
-                  >
-                    <img src={item.src} alt={item.title} loading="lazy" />
-                    <div className="gallery-marquee-overlay">
-                      <div className="flex justify-between items-start">
-                        <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#1A0709] text-gold-light border border-gold-primary/50 shadow-xs">
-                          {item.categoryLabel}
-                        </span>
-                        <span className="w-6 h-6 rounded-full bg-gold-primary text-espresso-950 flex items-center justify-center text-xs font-bold shadow-sm">
-                          +
-                        </span>
-                      </div>
-                      <div>
-                        <h4 className="font-heading text-xs font-bold text-cream line-clamp-1 leading-snug">
-                          {item.title}
-                        </h4>
-                        <span className="font-mono text-[10px] text-gold-light/90 block mt-0.5">
-                          📍 {item.location}
-                        </span>
+                {(() => {
+                  const half = Math.ceil(allGalleryImages.length / 2);
+                  const secondHalf = allGalleryImages.slice(half);
+                  return [...secondHalf, ...secondHalf].map((item, idx) => (
+                    <div
+                      key={`track2-${item.id}-${idx}`}
+                      className="gallery-marquee-card"
+                      onClick={() => openLightboxByImgId(item.id)}
+                    >
+                      <img src={item.src} alt={item.title} loading="lazy" />
+                      <div className="gallery-marquee-overlay">
+                        <div className="flex justify-between items-start">
+                          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#1A0709] text-gold-light border border-gold-primary/50 shadow-xs">
+                            {item.categoryLabel}
+                          </span>
+                          <span className="w-6 h-6 rounded-full bg-gold-primary text-espresso-950 flex items-center justify-center text-xs font-bold shadow-sm">
+                            +
+                          </span>
+                        </div>
+                        <div>
+                          <h4 className="font-heading text-xs font-bold text-cream line-clamp-1 leading-snug">
+                            {item.title}
+                          </h4>
+                          <span className="font-mono text-[10px] text-gold-light/90 block mt-0.5">
+                            📍 {item.location}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ));
+                })()}
               </div>
             </div>
           </div>
@@ -676,7 +556,7 @@ export default function GalleryPage() {
       {/* =========================================================================
           FULL-SCREEN HIGH-RESOLUTION LIGHTBOX MODAL
           ========================================================================= */}
-      {lightboxIndex !== null && availableGalleryImages[lightboxIndex] && (
+      {lightboxIndex !== null && allGalleryImages[lightboxIndex] && (
         <div
           className="gallery-lightbox-overlay"
           onClick={() => setLightboxIndex(null)}
@@ -689,10 +569,10 @@ export default function GalleryPage() {
             <div className="flex items-center justify-between px-5 py-3.5 border-b border-gold-primary/30 bg-[#100405] text-cream">
               <div className="flex items-center gap-2.5">
                 <span className="px-2.5 py-0.5 rounded text-[11px] font-mono font-bold bg-[#1A0709] text-gold-light border border-gold-primary/50 shadow-xs">
-                  {availableGalleryImages[lightboxIndex].categoryLabel}
+                  {allGalleryImages[lightboxIndex].categoryLabel}
                 </span>
                 <span className="font-mono text-xs text-gold-light/80">
-                  {lightboxIndex + 1} / {availableGalleryImages.length}
+                  {lightboxIndex + 1} / {allGalleryImages.length}
                 </span>
               </div>
 
@@ -701,7 +581,7 @@ export default function GalleryPage() {
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setLightboxIndex((prev) => (prev - 1 + availableGalleryImages.length) % availableGalleryImages.length);
+                    setLightboxIndex((prev) => (prev - 1 + allGalleryImages.length) % allGalleryImages.length);
                   }}
                   className="w-8 h-8 rounded-full border border-gold-border/40 text-cream hover:bg-gold-primary hover:text-espresso-950 flex items-center justify-center transition-all cursor-pointer font-bold"
                   title="Previous (Left Arrow)"
@@ -712,7 +592,7 @@ export default function GalleryPage() {
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setLightboxIndex((prev) => (prev + 1) % availableGalleryImages.length);
+                    setLightboxIndex((prev) => (prev + 1) % allGalleryImages.length);
                   }}
                   className="w-8 h-8 rounded-full border border-gold-border/40 text-cream hover:bg-gold-primary hover:text-espresso-950 flex items-center justify-center transition-all cursor-pointer font-bold"
                   title="Next (Right Arrow)"
@@ -733,8 +613,8 @@ export default function GalleryPage() {
             {/* Lightbox Center Image Wrap */}
             <div className="relative bg-black flex items-center justify-center overflow-hidden flex-1 min-h-[300px] max-h-[60vh]">
               <img
-                src={availableGalleryImages[lightboxIndex].src}
-                alt={availableGalleryImages[lightboxIndex].title}
+                src={allGalleryImages[lightboxIndex].src}
+                alt={allGalleryImages[lightboxIndex].title}
                 className="max-h-[60vh] w-auto max-w-full object-contain mx-auto"
               />
             </div>
@@ -743,19 +623,19 @@ export default function GalleryPage() {
             <div className="p-4 sm:p-5 bg-gradient-to-b from-[#1A0709] to-[#100405] border-t border-gold-primary/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
                 <h3 className="font-heading font-bold text-base sm:text-lg text-cream leading-snug">
-                  {availableGalleryImages[lightboxIndex].title}
+                  {allGalleryImages[lightboxIndex].title}
                 </h3>
                 <p className="font-body text-xs text-gold-light/80 mt-1 max-w-xl">
-                  {availableGalleryImages[lightboxIndex].desc}
+                  {allGalleryImages[lightboxIndex].desc}
                 </p>
                 <span className="font-mono text-xs text-gold-antique mt-1 block">
-                  📍 {availableGalleryImages[lightboxIndex].location}
+                  📍 {allGalleryImages[lightboxIndex].location}
                 </span>
               </div>
 
               <div className="flex items-center gap-2.5 w-full sm:w-auto">
                 <a
-                  href={`https://wa.me/919363599754?text=${encodeURIComponent(`Hello SHASHTIKA, I am enquiring about photograph: "${availableGalleryImages[lightboxIndex].title}" (${availableGalleryImages[lightboxIndex].location}). Please share more project details.`)}`}
+                  href={`https://wa.me/919363599754?text=${encodeURIComponent(`Hello SHASHTIKA, I am enquiring about photograph: "${allGalleryImages[lightboxIndex].title}" (${allGalleryImages[lightboxIndex].location}). Please share more project details.`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 sm:flex-none px-4 py-2 rounded-lg bg-[#25D366] hover:bg-[#1EBE5D] text-white font-mono text-xs font-bold tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-md cursor-pointer whitespace-nowrap"
