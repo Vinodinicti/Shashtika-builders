@@ -2038,11 +2038,15 @@
 
   .contact-form-box .form-label,
   #contact-form .form-label {
-    font-size: 0.64rem !important;
-    letter-spacing: 1px !important;
-    margin-bottom: 5px !important;
+    font-size: 0.60rem !important;
+    letter-spacing: 0.6px !important;
+    margin-bottom: 3px !important;
     font-weight: 700 !important;
     color: #1A0709 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: block !important;
   }
 
   .contact-form-box input,
@@ -2051,9 +2055,9 @@
   #contact-form input,
   #contact-form select,
   #contact-form textarea {
-    padding: 10px 14px !important;
-    min-height: 44px !important;
-    font-size: 16px !important; /* 16px strictly prevents iOS Safari auto-zoom */
+    padding: 8px 10px !important;
+    min-height: 42px !important;
+    font-size: 13.5px !important;
     border-radius: 8px !important;
     background: #FAF7F2 !important;
     border: 1px solid rgba(198, 161, 91, 0.45) !important;

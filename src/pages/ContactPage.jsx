@@ -376,7 +376,7 @@ export default function ContactPage() {
 
               <form id="contact-form" onSubmit={handleSubmit}>
                 {/* 2 & 2 Pair 1: Full Name & Phone Number */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
+                <div className="grid grid-cols-2 gap-2.5 sm:gap-4 mb-3 sm:mb-4">
                   <div className="form-group mb-0">
                     <label className="form-label">FULL NAME *</label>
                     <input
@@ -405,7 +405,7 @@ export default function ContactPage() {
                 </div>
 
                 {/* 2 & 2 Pair 2: Email & Preferred Location */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
+                <div className="grid grid-cols-2 gap-2.5 sm:gap-4 mb-3 sm:mb-4">
                   <div className="form-group mb-0">
                     <label className="form-label">EMAIL ADDRESS</label>
                     <input
@@ -435,7 +435,7 @@ export default function ContactPage() {
                 </div>
 
                 {/* 2 & 2 Pair 3: Buying Purpose & Timeline */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
+                <div className="grid grid-cols-2 gap-2.5 sm:gap-4 mb-3 sm:mb-4">
                   <div className="form-group mb-0">
                     <label className="form-label">PURPOSE *</label>
                     <select
@@ -470,7 +470,7 @@ export default function ContactPage() {
                 </div>
 
                 {/* 2 & 2 Pair 4: Estimated Budget & Plot of Interest */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
+                <div className="grid grid-cols-2 gap-2.5 sm:gap-4 mb-3 sm:mb-4">
                   <div className="form-group mb-0">
                     <label className="form-label">BUDGET *</label>
                     <select
