@@ -184,25 +184,47 @@
    03. FLOATING ACTION STACK (CALL & WHATSAPP)
    -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
-  .fixed.bottom-6.right-6 {
+  .floating-action-stack,
+  .fixed.bottom-6.right-6,
+  .fixed.bottom-5.right-5 {
     bottom: max(16px, env(safe-area-inset-bottom, 16px)) !important;
     right: 14px !important;
     gap: 10px !important;
   }
 
-  .fixed.bottom-6.right-6 a {
-    width: 46px !important;
-    height: 46px !important;
-    box-shadow: 0 4px 18px rgba(26, 7, 9, 0.45), 0 0 10px rgba(198, 161, 91, 0.25) !important;
+  .floating-action-btn,
+  .fixed.bottom-6.right-6 a,
+  .fixed.bottom-5.right-5 a {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid #C6A15B !important;
+    color: #1A0709 !important;
+    box-shadow: 0 4px 14px rgba(26, 7, 9, 0.18), 0 0 10px rgba(198, 161, 91, 0.2) !important;
   }
 
-  .fixed.bottom-6.right-6 a svg {
-    width: 18px !important;
-    height: 18px !important;
+  .floating-action-btn:active,
+  .fixed.bottom-6.right-6 a:active,
+  .fixed.bottom-5.right-5 a:active {
+    background: #1A0709 !important;
+    border-color: #C6A15B !important;
+    color: #E5D2A6 !important;
+  }
+
+  .floating-action-btn svg,
+  .fixed.bottom-6.right-6 a svg,
+  .fixed.bottom-5.right-5 a svg {
+    width: 17px !important;
+    height: 17px !important;
+    color: inherit !important;
   }
 
   /* Hide hover tooltip on touch devices */
-  .fixed.bottom-6.right-6 span {
+  .floating-tooltip,
+  .fixed.bottom-6.right-6 span,
+  .fixed.bottom-5.right-5 span {
     display: none !important;
   }
 }
@@ -2627,30 +2649,36 @@
    ========================================================================== */
 @media (max-width: 991px) {
   .floating-action-stack {
-    bottom: 16px !important;
+    bottom: max(16px, env(safe-area-inset-bottom, 16px)) !important;
     right: 16px !important;
-    gap: 8px !important;
+    gap: 10px !important;
   }
 
   .floating-action-btn {
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
-    min-height: 36px !important;
-    background: linear-gradient(135deg, #142C56 0%, #0D1C38 100%) !important;
-    border: 1.5px solid #DEBA70 !important;
-    color: #FFFDF8 !important;
-    box-shadow: 0 4px 14px rgba(10, 22, 46, 0.7), 0 0 10px rgba(198, 161, 91, 0.3) !important;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid #C6A15B !important;
+    color: #1A0709 !important;
+    box-shadow: 0 4px 14px rgba(26, 7, 9, 0.18), 0 0 10px rgba(198, 161, 91, 0.2) !important;
+  }
+
+  .floating-action-btn:active {
+    background: #1A0709 !important;
+    border-color: #C6A15B !important;
+    color: #E5D2A6 !important;
   }
 
   .floating-action-btn svg {
-    width: 15px !important;
-    height: 15px !important;
+    width: 17px !important;
+    height: 17px !important;
+    color: inherit !important;
   }
 
   .floating-tooltip {
-    background: #1A0709 !important;
-    border-color: rgba(198, 161, 91, 0.5) !important;
+    display: none !important;
   }
 }
 
