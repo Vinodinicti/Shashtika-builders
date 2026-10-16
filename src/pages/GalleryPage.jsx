@@ -359,10 +359,6 @@ export default function GalleryPage() {
         {/* Main Container - Exact matching max-w-[1320px] and alignment as Plot Hero */}
         <div className="max-w-[1320px] mx-auto px-4 sm:px-8 w-full flex flex-col justify-center h-full relative z-[3] flex-1">
           <div className="hero-fit-content">
-            <div className="architectural-tag" style={{ marginBottom: '14px', color: '#E5D2A6' }}>
-              ARCHITECTURAL PORTFOLIO &amp; GALLERY
-            </div>
-
             <h1 className="hero-headline">
               <span className="gold-hero-badge">OUR PORTFOLIO</span>
               <br />

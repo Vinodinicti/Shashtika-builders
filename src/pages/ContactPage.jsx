@@ -230,12 +230,6 @@ export default function ContactPage() {
               >
                 VIEW PLOTS MAP
               </a>
-              <a
-                href="#"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded bg-transparent border-[1.8px] border-gold-primary text-gold-light font-mono text-[0.78rem] font-extrabold tracking-[1.5px] hover:bg-gold-primary hover:text-espresso-950 transition-all shadow-md cursor-pointer"
-              >
-                RETURN HOME
-              </a>
             </div>
           </div>
         </div>
