@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { PLOTS_DATA, PROJECT_METADATA } from '../data/plotsKambalapattiData';
-import { KINATHUKADAVU_PLOTS_DATA, KINATHUKADAVU_METADATA } from '../data/plotsKinathukadavuData';
-import KinathukadavuBlueprintSVG from '../components/KinathukadavuBlueprintSVG';
+import { KOVILPALAYAM_PLOTS_DATA, KOVILPALAYAM_METADATA } from '../data/plotsKovilpalayamData';
+import { SIRUVANI_PLOTS_DATA, SIRUVANI_METADATA } from '../data/plotsSiruvaniData';
+import KovilpalayamBlueprintSVG from '../components/KovilpalayamBlueprintSVG';
+import SiruvaniBlueprintSVG from '../components/SiruvaniBlueprintSVG';
 
 export default function PlotsPage() {
-  // Active Layout Location: 'kambalampatti' | 'kinathukadavu'
+  // Active Layout Location: 'kambalampatti' | 'kovilpalayam' | 'siruvani'
   const [activeLocation, setActiveLocation] = useState('kambalampatti');
 
   // Kambalampatti plots with sync
@@ -20,22 +22,46 @@ export default function PlotsPage() {
     return PLOTS_DATA;
   });
 
-  // Kinathukadavu plots with sync
-  const [kinathukadavuPlots, setKinathukadavuPlots] = useState(() => {
-    const saved = localStorage.getItem('shashtika_plots_inventory_kinathukadavu');
+  // Kovilpalayam plots with sync
+  const [kovilpalayamPlots, setKovilpalayamPlots] = useState(() => {
+    const saved = localStorage.getItem('shashtika_plots_inventory_kovilpalayam');
     if (saved) {
       try {
         return JSON.parse(saved);
       } catch (e) {
-        return KINATHUKADAVU_PLOTS_DATA;
+        return KOVILPALAYAM_PLOTS_DATA;
       }
     }
-    return KINATHUKADAVU_PLOTS_DATA;
+    return KOVILPALAYAM_PLOTS_DATA;
+  });
+
+  // Siruvani plots with sync
+  const [siruvaniPlots, setSiruvaniPlots] = useState(() => {
+    const saved = localStorage.getItem('shashtika_plots_inventory_siruvani');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return SIRUVANI_PLOTS_DATA;
+      }
+    }
+    return SIRUVANI_PLOTS_DATA;
   });
 
   // Active dataset and metadata based on selected location
-  const currentMetadata = activeLocation === 'kambalampatti' ? PROJECT_METADATA : KINATHUKADAVU_METADATA;
-  const activePlots = activeLocation === 'kambalampatti' ? kambalampattiPlots : kinathukadavuPlots;
+  const currentMetadata =
+    activeLocation === 'kambalampatti'
+      ? PROJECT_METADATA
+      : activeLocation === 'kovilpalayam'
+      ? KOVILPALAYAM_METADATA
+      : SIRUVANI_METADATA;
+
+  const activePlots =
+    activeLocation === 'kambalampatti'
+      ? kambalampattiPlots
+      : activeLocation === 'kovilpalayam'
+      ? kovilpalayamPlots
+      : siruvaniPlots;
 
   const [selectedFilter, setSelectedFilter] = useState('ALL');
   const [tableFilter, setTableFilter] = useState('ALL');
@@ -52,10 +78,16 @@ export default function PlotsPage() {
           setKambalampattiPlots(JSON.parse(saved));
         } catch (e) {}
       }
-      const savedKinathu = localStorage.getItem('shashtika_plots_inventory_kinathukadavu');
-      if (savedKinathu) {
+      const savedKovil = localStorage.getItem('shashtika_plots_inventory_kovilpalayam');
+      if (savedKovil) {
         try {
-          setKinathukadavuPlots(JSON.parse(savedKinathu));
+          setKovilpalayamPlots(JSON.parse(savedKovil));
+        } catch (e) {}
+      }
+      const savedSiru = localStorage.getItem('shashtika_plots_inventory_siruvani');
+      if (savedSiru) {
+        try {
+          setSiruvaniPlots(JSON.parse(savedSiru));
         } catch (e) {}
       }
     };
@@ -100,12 +132,19 @@ export default function PlotsPage() {
         { label: 'PLOTS 33 – 48', id: '33-48', plots: filteredPlots.filter((p) => p.number >= 33 && p.number <= 48) },
         { label: 'PLOTS 49 – 64', id: '49-64', plots: filteredPlots.filter((p) => p.number >= 49 && p.number <= 64) }
       ];
+    } else if (activeLocation === 'kovilpalayam') {
+      return [
+        { label: 'PLOTS 01 – 08', id: '01-08', plots: filteredPlots.filter((p) => p.number >= 1 && p.number <= 8) },
+        { label: 'PLOTS 09 – 16', id: '09-16', plots: filteredPlots.filter((p) => p.number >= 9 && p.number <= 16) },
+        { label: 'PLOTS 17 – 24', id: '17-24', plots: filteredPlots.filter((p) => p.number >= 17 && p.number <= 24) },
+        { label: 'PLOTS 25 – 32', id: '25-32', plots: filteredPlots.filter((p) => p.number >= 25 && p.number <= 32) }
+      ];
     } else {
       return [
-        { label: 'PLOTS 01 – 11', id: '01-11', plots: filteredPlots.filter((p) => p.number >= 1 && p.number <= 11) },
-        { label: 'PLOTS 12 – 22', id: '12-22', plots: filteredPlots.filter((p) => p.number >= 12 && p.number <= 22) },
-        { label: 'PLOTS 23 – 32', id: '23-32', plots: filteredPlots.filter((p) => p.number >= 23 && p.number <= 32) },
-        { label: 'PLOTS 33 – 42', id: '33-42', plots: filteredPlots.filter((p) => p.number >= 33 && p.number <= 42) }
+        { label: 'PLOTS 01 – 12', id: '01-12', plots: filteredPlots.filter((p) => p.number >= 1 && p.number <= 12) },
+        { label: 'PLOTS 13 – 24', id: '13-24', plots: filteredPlots.filter((p) => p.number >= 13 && p.number <= 24) },
+        { label: 'PLOTS 25 – 36', id: '25-36', plots: filteredPlots.filter((p) => p.number >= 25 && p.number <= 36) },
+        { label: 'PLOTS 37 – 47', id: '37-47', plots: filteredPlots.filter((p) => p.number >= 37 && p.number <= 47) }
       ];
     }
   }, [activeLocation, filteredPlots]);
@@ -113,7 +152,7 @@ export default function PlotsPage() {
   // WhatsApp enquiry handler
   const openWhatsApp = (plot) => {
     const text = encodeURIComponent(
-      `Hello SHASHTIKA Plot Developers,\n\nI am interested in Plot #${plot.number} (${plot.sqft} Sq.Ft / ${plot.cent} Cents ${plot.remSqft > 0 ? `${plot.remSqft} Sq.Ft` : ''}) at ${currentMetadata.name}, ${currentMetadata.location}.\n\nApproval No: ${currentMetadata.approvalNo}\nSurvey No: ${currentMetadata.sfNumbers}\nFacing: ${plot.facing}\nRoad: ${plot.road}\n\nPlease share the detailed site visit schedule and booking assistance.`
+      `Hello SHASHTIKA Plot Developers,\n\nI am interested in Plot ${plot.number} (${plot.sqft} Sq.Ft / ${plot.cent} Cents ${plot.remSqft > 0 ? `${plot.remSqft} Sq.Ft` : ''}) at ${currentMetadata.name}, ${currentMetadata.location}.\n\nApproval No: ${currentMetadata.approvalNo}\nSurvey No: ${currentMetadata.sfNumbers}\nFacing: ${plot.facing}\nRoad: ${plot.road}\n\nPlease share the detailed site visit schedule and booking assistance.`
     );
     window.open(`https://wa.me/919363599754?text=${text}`, '_blank');
   };
@@ -283,7 +322,7 @@ export default function PlotsPage() {
                           className="w-1.5 h-1.5 rounded-full flex-shrink-0"
                           style={{ backgroundColor: badge.fill }}
                         />
-                        #{plot.number}
+                        {plot.number}
                       </span>
                     </td>
                     <td className="py-1 px-1 font-semibold text-[9px] sm:text-xs text-espresso-900 text-right border-r border-gold-border/20 truncate">
@@ -379,7 +418,7 @@ export default function PlotsPage() {
               CHOOSE RESIDENTIAL MASTER PLAN
             </h2>
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-2xl mx-auto p-2 bg-white border-2 border-gold-primary rounded-2xl shadow-[0_8px_25px_rgba(26,7,9,0.08)]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 max-w-4xl mx-auto p-2.5 bg-white border-2 border-gold-primary rounded-2xl shadow-[0_8px_25px_rgba(26,7,9,0.08)]">
             <button
               type="button"
               onClick={() => {
@@ -388,16 +427,16 @@ export default function PlotsPage() {
                 setTableFilter('ALL');
                 setSelectedFilter('ALL');
               }}
-              className={`flex-1 w-full py-3 px-5 rounded-xl transition-all duration-300 flex items-center justify-between sm:justify-center gap-3 cursor-pointer ${
+              className={`w-full py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-between sm:justify-center gap-2.5 cursor-pointer ${
                 activeLocation === 'kambalampatti'
                   ? 'bg-[#1A0709] text-white shadow-md border-2 border-[#1A0709]'
                   : 'bg-transparent text-[#1A0709] hover:bg-[#FAF7F2] border border-transparent'
               }`}
             >
-              <span className="font-heading font-extrabold text-sm sm:text-base tracking-wide">
-                KAMBALAMPATTI LAYOUT
+              <span className="font-heading font-extrabold text-xs sm:text-sm tracking-wide">
+                KAMBALAMPATTI
               </span>
-              <span className={`px-2.5 py-0.5 rounded text-[11px] font-mono font-black uppercase ${
+              <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-black uppercase ${
                 activeLocation === 'kambalampatti' ? 'bg-gold-primary text-espresso-950' : 'bg-[#FAF7F2] text-[#1A0709] border border-gold-border/60'
               }`}>
                 64 PLOTS
@@ -406,24 +445,47 @@ export default function PlotsPage() {
             <button
               type="button"
               onClick={() => {
-                setActiveLocation('kinathukadavu');
+                setActiveLocation('kovilpalayam');
                 setSelectedPlot(null);
                 setTableFilter('ALL');
                 setSelectedFilter('ALL');
               }}
-              className={`flex-1 w-full py-3 px-5 rounded-xl transition-all duration-300 flex items-center justify-between sm:justify-center gap-3 cursor-pointer ${
-                activeLocation === 'kinathukadavu'
+              className={`w-full py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-between sm:justify-center gap-2.5 cursor-pointer ${
+                activeLocation === 'kovilpalayam'
                   ? 'bg-[#1A0709] text-white shadow-md border-2 border-[#1A0709]'
                   : 'bg-transparent text-[#1A0709] hover:bg-[#FAF7F2] border border-transparent'
               }`}
             >
-              <span className="font-heading font-extrabold text-sm sm:text-base tracking-wide">
-                KINATHUKADAVU LAYOUT
+              <span className="font-heading font-extrabold text-xs sm:text-sm tracking-wide">
+                KOVILPALAYAM
               </span>
-              <span className={`px-2.5 py-0.5 rounded text-[11px] font-mono font-black uppercase ${
-                activeLocation === 'kinathukadavu' ? 'bg-gold-primary text-espresso-950' : 'bg-[#FAF7F2] text-[#1A0709] border border-gold-border/60'
+              <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-black uppercase ${
+                activeLocation === 'kovilpalayam' ? 'bg-gold-primary text-espresso-950' : 'bg-[#FAF7F2] text-[#1A0709] border border-gold-border/60'
               }`}>
-                42 PLOTS
+                32 PLOTS
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setActiveLocation('siruvani');
+                setSelectedPlot(null);
+                setTableFilter('ALL');
+                setSelectedFilter('ALL');
+              }}
+              className={`w-full py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-between sm:justify-center gap-2.5 cursor-pointer ${
+                activeLocation === 'siruvani'
+                  ? 'bg-[#1A0709] text-white shadow-md border-2 border-[#1A0709]'
+                  : 'bg-transparent text-[#1A0709] hover:bg-[#FAF7F2] border border-transparent'
+              }`}
+            >
+              <span className="font-heading font-extrabold text-xs sm:text-sm tracking-wide">
+                SIRUVANI
+              </span>
+              <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-black uppercase ${
+                activeLocation === 'siruvani' ? 'bg-gold-primary text-espresso-950' : 'bg-[#FAF7F2] text-[#1A0709] border border-gold-border/60'
+              }`}>
+                47 PLOTS
               </span>
             </button>
           </div>
@@ -1059,8 +1121,15 @@ export default function PlotsPage() {
                     </text>
                   </g>
                 </svg>
+              ) : activeLocation === 'kovilpalayam' ? (
+                <KovilpalayamBlueprintSVG
+                  plots={activePlots}
+                  selectedPlot={selectedPlot}
+                  selectedFilter={selectedFilter}
+                  onSelectPlot={setSelectedPlot}
+                />
               ) : (
-                <KinathukadavuBlueprintSVG
+                <SiruvaniBlueprintSVG
                   plots={activePlots}
                   selectedPlot={selectedPlot}
                   selectedFilter={selectedFilter}
@@ -1191,7 +1260,21 @@ export default function PlotsPage() {
                   </ul>
 
                   {/* Clean Action Button */}
-                  <div className="mt-6 pt-4 border-t border-gold-border/40">
+                  <div className="mt-6 pt-4 border-t border-gold-border/40 space-y-2.5">
+                    {currentMetadata.googleMapsUrl && (
+                      <a
+                        href={currentMetadata.googleMapsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-2.5 px-4 rounded-lg bg-white hover:bg-[#FAF7F2] border-2 border-gold-primary text-espresso-950 font-mono text-xs font-bold tracking-wider uppercase text-center transition-all cursor-pointer shadow-sm flex items-center justify-center gap-2 group"
+                      >
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-gold-antique group-hover:scale-110 transition-transform">
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                          <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span>VIEW ON GOOGLE MAPS ↗</span>
+                      </a>
+                    )}
                     <button
                       type="button"
                       onClick={() => {
@@ -1263,7 +1346,7 @@ export default function PlotsPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search plot #, facing, sqft, cent..."
+                placeholder="Search plot, facing, sqft, cent..."
                 className="w-full bg-biscuit-100 border border-gold-border rounded px-3 py-2 pl-9 text-xs sm:text-sm text-espresso-900 placeholder:text-espresso-600 focus:outline-none focus:border-gold-primary"
               />
               <svg
@@ -1301,23 +1384,27 @@ export default function PlotsPage() {
 
       </div>
 
-      {/* 6. PLOT INSPECTOR DRAWER / POPUP MODAL (NEATLY ALIGNED & VISIBLE FOR ALL AGE GROUPS) */}
+      {/* 6. PLOT INSPECTOR DRAWER / POPUP MODAL (MODERN ARCHITECTURAL FORMAT) */}
       {selectedPlot && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-espresso-950/80 backdrop-blur-md"
           onClick={() => setSelectedPlot(null)}
         >
           <div
-            className="w-full max-w-xl bg-[#FFFDF8] border-2 border-gold-primary rounded-2xl p-5 sm:p-7 shadow-[0_20px_60px_rgba(20,12,8,0.35)] relative animate-modalFadeIn max-h-[92vh] overflow-y-auto"
+            className="w-full max-w-lg bg-[#FFFDF9] border-2 border-gold-primary/70 rounded-2xl p-5 sm:p-6 shadow-[0_24px_70px_rgba(26,7,9,0.32)] relative animate-modalFadeIn max-h-[92vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Top Bar with Plot Badge, Status & Close Button */}
-            <div className="flex items-center justify-between pb-3.5 border-b border-gold-border/50">
-              <div className="flex items-center gap-2.5 flex-wrap">
-                <span className="px-3.5 py-1 bg-espresso-950 text-gold-light border border-gold-primary rounded-md font-mono font-black text-sm tracking-widest shadow-xs">
-                  PLOT #{selectedPlot.number}
+            {/* Top Bar with Plot Badge, Status & Sleek Close Button */}
+            <div className="flex items-center justify-between pb-3 border-b border-gold-border/40">
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 bg-espresso-950 text-gold-light border border-gold-primary/60 rounded-lg font-mono font-bold text-xs tracking-wider shadow-xs">
+                  PLOT {selectedPlot.number}
                 </span>
-                <span className={`inline-block px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider ${getStatusColor(selectedPlot.status).badgeClass}`}>
+                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider ${getStatusColor(selectedPlot.status).badgeClass}`}>
+                  <span
+                    className="w-2 h-2 rounded-full inline-block"
+                    style={{ backgroundColor: getStatusColor(selectedPlot.status).fill }}
+                  />
                   {selectedPlot.status}
                 </span>
               </div>
@@ -1326,7 +1413,7 @@ export default function PlotsPage() {
               <button
                 type="button"
                 onClick={() => setSelectedPlot(null)}
-                className="w-9 h-9 rounded-full border border-gold-primary/80 bg-espresso-900 text-white flex items-center justify-center text-2xl hover:bg-gold-primary hover:text-espresso-950 transition-colors cursor-pointer shadow-sm"
+                className="w-8 h-8 rounded-full border border-gold-border/80 bg-white text-espresso-900 flex items-center justify-center text-xl hover:bg-espresso-950 hover:text-white transition-all cursor-pointer shadow-xs"
                 title="Close"
               >
                 &times;
@@ -1334,149 +1421,163 @@ export default function PlotsPage() {
             </div>
 
             {/* Plot Heading & Location Subtitle */}
-            <div className="mt-4 mb-5">
-              <h3 className="font-heading font-extrabold text-2xl sm:text-[1.65rem] text-espresso-950 leading-tight">
-                Plot #{selectedPlot.number} — {selectedPlot.facing}
+            <div className="mt-3.5 mb-4">
+              <h3 className="font-heading font-extrabold text-2xl sm:text-[1.7rem] text-[#1A0709] tracking-tight leading-tight">
+                Plot {selectedPlot.number} — {selectedPlot.facing}
               </h3>
-              <p className="font-body text-xs sm:text-sm text-espresso-700 mt-1.5 flex items-center gap-2 flex-wrap">
-                <span className="font-semibold text-espresso-900">{currentMetadata.name}</span>
-                <span>•</span>
-                <span className="font-mono text-gold-dark font-bold">{currentMetadata.approvalNo}</span>
+              <p className="font-body text-xs text-espresso-700 mt-1 flex items-center gap-2 flex-wrap">
+                <span className="font-bold text-[#1A0709]">{currentMetadata.name}</span>
+                <span className="text-gold-antique">•</span>
+                <span className="text-[#9C7230] font-mono font-bold">{currentMetadata.approvalNo}</span>
               </p>
             </div>
 
-            {/* Primary Highlight Metrics (Large, High Contrast & Ultra-Legible for All Ages) */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-5">
-              <div className="bg-[#FAF4EB] p-4 rounded-xl border border-gold-border/70 shadow-xs">
-                <span className="block font-mono text-[11px] sm:text-xs font-bold text-espresso-700 uppercase tracking-wider">
-                  TOTAL LAND EXTENT
-                </span>
-                <div className="mt-1 flex items-baseline gap-1.5">
-                  <span className="font-sans text-2xl sm:text-3xl font-black text-espresso-950 tracking-tight">
-                    {selectedPlot.sqft.toLocaleString()}
+            {/* NEW UNIFIED EXTENT HERO PANEL (SAME FONT COLOR FOR SQFT & CENT) */}
+            <div className="bg-[#FAF6EE] rounded-xl border border-gold-border/70 p-3.5 sm:p-4 mb-4 shadow-xs">
+              <div className="grid grid-cols-2 divide-x divide-gold-border/50 items-center">
+                {/* Total Land Extent (Sq.Ft) */}
+                <div className="pr-3 sm:pr-4">
+                  <span className="block font-mono text-[9.5px] sm:text-[10px] font-bold text-espresso-600 uppercase tracking-widest mb-0.5">
+                    TOTAL LAND EXTENT
                   </span>
-                  <span className="text-xs sm:text-sm font-extrabold text-espresso-700 uppercase">
-                    Sq.Ft
+                  <div className="flex items-baseline gap-1">
+                    <span className="font-heading font-extrabold text-2xl sm:text-[1.85rem] text-[#1A0709] tracking-tight leading-none">
+                      {selectedPlot.sqft.toLocaleString()}
+                    </span>
+                    <span className="font-heading font-extrabold text-xs sm:text-sm text-[#1A0709] uppercase tracking-wider">
+                      SQ.FT
+                    </span>
+                  </div>
+                  <span className="block font-body text-[10.5px] text-espresso-600 mt-1 font-medium">
+                    100% DTCP Approved area
                   </span>
                 </div>
-                <span className="block text-[10.5px] text-espresso-600 mt-1">
-                  100% DTCP Approved area
+
+                {/* Extent in Cents (Same Font Color: #1A0709) */}
+                <div className="pl-3 sm:pl-4">
+                  <span className="block font-mono text-[9.5px] sm:text-[10px] font-bold text-espresso-600 uppercase tracking-widest mb-0.5">
+                    EXTENT IN CENTS
+                  </span>
+                  <div className="flex items-baseline gap-1 flex-wrap">
+                    <span className="font-heading font-extrabold text-2xl sm:text-[1.85rem] text-[#1A0709] tracking-tight leading-none">
+                      {selectedPlot.cent} Cents
+                    </span>
+                    {selectedPlot.remSqft > 0 && (
+                      <span className="font-heading font-extrabold text-xs sm:text-sm text-[#1A0709]">
+                        {selectedPlot.remSqft} Sq.Ft
+                      </span>
+                    )}
+                  </div>
+                  <span className="block font-body text-[10.5px] text-espresso-600 mt-1 font-medium">
+                    Revenue cent measurement
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* NEW BENTO SPECIFICATION GRID (CLEAN, MODULAR & MODERN) */}
+            <div className="grid grid-cols-2 gap-2.5 mb-4">
+              {/* Card 1: Dimensions */}
+              <div className="bg-[#FAF7F2] p-3 rounded-xl border border-gold-border/40 flex flex-col justify-between">
+                <span className="font-mono text-[9.5px] font-bold text-espresso-600 uppercase tracking-wider flex items-center gap-1.5 mb-1">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9C7230" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="M21.3 15.3l-6.6-6.6a2 2 0 0 0-2.8 0L2.7 17.9a2 2 0 0 0 0 2.8l.6.6a2 2 0 0 0 2.8 0l9.2-9.2a2 2 0 0 1 2.8 0l3.2 3.2z"/><path d="M7.5 13.5l1.5 1.5"/><path d="M10.5 10.5l1.5 1.5"/><path d="M13.5 7.5l1.5 1.5"/></svg>
+                  DIMENSIONS
+                </span>
+                <strong className="font-heading font-bold text-sm sm:text-[15px] text-[#1A0709]">
+                  {selectedPlot.dim || 'Standard Plot'}
+                </strong>
+              </div>
+
+              {/* Card 2: Facing Direction */}
+              <div className="bg-[#FAF7F2] p-3 rounded-xl border border-gold-border/40 flex flex-col justify-between">
+                <span className="font-mono text-[9.5px] font-bold text-espresso-600 uppercase tracking-wider flex items-center gap-1.5 mb-1">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9C7230" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                  FACING DIRECTION
+                </span>
+                <strong className="font-heading font-bold text-sm sm:text-[15px] text-[#1A0709]">
+                  {selectedPlot.facing}
+                </strong>
+              </div>
+
+              {/* Card 3: Road Width & Access (Full Row) */}
+              <div className="col-span-2 bg-[#FAF7F2] p-3 rounded-xl border border-gold-border/40 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <span className="font-mono text-[9.5px] font-bold text-espresso-600 uppercase tracking-wider flex items-center gap-1.5">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9C7230" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="M4 19L8 5M16 5l4 14M12 5v14"/></svg>
+                  ROAD WIDTH &amp; ACCESS
+                </span>
+                <strong className="font-heading font-bold text-xs sm:text-sm text-[#1A0709]">
+                  {selectedPlot.road}
+                </strong>
+              </div>
+
+              {/* Card 4: Survey Numbers */}
+              <div className="bg-[#FAF7F2] p-3 rounded-xl border border-gold-border/40 flex flex-col justify-between">
+                <span className="font-mono text-[9.5px] font-bold text-espresso-600 uppercase tracking-wider flex items-center gap-1.5 mb-1">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9C7230" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  SURVEY NUMBERS
+                </span>
+                <span className="font-mono font-bold text-xs text-[#1A0709] leading-snug">
+                  {currentMetadata.sfNumbers}
                 </span>
               </div>
 
-              <div className="bg-[#FAF4EB] p-4 rounded-xl border border-gold-border/70 shadow-xs">
-                <span className="block font-mono text-[11px] sm:text-xs font-bold text-espresso-700 uppercase tracking-wider">
-                  EXTENT IN CENTS
+              {/* Card 5: Taluk & Village */}
+              <div className="bg-[#FAF7F2] p-3 rounded-xl border border-gold-border/40 flex flex-col justify-between">
+                <span className="font-mono text-[9.5px] font-bold text-espresso-600 uppercase tracking-wider flex items-center gap-1.5 mb-1">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9C7230" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  TALUK &amp; VILLAGE
                 </span>
-                <div className="mt-1 flex items-baseline gap-1.5 flex-wrap">
-                  <span className="font-sans text-xl sm:text-2xl font-black text-gold-dark tracking-tight">
-                    {selectedPlot.cent} Cents
-                  </span>
-                  {selectedPlot.remSqft > 0 && (
-                    <span className="text-xs sm:text-sm font-bold text-espresso-800">
-                      {selectedPlot.remSqft} Sq.Ft
-                    </span>
-                  )}
-                </div>
-                <span className="block text-[10.5px] text-espresso-600 mt-1">
-                  Revenue cent measurement
+                <span className="font-body font-semibold text-xs text-[#1A0709] leading-snug">
+                  {currentMetadata.location}
                 </span>
               </div>
             </div>
 
-            {/* Neatly Aligned Specification Rows (Clean Key-Value Spec Sheet) */}
-            <div className="bg-[#FAF4EB] rounded-xl border border-gold-border/60 divide-y divide-gold-border/30 overflow-hidden mb-5">
-              <div className="flex items-center justify-between px-4 py-3 text-xs sm:text-sm">
-                <span className="font-semibold text-espresso-700">Dimensions</span>
-                <strong className="font-bold text-espresso-950 font-mono text-sm">{selectedPlot.dim}</strong>
-              </div>
-
-              <div className="flex items-center justify-between px-4 py-3 text-xs sm:text-sm bg-white/60">
-                <span className="font-semibold text-espresso-700">Facing Direction</span>
-                <strong className="font-bold text-espresso-950">{selectedPlot.facing}</strong>
-              </div>
-
-              <div className="flex items-center justify-between px-4 py-3 text-xs sm:text-sm">
-                <span className="font-semibold text-espresso-700">Road Width &amp; Access</span>
-                <strong className="font-bold text-espresso-950 text-right">{selectedPlot.road}</strong>
-              </div>
-
-              <div className="flex items-center justify-between px-4 py-3 text-xs sm:text-sm bg-white/60">
-                <span className="font-semibold text-espresso-700">Survey Numbers</span>
-                <strong className="font-bold text-espresso-950 font-mono text-xs sm:text-sm">{currentMetadata.sfNumbers}</strong>
-              </div>
-
-              <div className="flex items-center justify-between px-4 py-3 text-xs sm:text-sm">
-                <span className="font-semibold text-espresso-700">Taluk &amp; Village</span>
-                <strong className="font-bold text-espresso-950 text-right">{currentMetadata.location}</strong>
-              </div>
-            </div>
-
-            {/* Location Landmarks & Amenities Strip inside Modal (Clean, No Emojis) */}
-            {currentMetadata.locationHighlights && (
-              <div className="bg-[#FAF4EB] p-3.5 rounded-xl border border-gold-border/60 mb-5 shadow-2xs">
-                <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-gold-border/40">
-                  <span className="font-mono text-[10.5px] font-bold text-gold-dark uppercase tracking-wider">
-                    LOCATION HIGHLIGHTS &amp; AMENITIES
-                  </span>
-                  <span className="font-mono text-[10px] font-extrabold text-espresso-900 bg-white border border-gold-border/40 px-2 py-0.5 rounded">
-                    {currentMetadata.shortName || 'CORRIDOR'}
+            {/* REFINED DTCP APPROVAL & LEGAL GUARANTEE CARD */}
+            <div className="bg-[#FAF6EE] p-3.5 rounded-xl border border-gold-border/60 mb-5">
+              <div className="flex flex-wrap items-center justify-between gap-1 pb-2 mb-2 border-b border-gold-border/30">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#1D4D27]" />
+                  <span className="font-mono text-[10px] sm:text-[11px] font-extrabold text-[#7C6337] uppercase tracking-wider">
+                    GOVERNMENT DTCP APPROVAL
                   </span>
                 </div>
-                <div className="flex flex-wrap gap-1.5 text-xs text-espresso-950 font-medium">
-                  {currentMetadata.locationHighlights.points.slice(0, 4).map((pt, i) => (
-                    <span key={i} className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white rounded-md border border-gold-border/50 text-[11px] shadow-2xs">
-                      <span className="w-1.5 h-1.5 rounded-full bg-gold-primary flex-shrink-0" />
-                      <span>{pt}</span>
-                    </span>
-                  ))}
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white rounded-md border border-gold-border/50 text-[11px] shadow-2xs">
-                    <span className="w-1.5 h-1.5 rounded-full bg-gold-primary flex-shrink-0" />
-                    <span>Road: {selectedPlot.road}</span>
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* Government DTCP Approval Trust Card */}
-            <div className="bg-espresso-950 text-gold-light p-4 rounded-xl border border-gold-primary mb-5 shadow-sm">
-              <div className="flex flex-wrap items-center justify-between gap-1 pb-2 border-b border-gold-primary/30">
-                <span className="font-mono text-xs text-gold-antique uppercase font-extrabold tracking-wider">
-                  GOVERNMENT DTCP APPROVAL
-                </span>
-                <span className="font-mono text-xs sm:text-sm text-gold-light font-bold">
+                <span className="font-mono text-xs font-bold text-[#1A0709]">
                   {currentMetadata.approvalNo}
                 </span>
               </div>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-cream/95 pt-2.5 font-medium">
-                <span className="flex items-center gap-1.5">
-                  <span className="text-gold-antique font-bold">✓</span> 100% Clear Title
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-semibold text-[#1A0709]">
+                <span className="inline-flex items-center gap-1.5 bg-white px-2.5 py-1 rounded-md border border-gold-border/30 shadow-xs">
+                  <span className="text-[#1D4D27] font-bold">✓</span> 100% Clear Title
                 </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="text-gold-antique font-bold">✓</span> Individual Patta Eligible
+                <span className="inline-flex items-center gap-1.5 bg-white px-2.5 py-1 rounded-md border border-gold-border/30 shadow-xs">
+                  <span className="text-[#1D4D27] font-bold">✓</span> Individual Patta Eligible
                 </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="text-gold-antique font-bold">✓</span> Ready for Immediate Registration
+                <span className="inline-flex items-center gap-1.5 bg-white px-2.5 py-1 rounded-md border border-gold-border/30 shadow-xs">
+                  <span className="text-[#1D4D27] font-bold">✓</span> Ready for Immediate Registration
                 </span>
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-1">
+            {/* ACTION BUTTONS (HIGH CONTRAST & ACCESSIBLE) */}
+            <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
               <button
                 type="button"
                 onClick={() => openWhatsApp(selectedPlot)}
-                className="flex-1 btn btn-gold py-3 px-5 rounded-lg text-xs sm:text-sm font-mono font-bold tracking-wider text-center cursor-pointer shadow-md hover:scale-[1.01] transition-transform flex items-center justify-center gap-2"
+                className="flex-1 px-5 py-3 rounded-xl bg-[#1A0709] hover:bg-[#2D0E12] text-[#E5D2A6] hover:text-white border border-[#C6A15B] font-mono text-xs sm:text-[13px] font-bold tracking-wider text-center cursor-pointer shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="shrink-0 text-[#C6A15B]">
                   <path d="M12.031 0C5.385 0 0 5.386 0 12.031c0 2.124.553 4.197 1.604 6.02L0 24l6.155-1.614A11.968 11.968 0 0 0 12.03 24c6.645 0 12.03-5.385 12.03-12.031C24.06 5.386 18.675 0 12.031 0zm.012 22.012c-1.808 0-3.585-.486-5.143-1.408l-.369-.219-3.817 1.001 1.019-3.721-.241-.383A9.99 9.99 0 0 1 2.012 12.03c0-5.524 4.496-10.02 10.031-10.02 5.524 0 10.02 4.496 10.02 10.02 0 5.536-4.496 10.012-10.02 10.012zm5.503-7.519c-.302-.152-1.785-.881-2.062-.981-.277-.101-.479-.152-.68.152-.202.302-.782.981-.959 1.183-.176.201-.353.226-.655.075-1.745-.875-2.894-1.559-4.04-3.535-.302-.52.302-.482.864-1.608.101-.201.05-.378-.025-.529-.075-.152-.68-1.636-.932-2.24-.244-.588-.493-.508-.68-.518-.176-.009-.378-.009-.58-.009-.201 0-.528.075-.804.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.92 1.233 3.122.151.201 2.128 3.25 5.156 4.558 2.164.935 2.809.845 3.791.7.636-.094 1.785-.73 2.037-1.435.252-.705.252-1.309.176-1.435-.076-.125-.278-.201-.58-.352z" />
                 </svg>
                 <span>ENQUIRE VIA WHATSAPP →</span>
               </button>
               <a
-                href="tel:+919842210542"
-                className="btn btn-outline-gold py-3 px-6 rounded-lg text-xs sm:text-sm font-mono font-bold tracking-wider text-center cursor-pointer flex items-center justify-center gap-2"
+                href="tel:+919363599754"
+                className="px-5 py-3 rounded-xl bg-white hover:bg-[#FAF7F2] text-[#1A0709] border-2 border-[#1A0709] font-mono text-xs sm:text-[13px] font-bold tracking-wider text-center cursor-pointer shadow-sm hover:shadow transition-all flex items-center justify-center gap-2"
               >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
                 <span>CALL NOW</span>
               </a>
             </div>

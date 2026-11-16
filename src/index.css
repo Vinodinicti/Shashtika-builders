@@ -597,10 +597,17 @@ body {
    ========================================================================== */
 .location-cards-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  max-width: 1040px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  max-width: 1240px;
   margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+  .location-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 840px;
+  }
 }
 
 @media (max-width: 768px) {

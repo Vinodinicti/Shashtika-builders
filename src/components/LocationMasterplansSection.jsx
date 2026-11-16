@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { LOCATION_MASTERPLANS } from '../data/homeData';
 import { PROJECT_METADATA, PLOTS_DATA } from '../data/plotsKambalapattiData';
+import { KOVILPALAYAM_METADATA, KOVILPALAYAM_PLOTS_DATA } from '../data/plotsKovilpalayamData';
+import { SIRUVANI_METADATA, SIRUVANI_PLOTS_DATA } from '../data/plotsSiruvaniData';
+import KovilpalayamBlueprintSVG from './KovilpalayamBlueprintSVG';
+import SiruvaniBlueprintSVG from './SiruvaniBlueprintSVG';
 
 // Coordinates mapper for all 64 plots matching official blueprint
 const getPlotCoordinates = (num) => {
@@ -101,10 +105,9 @@ export default function LocationMasterplansSection() {
   const [selectedFilter, setSelectedFilter] = useState('ALL');
   const [zoomLevel, setZoomLevel] = useState(1);
 
-  // Kambalampatti on the left (index 0), Coimbatore on the right (index 1)
-  const locationKeys = ['kambalampatti', 'coimbatore'];
+  // 3 Primary Work Locations: Kambalampatti, Kovilpalayam, Siruvani
+  const locationKeys = ['kambalampatti', 'kovilpalayam', 'siruvani'];
   const activePlan = selectedCity ? LOCATION_MASTERPLANS[selectedCity] : null;
-  const isKambalampatti = selectedCity === 'kambalampatti';
 
   // Synchronize live plot stats with PlotsPage & localStorage
   const [plotsInventory, setPlotsInventory] = useState(() => {
@@ -119,12 +122,48 @@ export default function LocationMasterplansSection() {
     return PLOTS_DATA;
   });
 
-  useEffect(() => {
-    const handleSync = () => {
-      const saved = localStorage.getItem('shashtika_plots_inventory');
+  const [kovilpalayamInventory, setKovilpalayamInventory] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('shashtika_plots_inventory_kovilpalayam');
       if (saved) {
         try {
-          setPlotsInventory(JSON.parse(saved));
+          return JSON.parse(saved);
+        } catch (e) {}
+      }
+    }
+    return KOVILPALAYAM_PLOTS_DATA;
+  });
+
+  const [siruvaniInventory, setSiruvaniInventory] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('shashtika_plots_inventory_siruvani');
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch (e) {}
+      }
+    }
+    return SIRUVANI_PLOTS_DATA;
+  });
+
+  useEffect(() => {
+    const handleSync = () => {
+      const savedKambal = localStorage.getItem('shashtika_plots_inventory');
+      if (savedKambal) {
+        try {
+          setPlotsInventory(JSON.parse(savedKambal));
+        } catch (e) {}
+      }
+      const savedKovil = localStorage.getItem('shashtika_plots_inventory_kovilpalayam');
+      if (savedKovil) {
+        try {
+          setKovilpalayamInventory(JSON.parse(savedKovil));
+        } catch (e) {}
+      }
+      const savedSiru = localStorage.getItem('shashtika_plots_inventory_siruvani');
+      if (savedSiru) {
+        try {
+          setSiruvaniInventory(JSON.parse(savedSiru));
         } catch (e) {}
       }
     };
@@ -136,18 +175,32 @@ export default function LocationMasterplansSection() {
     };
   }, []);
 
-  const kambalampattiStats = useMemo(() => {
-    const total = plotsInventory.length;
-    const available = plotsInventory.filter((p) => p.status === 'AVAILABLE').length;
-    const prebooked = plotsInventory.filter((p) => p.status === 'PRE-BOOKED').length;
-    const sold = plotsInventory.filter((p) => p.status === 'SOLD').length;
+  const currentMetadata = useMemo(() => {
+    if (selectedCity === 'kambalampatti') return PROJECT_METADATA;
+    if (selectedCity === 'kovilpalayam') return KOVILPALAYAM_METADATA;
+    if (selectedCity === 'siruvani') return SIRUVANI_METADATA;
+    return null;
+  }, [selectedCity]);
+
+  const currentPlots = useMemo(() => {
+    if (selectedCity === 'kambalampatti') return plotsInventory;
+    if (selectedCity === 'kovilpalayam') return kovilpalayamInventory;
+    if (selectedCity === 'siruvani') return siruvaniInventory;
+    return [];
+  }, [selectedCity, plotsInventory, kovilpalayamInventory, siruvaniInventory]);
+
+  const activeStats = useMemo(() => {
+    const total = currentPlots.length;
+    const available = currentPlots.filter((p) => p.status === 'AVAILABLE').length;
+    const prebooked = currentPlots.filter((p) => p.status === 'PRE-BOOKED').length;
+    const sold = currentPlots.filter((p) => p.status === 'SOLD').length;
     return { total, available, prebooked, sold };
-  }, [plotsInventory]);
+  }, [currentPlots]);
 
   // WhatsApp enquiry handler
   const openWhatsApp = (plot) => {
     const text = encodeURIComponent(
-      `Hello SHASHTIKA Plot Developers,\n\nI am interested in DTCP Approved Plot #${plot.number} (${plot.sqft} Sq.Ft / ${plot.cent} Cents ${plot.remSqft > 0 ? `${plot.remSqft} Sq.Ft` : ''}) at ${PROJECT_METADATA.name}, Kambalapatti Village, Anaimalai Taluk.\n\nApproval No: ${PROJECT_METADATA.approvalNo}\nSurvey No: ${PROJECT_METADATA.sfNumbers}\nFacing: ${plot.facing}\nRoad: ${plot.road}\n\nPlease share booking assistance and site visit schedule.`
+      `Hello SHASHTIKA Plot Developers,\n\nI am interested in DTCP Approved Plot ${plot.number} (${plot.sqft} Sq.Ft / ${plot.cent} Cents ${plot.remSqft > 0 ? `${plot.remSqft} Sq.Ft` : ''}) at ${currentMetadata?.name || 'SHASHTIKA Layout'}.\n\nApproval No: ${currentMetadata?.approvalNo || ''}\nSurvey No: ${currentMetadata?.sfNumbers || ''}\nFacing: ${plot.facing || 'North/East'}\nRoad: ${plot.road || 'Layout Road'}\n\nPlease share booking assistance and site visit schedule.`
     );
     window.open(`https://wa.me/919363599754?text=${text}`, '_blank');
   };
@@ -177,18 +230,21 @@ export default function LocationMasterplansSection() {
             REGIONAL LOCATION MASTER PLANS
           </h2>
           <p className="font-body text-xs sm:text-sm text-espresso-700 leading-relaxed">
-            Select any of our 2 major location corridors below to open the corresponding layout masterplan blueprint, plot dimensions, live availability, and full summary details in a popup inspector.
+            Select any of our 3 prime location corridors below to open the corresponding layout masterplan blueprint, plot dimensions, live availability, and full summary details in a popup inspector.
           </p>
         </div>
 
-        {/* Exact 2 Location Cards Grid (Left: Kambalampatti, Right: Coimbatore) */}
+        {/* 3 Location Cards Grid: Kambalampatti, Kovilpalayam, Siruvani */}
         <div className="location-cards-grid">
           {locationKeys.map((key) => {
             const item = LOCATION_MASTERPLANS[key];
+            if (!item) return null;
             const imgSrc =
               key === 'kambalampatti'
                 ? '/Images/Pollachi_Location.jpg'
-                : '/Images/Coimbatore_Location.jpg';
+                : key === 'kovilpalayam'
+                ? '/Images/Kovilpalayam_Plan.jpg'
+                : '/Images/Siruvani_Plan.jpg';
 
             return (
               <div
@@ -237,11 +293,9 @@ export default function LocationMasterplansSection() {
                         </strong>
                       </div>
                       <div className="location-spec-col-price">
-                        <span className="location-spec-lbl">
-                          {key === 'kambalampatti' ? 'TOTAL PLOTS' : 'STARTING PRICE'}
-                        </span>
+                        <span className="location-spec-lbl">TOTAL PLOTS</span>
                         <strong className="location-spec-val text-gold">
-                          {key === 'kambalampatti' ? '64 DTCP Units' : item.startingPrice}
+                          {item.totalPlots}
                         </strong>
                       </div>
                     </div>
@@ -281,121 +335,121 @@ export default function LocationMasterplansSection() {
               &times;
             </button>
 
-            {/* KAMBALAMPATTI INTERACTIVE 64-PLOT BLUEPRINT VIEW (MATCHING PLOTS PAGE) */}
-            {isKambalampatti ? (
-              <div>
-                {/* Header */}
-                <div className="mb-4 pr-10 border-b border-gold-border/30 pb-3">
-                  <div className="flex flex-wrap items-center gap-2 mb-1">
-                    <span className="architectural-tag text-gold-antique">
-                      {PROJECT_METADATA.name}
-                    </span>
-                    <span className="px-2.5 py-0.5 rounded text-[11px] font-mono font-bold bg-[#1D4D27]/15 text-[#1D4D27] border border-[#1D4D27]/30">
-                      {PROJECT_METADATA.approvalNo}
-                    </span>
-                  </div>
-                  <h2 className="font-heading font-extrabold text-xl sm:text-2xl text-[#1A0709]">
-                    {PROJECT_METADATA.tamilTitle}
-                  </h2>
-                  <p className="font-mono text-xs text-espresso-700 mt-1">
-                    <strong className="text-espresso-950">{PROJECT_METADATA.sfNumbers}</strong> • {PROJECT_METADATA.location}
-                  </p>
+            {/* UNIFIED INTERACTIVE BLUEPRINT VIEW FOR ALL 3 LOCATIONS */}
+            <div>
+              {/* Header */}
+              <div className="mb-4 pr-10 border-b border-gold-border/30 pb-3">
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <span className="architectural-tag text-gold-antique">
+                    {currentMetadata?.name || activePlan?.title}
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded text-[11px] font-mono font-bold bg-[#1D4D27]/15 text-[#1D4D27] border border-[#1D4D27]/30">
+                    {currentMetadata?.approvalNo || activePlan?.approval}
+                  </span>
                 </div>
+                <h2 className="font-heading font-extrabold text-xl sm:text-2xl text-[#1A0709]">
+                  {currentMetadata?.tamilTitle || activePlan?.title}
+                </h2>
+                <p className="font-mono text-xs text-espresso-700 mt-1">
+                  <strong className="text-espresso-950">{currentMetadata?.sfNumbers || activePlan?.city}</strong> • {currentMetadata?.location || activePlan?.subtitle}
+                </p>
+              </div>
 
-                {/* Availability Filter Chips */}
-                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-4">
+              {/* Availability Filter Chips */}
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-4">
+                <button
+                  type="button"
+                  onClick={() => setSelectedFilter('ALL')}
+                  className={`px-3 py-1.5 rounded-full text-xs font-mono font-bold transition-all cursor-pointer ${
+                    selectedFilter === 'ALL'
+                      ? 'bg-espresso-950 text-cream shadow-sm'
+                      : 'bg-biscuit-100 text-espresso-800 hover:bg-biscuit-200 border border-gold-border/40'
+                  }`}
+                >
+                  ALL ({activeStats.total})
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedFilter('AVAILABLE')}
+                  className={`px-3 py-1.5 rounded-full text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    selectedFilter === 'AVAILABLE'
+                      ? 'bg-[#1D4D27] text-white shadow-sm'
+                      : 'bg-emerald-50 text-[#1D4D27] hover:bg-emerald-100 border border-emerald-300'
+                  }`}
+                >
+                  <span className="w-2 h-2 rounded-full bg-[#1D4D27]" />
+                  AVAILABLE: {activeStats.available}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedFilter('PRE-BOOKED')}
+                  className={`px-3 py-1.5 rounded-full text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    selectedFilter === 'PRE-BOOKED'
+                      ? 'bg-[#C99E5B] text-espresso-950 shadow-sm'
+                      : 'bg-amber-50 text-[#9C7230] hover:bg-amber-100 border border-amber-300'
+                  }`}
+                >
+                  <span className="w-2 h-2 rounded-full bg-[#C99E5B]" />
+                  PRE-BOOKED: {activeStats.prebooked}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedFilter('SOLD')}
+                  className={`px-3 py-1.5 rounded-full text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    selectedFilter === 'SOLD'
+                      ? 'bg-[#A63826] text-white shadow-sm'
+                      : 'bg-rose-50 text-[#A63826] hover:bg-rose-100 border border-rose-300'
+                  }`}
+                >
+                  <span className="w-2 h-2 rounded-full bg-[#A63826]" />
+                  SOLD: {activeStats.sold}
+                </button>
+
+                {/* Zoom Controls */}
+                <div className="ml-auto hidden sm:flex items-center gap-1 bg-biscuit-100 rounded border border-gold-border px-2 py-1">
                   <button
                     type="button"
-                    onClick={() => setSelectedFilter('ALL')}
-                    className={`px-3 py-1.5 rounded-full text-xs font-mono font-bold transition-all cursor-pointer ${
-                      selectedFilter === 'ALL'
-                        ? 'bg-espresso-950 text-cream shadow-sm'
-                        : 'bg-biscuit-100 text-espresso-800 hover:bg-biscuit-200 border border-gold-border/40'
-                    }`}
+                    onClick={() => setZoomLevel((z) => Math.max(0.7, z - 0.15))}
+                    className="px-1.5 font-mono font-bold text-sm text-espresso-900 hover:text-gold-antique cursor-pointer"
+                    title="Zoom Out"
                   >
-                    ALL ({kambalampattiStats.total})
+                    -
                   </button>
-
+                  <span className="font-mono text-xs text-espresso-700 px-1">
+                    {Math.round(zoomLevel * 100)}%
+                  </span>
                   <button
                     type="button"
-                    onClick={() => setSelectedFilter('AVAILABLE')}
-                    className={`px-3 py-1.5 rounded-full text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                      selectedFilter === 'AVAILABLE'
-                        ? 'bg-[#1D4D27] text-white shadow-sm'
-                        : 'bg-emerald-50 text-[#1D4D27] hover:bg-emerald-100 border border-emerald-300'
-                    }`}
+                    onClick={() => setZoomLevel((z) => Math.min(1.8, z + 0.15))}
+                    className="px-1.5 font-mono font-bold text-sm text-espresso-900 hover:text-gold-antique cursor-pointer"
+                    title="Zoom In"
                   >
-                    <span className="w-2 h-2 rounded-full bg-[#1D4D27]" />
-                    AVAILABLE: {kambalampattiStats.available}
+                    +
                   </button>
-
                   <button
                     type="button"
-                    onClick={() => setSelectedFilter('PRE-BOOKED')}
-                    className={`px-3 py-1.5 rounded-full text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                      selectedFilter === 'PRE-BOOKED'
-                        ? 'bg-[#C99E5B] text-espresso-950 shadow-sm'
-                        : 'bg-amber-50 text-[#9C7230] hover:bg-amber-100 border border-amber-300'
-                    }`}
+                    onClick={() => setZoomLevel(1)}
+                    className="text-[10px] font-mono text-gold-antique hover:underline ml-1 cursor-pointer"
                   >
-                    <span className="w-2 h-2 rounded-full bg-[#C99E5B]" />
-                    PRE-BOOKED: {kambalampattiStats.prebooked}
+                    RESET
                   </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setSelectedFilter('SOLD')}
-                    className={`px-3 py-1.5 rounded-full text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                      selectedFilter === 'SOLD'
-                        ? 'bg-[#A63826] text-white shadow-sm'
-                        : 'bg-rose-50 text-[#A63826] hover:bg-rose-100 border border-rose-300'
-                    }`}
-                  >
-                    <span className="w-2 h-2 rounded-full bg-[#A63826]" />
-                    SOLD: {kambalampattiStats.sold}
-                  </button>
-
-                  {/* Zoom Controls */}
-                  <div className="ml-auto hidden sm:flex items-center gap-1 bg-biscuit-100 rounded border border-gold-border px-2 py-1">
-                    <button
-                      type="button"
-                      onClick={() => setZoomLevel((z) => Math.max(0.7, z - 0.15))}
-                      className="px-1.5 font-mono font-bold text-sm text-espresso-900 hover:text-gold-antique cursor-pointer"
-                      title="Zoom Out"
-                    >
-                      -
-                    </button>
-                    <span className="font-mono text-xs text-espresso-700 px-1">
-                      {Math.round(zoomLevel * 100)}%
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setZoomLevel((z) => Math.min(1.8, z + 0.15))}
-                      className="px-1.5 font-mono font-bold text-sm text-espresso-900 hover:text-gold-antique cursor-pointer"
-                      title="Zoom In"
-                    >
-                      +
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setZoomLevel(1)}
-                      className="text-[10px] font-mono text-gold-antique hover:underline ml-1 cursor-pointer"
-                    >
-                      RESET
-                    </button>
-                  </div>
                 </div>
+              </div>
 
-                {/* Interactive SVG Masterplan Blueprint Canvas */}
-                <div className="relative bg-[#FCFAF5] border border-gold-border/70 rounded-xl p-2 sm:p-4 overflow-auto flex justify-center items-center shadow-inner min-h-[420px] max-h-[580px]">
-                  <div
-                    className="w-full flex justify-center transition-transform duration-200"
-                    style={{
-                      transform: zoomLevel !== 1 ? `scale(${zoomLevel})` : undefined,
-                      transformOrigin: 'top center',
-                      minWidth: zoomLevel > 1 ? `${zoomLevel * 100}%` : '100%'
-                    }}
-                  >
+              {/* Interactive SVG Masterplan Blueprint Canvas */}
+              <div className="relative bg-[#FCFAF5] border border-gold-border/70 rounded-xl p-2 sm:p-4 overflow-auto flex justify-center items-center shadow-inner min-h-[420px] max-h-[580px]">
+                <div
+                  className="w-full flex justify-center transition-transform duration-200"
+                  style={{
+                    transform: zoomLevel !== 1 ? `scale(${zoomLevel})` : undefined,
+                    transformOrigin: 'top center',
+                    minWidth: zoomLevel > 1 ? `${zoomLevel * 100}%` : '100%'
+                  }}
+                >
+                  {selectedCity === 'kambalampatti' ? (
                     <svg
                       viewBox="0 0 1180 840"
                       className="w-full max-w-[1100px] h-auto select-none block"
@@ -591,6 +645,21 @@ export default function LocationMasterplansSection() {
                         </text>
                       </g>
                     </svg>
+                  ) : selectedCity === 'kovilpalayam' ? (
+                    <KovilpalayamBlueprintSVG
+                      plots={kovilpalayamInventory}
+                      selectedPlot={selectedPlot}
+                      selectedFilter={selectedFilter}
+                      onSelectPlot={setSelectedPlot}
+                    />
+                  ) : selectedCity === 'siruvani' ? (
+                    <SiruvaniBlueprintSVG
+                      plots={siruvaniInventory}
+                      selectedPlot={selectedPlot}
+                      selectedFilter={selectedFilter}
+                      onSelectPlot={setSelectedPlot}
+                    />
+                  ) : null}
                   </div>
                 </div>
 
@@ -609,12 +678,12 @@ export default function LocationMasterplansSection() {
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-lg bg-espresso-950 flex flex-col items-center justify-center text-gold-light font-mono flex-shrink-0">
                         <span className="text-[10px] uppercase text-espresso-300">PLOT</span>
-                        <span className="text-base font-extrabold leading-none">#{selectedPlot.number}</span>
+                        <span className="text-base font-extrabold leading-none">{selectedPlot.number}</span>
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
                           <strong className="font-heading text-sm sm:text-base text-espresso-950">
-                            {selectedPlot.sqft.toLocaleString()} Sq.Ft ({selectedPlot.cent} Cents {selectedPlot.remSqft > 0 ? `${selectedPlot.remSqft} Sq.Ft` : ''})
+                            {selectedPlot.sqft?.toLocaleString()} Sq.Ft ({selectedPlot.cent} Cents {selectedPlot.remSqft > 0 ? `${selectedPlot.remSqft} Sq.Ft` : ''})
                           </strong>
                           <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase ${getStatusColor(selectedPlot.status).badgeClass}`}>
                             {selectedPlot.status}
@@ -623,7 +692,7 @@ export default function LocationMasterplansSection() {
                         <div className="text-xs font-mono text-espresso-700 mt-1 flex flex-wrap gap-x-3 gap-y-1">
                           <span>Facing: <strong className="text-espresso-900">{selectedPlot.facing}</strong></span>
                           <span>Road: <strong className="text-espresso-900">{selectedPlot.road}</strong></span>
-                          <span>Dim: <strong className="text-espresso-900">{selectedPlot.dim}</strong></span>
+                          {selectedPlot.dim && <span>Dim: <strong className="text-espresso-900">{selectedPlot.dim}</strong></span>}
                         </div>
                       </div>
                     </div>
@@ -653,13 +722,13 @@ export default function LocationMasterplansSection() {
                 {/* Minimal Color Legend */}
                 <div className="flex flex-wrap items-center justify-center gap-4 py-2.5 px-4 mt-3 bg-biscuit-100 rounded-lg border border-gold-border/40 text-xs font-mono">
                   <span className="flex items-center gap-1.5 text-espresso-900 font-semibold">
-                    <span className="w-3.5 h-3.5 rounded bg-[#1D4D27] inline-block" /> AVAILABLE ({kambalampattiStats.available})
+                    <span className="w-3.5 h-3.5 rounded bg-[#1D4D27] inline-block" /> AVAILABLE ({activeStats.available})
                   </span>
                   <span className="flex items-center gap-1.5 text-espresso-900 font-semibold">
-                    <span className="w-3.5 h-3.5 rounded bg-[#C99E5B] inline-block" /> PRE-BOOKED ({kambalampattiStats.prebooked})
+                    <span className="w-3.5 h-3.5 rounded bg-[#C99E5B] inline-block" /> PRE-BOOKED ({activeStats.prebooked})
                   </span>
                   <span className="flex items-center gap-1.5 text-espresso-900 font-semibold">
-                    <span className="w-3.5 h-3.5 rounded bg-[#A63826] inline-block" /> SOLD ({kambalampattiStats.sold})
+                    <span className="w-3.5 h-3.5 rounded bg-[#A63826] inline-block" /> SOLD ({activeStats.sold})
                   </span>
                 </div>
 
@@ -670,7 +739,7 @@ export default function LocationMasterplansSection() {
                     onClick={closeModal}
                     className="px-5 py-2.5 rounded bg-gold-primary hover:bg-gold-light text-espresso-950 font-mono text-xs font-extrabold tracking-wider transition-all shadow-md flex items-center gap-1.5"
                   >
-                    EXPLORE FULL 64 PLOTS DIRECTORY IN PLOTS PAGE →
+                    EXPLORE FULL {currentMetadata?.totalPlots ? `${currentMetadata.totalPlots} PLOTS` : 'PLOTS'} IN PLOTS PAGE →
                   </a>
                   <button
                     type="button"
@@ -681,89 +750,6 @@ export default function LocationMasterplansSection() {
                   </button>
                 </div>
               </div>
-            ) : (
-              /* COIMBATORE MASTERPLAN VIEW */
-              <div>
-                <div className="mb-6 border-b border-gold-border/30 pb-4">
-                  <span className="architectural-tag text-gold-antique">
-                    {activePlan.city.toUpperCase()} — {activePlan.tag}
-                  </span>
-                  <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-[#1A0709] mt-1">
-                    {activePlan.title}
-                  </h2>
-                  <p className="font-mono text-xs text-gold-antique mt-1">
-                    {activePlan.subtitle} • {activePlan.approval}
-                  </p>
-                </div>
-
-                {/* SVG Blueprint */}
-                <div className="bg-biscuit-100 border border-gold-border p-4 rounded-lg mb-6 shadow-inner">
-                  <div className="flex justify-between items-center mb-2 font-mono text-xs text-gold-antique font-bold">
-                    <span>MASTER PLAN BLUEPRINT — {activePlan.totalPlots} ({activePlan.city.toUpperCase()})</span>
-                    <span>NORTH ↑</span>
-                  </div>
-                  <div
-                    className="overflow-x-auto rounded border border-gold-border/40"
-                    dangerouslySetInnerHTML={{ __html: activePlan.svgBlueprint }}
-                  />
-                </div>
-
-                {/* Status Badges */}
-                <div className="flex flex-wrap gap-2.5 mb-6">
-                  <span className="px-3.5 py-1.5 rounded bg-[#1D4D27] text-white font-mono text-xs font-bold tracking-wider">
-                    {activePlan.available} AVAILABLE
-                  </span>
-                  <span className="px-3.5 py-1.5 rounded bg-[#C99E5B] text-espresso-950 font-mono text-xs font-bold tracking-wider">
-                    {activePlan.prebooked} PRE-BOOKED
-                  </span>
-                  <span className="px-3.5 py-1.5 rounded bg-terracotta text-cream font-mono text-xs font-bold tracking-wider">
-                    {activePlan.sold} SOLD
-                  </span>
-                </div>
-
-                {/* Specs Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 mb-6">
-                  <div className="p-3 rounded bg-biscuit-100 border border-gold-border/30">
-                    <span className="font-mono text-[10px] text-espresso-600 block uppercase">TOTAL LAYOUT</span>
-                    <strong className="font-mono text-xs sm:text-sm text-espresso-900">{activePlan.totalPlots}</strong>
-                  </div>
-                  <div className="p-3 rounded bg-biscuit-100 border border-gold-border/30">
-                    <span className="font-mono text-[10px] text-espresso-600 block uppercase">PLOT SIZES</span>
-                    <strong className="font-mono text-xs sm:text-sm text-espresso-900">{activePlan.plotSizes}</strong>
-                  </div>
-                  <div className="p-3 rounded bg-biscuit-100 border border-gold-border/30">
-                    <span className="font-mono text-[10px] text-espresso-600 block uppercase">ROAD WIDTHS</span>
-                    <strong className="font-mono text-xs sm:text-sm text-espresso-900">{activePlan.roadWidths}</strong>
-                  </div>
-                  <div className="p-3 rounded bg-biscuit-100 border border-gold-border/30">
-                    <span className="font-mono text-[10px] text-espresso-600 block uppercase">APPROVAL STATUS</span>
-                    <strong className="font-mono text-xs sm:text-sm text-gold-antique">{activePlan.approval}</strong>
-                  </div>
-                  <div className="p-3 rounded bg-biscuit-100 border border-gold-border/30">
-                    <span className="font-mono text-[10px] text-espresso-600 block uppercase">STARTING PRICE</span>
-                    <strong className="font-mono text-xs sm:text-sm text-gold-antique">{activePlan.startingPrice}</strong>
-                  </div>
-                </div>
-
-                {/* Footer Buttons */}
-                <div className="flex flex-wrap items-center gap-3">
-                  <a
-                    href="#quick-enquiry-section"
-                    onClick={closeModal}
-                    className="px-6 py-2.5 rounded bg-gold-primary hover:bg-gold-light text-espresso-950 font-mono text-xs font-bold tracking-wider transition-all"
-                  >
-                    ENQUIRE NOW
-                  </a>
-                  <button
-                    type="button"
-                    onClick={closeModal}
-                    className="px-6 py-2.5 rounded border border-gold-primary text-espresso-900 hover:bg-gold-primary/20 font-mono text-xs font-bold tracking-wider transition-all cursor-pointer"
-                  >
-                    CLOSE
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       )}

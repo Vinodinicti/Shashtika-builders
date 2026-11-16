@@ -25,7 +25,7 @@ export default function HeroSection({ isLoaded = true, homeNavCount = 0 }) {
     setCounts(HERO_STATS.map(() => 0));
 
     const startTime = performance.now();
-    // Wave stagger: 20 yrs (1300ms), 8+ layouts (1500ms), 4 ongoing (1200ms), 150+ houses (1700ms), 850+ customers (1900ms)
+    // Wave stagger: 20 yrs (1300ms), 24 layouts (1500ms), 1750+ plots (1200ms), 150+ houses (1700ms), 1500+ customers (1900ms)
     const durations = [1300, 1500, 1200, 1700, 1900];
 
     const update = (now) => {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { PLOTS_DATA, PROJECT_METADATA } from '../data/plotsKambalapattiData';
-import { KINATHUKADAVU_PLOTS_DATA, KINATHUKADAVU_METADATA } from '../data/plotsKinathukadavuData';
+import { KOVILPALAYAM_PLOTS_DATA, KOVILPALAYAM_METADATA } from '../data/plotsKovilpalayamData';
+import { SIRUVANI_PLOTS_DATA, SIRUVANI_METADATA } from '../data/plotsSiruvaniData';
 import {
   DEFAULT_GALLERY_IMAGES,
   GALLERY_CATEGORIES,
@@ -49,7 +50,7 @@ const DEFAULT_AI_LEADS = [
     purpose: 'Immediate Villa Construction',
     budget: '₹35L - ₹40L',
     timeline: 'Immediate (Within 7 Days)',
-    targetPlot: 'Plot #01 Corner (1615 Sq.Ft)',
+    targetPlot: 'Plot 01 Corner (1615 Sq.Ft)',
     score: 96,
     category: 'HOT',
     assignedStaff: 'Ramesh Kumar (Senior Sales Lead)',
@@ -67,7 +68,7 @@ const DEFAULT_AI_LEADS = [
     purpose: 'NRI Capital Investment',
     budget: '₹28L - ₹32L',
     timeline: 'Within 15 Days',
-    targetPlot: 'Plot #14 East Facing (1142 Sq.Ft)',
+    targetPlot: 'Plot 14 East Facing (1142 Sq.Ft)',
     score: 92,
     category: 'HOT',
     assignedStaff: 'Priya Sharma (Client Advisor)',
@@ -85,7 +86,7 @@ const DEFAULT_AI_LEADS = [
     purpose: 'Residential Farm Plot',
     budget: '₹22L - ₹26L',
     timeline: 'Within 30 Days',
-    targetPlot: 'Plot #07 North Facing (1235 Sq.Ft)',
+    targetPlot: 'Plot 07 North Facing (1235 Sq.Ft)',
     score: 78,
     category: 'WARM',
     assignedStaff: 'Karthik V (Site Manager)',
@@ -103,7 +104,7 @@ const DEFAULT_AI_LEADS = [
     purpose: 'Long-Term Land Appreciation',
     budget: '₹20L - ₹25L',
     timeline: '45-60 Days',
-    targetPlot: 'Plot #22 North Facing (1142 Sq.Ft)',
+    targetPlot: 'Plot 22 North Facing (1142 Sq.Ft)',
     score: 68,
     category: 'WARM',
     assignedStaff: 'Anitha Raj (Relationship Manager)',
@@ -139,7 +140,7 @@ const DEFAULT_CUSTOMERS = [
     name: 'Rajesh Kumar',
     phone: '+91 98422 18450',
     email: 'rajesh.k@gmail.com',
-    requirement: 'Plot #01 Corner (1615 Sq.Ft), Kambalapatti',
+    requirement: 'Plot 01 Corner (1615 Sq.Ft), Kambalapatti',
     assignedStaff: 'Ramesh Kumar (Senior Sales Lead)',
     actionTaken: 'TOKEN PAID',
     stage: 'TOKEN_PAID',
@@ -152,7 +153,7 @@ const DEFAULT_CUSTOMERS = [
     name: 'Meenakshi Sundaram',
     phone: '+91 94433 72190',
     email: 'meenakshi.s@outlook.com',
-    requirement: 'Plot #14 East Facing (1142 Sq.Ft), Kambalapatti',
+    requirement: 'Plot 14 East Facing (1142 Sq.Ft), Kambalapatti',
     assignedStaff: 'Priya Sharma (Client Advisor)',
     actionTaken: 'SITE VISIT SCHEDULED',
     stage: 'INQUIRY',
@@ -165,7 +166,7 @@ const DEFAULT_CUSTOMERS = [
     name: 'V. Balasubramaniam',
     phone: '+91 98428 55102',
     email: 'balu.pollachi@gmail.com',
-    requirement: 'Plot #05 North Facing (1178 Sq.Ft), Kambalapatti',
+    requirement: 'Plot 05 North Facing (1178 Sq.Ft), Kambalapatti',
     assignedStaff: 'Ramesh Kumar (Senior Sales Lead)',
     actionTaken: 'TOKEN PAID',
     stage: 'BOUGHT',
@@ -256,21 +257,44 @@ export default function AdminPage() {
     return PLOTS_DATA;
   });
 
-  // Kinathukadavu Plots State
-  const [kinathuPlots, setKinathuPlots] = useState(() => {
-    const saved = localStorage.getItem('shashtika_plots_inventory_kinathukadavu');
+  // Kovilpalayam Plots State
+  const [kovilpalayamPlots, setKovilpalayamPlots] = useState(() => {
+    const saved = localStorage.getItem('shashtika_plots_inventory_kovilpalayam');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) return parsed;
       } catch (e) {}
     }
-    return KINATHUKADAVU_PLOTS_DATA;
+    return KOVILPALAYAM_PLOTS_DATA;
+  });
+
+  // Siruvani Plots State
+  const [siruvaniPlots, setSiruvaniPlots] = useState(() => {
+    const saved = localStorage.getItem('shashtika_plots_inventory_siruvani');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {}
+    }
+    return SIRUVANI_PLOTS_DATA;
   });
 
   // Active plot list and metadata
-  const plots = adminPlotLocation === 'kambalampatti' ? kambalaPlots : kinathuPlots;
-  const currentAdminMetadata = adminPlotLocation === 'kambalampatti' ? PROJECT_METADATA : KINATHUKADAVU_METADATA;
+  const plots =
+    adminPlotLocation === 'kambalampatti'
+      ? kambalaPlots
+      : adminPlotLocation === 'kovilpalayam'
+      ? kovilpalayamPlots
+      : siruvaniPlots;
+
+  const currentAdminMetadata =
+    adminPlotLocation === 'kambalampatti'
+      ? PROJECT_METADATA
+      : adminPlotLocation === 'kovilpalayam'
+      ? KOVILPALAYAM_METADATA
+      : SIRUVANI_METADATA;
 
   const [plotStatusFilter, setPlotStatusFilter] = useState('ALL');
   const [plotSearchQuery, setPlotSearchQuery] = useState('');
@@ -555,9 +579,14 @@ export default function AdminPage() {
   }, [kambalaPlots]);
 
   useEffect(() => {
-    localStorage.setItem('shashtika_plots_inventory_kinathukadavu', JSON.stringify(kinathuPlots));
+    localStorage.setItem('shashtika_plots_inventory_kovilpalayam', JSON.stringify(kovilpalayamPlots));
     window.dispatchEvent(new Event('shashtika_plot_updated'));
-  }, [kinathuPlots]);
+  }, [kovilpalayamPlots]);
+
+  useEffect(() => {
+    localStorage.setItem('shashtika_plots_inventory_siruvani', JSON.stringify(siruvaniPlots));
+    window.dispatchEvent(new Event('shashtika_plot_updated'));
+  }, [siruvaniPlots]);
 
   useEffect(() => {
     localStorage.setItem('shashtika_customers_registry', JSON.stringify(customers));
@@ -651,7 +680,7 @@ export default function AdminPage() {
             purpose: String(item.purpose || 'Residential Construction'),
             budget: String(item.budget || '₹ 25.00 - 40.00 Lakhs'),
             timeline: String(item.timeline || 'Immediate'),
-            targetPlot: plotRaw.toLowerCase().startsWith('plot') ? plotRaw : `Plot #${plotRaw}`,
+            targetPlot: plotRaw.toLowerCase().startsWith('plot') ? plotRaw.replace(/plot\s*#/i, 'Plot ') : `Plot ${plotRaw.replace(/^#\s*/, '')}`,
             score: score,
             category: cat,
             assignedStaff: String(item.assignedStaff || DEFAULT_STAFF_ROSTER[0].name),
@@ -816,8 +845,12 @@ _Please contact this client immediately and arrange site inspection / discussion
       setKambalaPlots((prev) =>
         prev.map((p) => (p.number === plotNumber ? { ...p, status: newStatus } : p))
       );
+    } else if (adminPlotLocation === 'kovilpalayam') {
+      setKovilpalayamPlots((prev) =>
+        prev.map((p) => (p.number === plotNumber ? { ...p, status: newStatus } : p))
+      );
     } else {
-      setKinathuPlots((prev) =>
+      setSiruvaniPlots((prev) =>
         prev.map((p) => (p.number === plotNumber ? { ...p, status: newStatus } : p))
       );
     }
@@ -2238,7 +2271,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                     <button
                       type="button"
                       onClick={() => {
-                        setAdminPlotLocation('kinathukadavu');
+                        setAdminPlotLocation('kovilpalayam');
                         setPlotCurrentPage(1);
                         setPlotSearchQuery('');
                         setPlotStatusFilter('ALL');
@@ -2246,22 +2279,52 @@ _Please contact this client immediately and arrange site inspection / discussion
                       style={{
                         padding: '10px 20px',
                         borderRadius: '8px',
-                        border: adminPlotLocation === 'kinathukadavu' ? '2px solid #C6A15B' : '1px solid rgba(198,161,91,0.3)',
-                        background: adminPlotLocation === 'kinathukadavu' ? '#1A0709' : '#FFFDF8',
-                        color: adminPlotLocation === 'kinathukadavu' ? '#F3E5AB' : '#1A0709',
+                        border: adminPlotLocation === 'kovilpalayam' ? '2px solid #C6A15B' : '1px solid rgba(198,161,91,0.3)',
+                        background: adminPlotLocation === 'kovilpalayam' ? '#1A0709' : '#FFFDF8',
+                        color: adminPlotLocation === 'kovilpalayam' ? '#F3E5AB' : '#1A0709',
                         fontWeight: 800,
                         fontSize: '0.85rem',
                         cursor: 'pointer',
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '8px',
-                        boxShadow: adminPlotLocation === 'kinathukadavu' ? '0 4px 14px rgba(10,19,37,0.35)' : 'none',
+                        boxShadow: adminPlotLocation === 'kovilpalayam' ? '0 4px 14px rgba(10,19,37,0.35)' : 'none',
                         transition: 'all 0.2s ease'
                       }}
                     >
-                      <span>KINATHUKADAVU LAYOUT</span>
-                      <span style={{ fontSize: '0.72rem', padding: '2px 8px', borderRadius: '4px', background: adminPlotLocation === 'kinathukadavu' ? '#C6A15B' : '#FAF4EB', color: adminPlotLocation === 'kinathukadavu' ? '#1A0709' : '#8A6324', fontWeight: 900 }}>
-                        42 PLOTS
+                      <span>KOVILPALAYAM LAYOUT</span>
+                      <span style={{ fontSize: '0.72rem', padding: '2px 8px', borderRadius: '4px', background: adminPlotLocation === 'kovilpalayam' ? '#C6A15B' : '#FAF4EB', color: adminPlotLocation === 'kovilpalayam' ? '#1A0709' : '#8A6324', fontWeight: 900 }}>
+                        32 PLOTS
+                      </span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAdminPlotLocation('siruvani');
+                        setPlotCurrentPage(1);
+                        setPlotSearchQuery('');
+                        setPlotStatusFilter('ALL');
+                      }}
+                      style={{
+                        padding: '10px 20px',
+                        borderRadius: '8px',
+                        border: adminPlotLocation === 'siruvani' ? '2px solid #C6A15B' : '1px solid rgba(198,161,91,0.3)',
+                        background: adminPlotLocation === 'siruvani' ? '#1A0709' : '#FFFDF8',
+                        color: adminPlotLocation === 'siruvani' ? '#F3E5AB' : '#1A0709',
+                        fontWeight: 800,
+                        fontSize: '0.85rem',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        boxShadow: adminPlotLocation === 'siruvani' ? '0 4px 14px rgba(10,19,37,0.35)' : 'none',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      <span>SIRUVANI LAYOUT</span>
+                      <span style={{ fontSize: '0.72rem', padding: '2px 8px', borderRadius: '4px', background: adminPlotLocation === 'siruvani' ? '#C6A15B' : '#FAF4EB', color: adminPlotLocation === 'siruvani' ? '#1A0709' : '#8A6324', fontWeight: 900 }}>
+                        47 PLOTS
                       </span>
                     </button>
                   </div>
@@ -3793,7 +3856,7 @@ _Please contact this client immediately and arrange site inspection / discussion
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. 1500 Sq.Ft East Facing Plot #14, Kambalapatti"
+                  placeholder="e.g. 1500 Sq.Ft East Facing Plot 14, Kambalapatti"
                   value={custForm.requirement}
                   onChange={(e) => setCustForm({ ...custForm, requirement: e.target.value })}
                   style={{ width: '100%', padding: '8px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--gold-border)', background: 'var(--bg-cream)', fontSize: '0.9rem', color: '#1A0709', boxSizing: 'border-box' }}

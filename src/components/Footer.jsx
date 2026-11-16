@@ -23,10 +23,10 @@ export default function Footer() {
                 </span>
               </div>
               <span className="font-mono text-[10px] tracking-[2px] text-gold-antique uppercase block mb-3 footer-brand-sub font-bold">
-                PLOT DEVELOPERS &amp; BUILDERS • EST. 2004
+                PLOT DEVELOPERS &amp; BUILDERS • EST. 1999
               </span>
               <p className="font-body text-xs text-espresso-800 leading-relaxed mb-4 footer-brand-desc">
-                Pioneering premium DTCP &amp; RERA approved plot enclaves, farm residency layouts, and custom building construction across Coimbatore &amp; Pollachi.
+                Pioneering premium DTCP &amp; RERA approved plot enclaves, farm residency layouts, and custom building construction across Kambalampatti, Siruvani &amp; Kovilpalayam.
               </p>
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded bg-[#FAF7F2] border border-gold-border/60 text-[10px] font-mono font-bold text-[#1A0709] tracking-wider uppercase footer-cert-badge shadow-xs">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#99793B" strokeWidth="2.5">
@@ -89,7 +89,7 @@ export default function Footer() {
 
                 {/* Instagram */}
                 <a
-                  href="https://instagram.com"
+                  href="https://www.instagram.com/shashtikadevelopers?obrf=cnducHcweGx5OGxz"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-full bg-[#FAF7F2] border border-gold-border/60 text-[#1A0709] hover:bg-[#E1306C] hover:text-white hover:border-[#E1306C] flex items-center justify-center transition-all duration-300 shadow-sm hover:scale-105"
@@ -103,25 +103,11 @@ export default function Footer() {
                   </svg>
                 </a>
 
-                {/* Facebook */}
-                <a
-                  href="https://facebook.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[#FAF7F2] border border-gold-border/60 text-[#1A0709] hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] flex items-center justify-center transition-all duration-300 shadow-sm hover:scale-105"
-                  title="Follow on Facebook"
-                  aria-label="Follow on Facebook"
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                  </svg>
-                </a>
-
                 {/* Email */}
                 <a
-                  href="mailto:contact@shashtika.com"
+                  href="mailto:shashtikadevelopers@gmail.com"
                   className="w-10 h-10 rounded-full bg-[#FAF7F2] border border-gold-border/60 text-[#1A0709] hover:bg-gold-primary hover:text-white hover:border-gold-primary flex items-center justify-center transition-all duration-300 shadow-sm hover:scale-105"
-                  title="Send Email"
+                  title="Send Email (shashtikadevelopers@gmail.com)"
                   aria-label="Send Email"
                 >
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -133,10 +119,24 @@ export default function Footer() {
 
               {/* Quick Contact Info */}
               <div className="mt-4 pt-3 border-t border-gold-border/30 font-mono text-[11px] text-espresso-700 footer-helpline-box">
-                <span>Helpline: </span>
-                <a href="tel:+919363599754" className="text-[#1A0709] font-bold hover:underline">
-                  +91 93635 99754
-                </a>
+                <div>
+                  <span>Helpline: </span>
+                  <a href="tel:+919363599754" className="text-[#1A0709] font-bold hover:underline">
+                    +91 93635 99754
+                  </a>
+                </div>
+                <div className="mt-1">
+                  <span>Email: </span>
+                  <a href="mailto:shashtikadevelopers@gmail.com" className="text-[#1A0709] font-bold hover:underline break-all">
+                    shashtikadevelopers@gmail.com
+                  </a>
+                </div>
+                <div className="mt-1.5 text-[10.5px] leading-relaxed">
+                  <span className="font-bold text-[#1A0709]">Office Address: </span>
+                  <span className="text-espresso-800 font-sans block mt-0.5">
+                    4/598 Near Apollo Pharmacy Sarojini Naidu Road Coimbatore, Close to Siddhapudur, New Siddhapudur, Coimbatore
+                  </span>
+                </div>
               </div>
             </div>
 

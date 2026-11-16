@@ -5,7 +5,7 @@ export default function ContactPage() {
     name: '',
     phone: '',
     email: '',
-    location: 'Coimbatore',
+    location: 'Kambalampatti',
     purpose: 'Residential Construction',
     timeline: 'Within 15 Days (Immediate)',
     budget: 'Below ₹25 Lakhs',
@@ -270,7 +270,7 @@ export default function ContactPage() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-gold-antique uppercase font-bold block">
-                      CALL HELPLINE
+                      CALL &amp; WHATSAPP
                     </span>
                     <a href="tel:+919363599754" className="font-bold text-[#1A0709] hover:text-gold-primary transition-colors text-[0.88rem] sm:text-sm block mt-0.5">
                       +91 93635 99754
@@ -312,14 +312,56 @@ export default function ContactPage() {
                     <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-gold-antique uppercase font-bold block">
                       EMAIL ADVISORY
                     </span>
-                    <a href="mailto:contact@shashtika.com" className="font-bold text-[#1A0709] hover:text-gold-primary transition-colors text-[0.82rem] sm:text-xs block mt-0.5 break-all">
-                      contact@shashtika.com
+                    <a href="mailto:shashtikadevelopers@gmail.com" className="font-bold text-[#1A0709] hover:text-gold-primary transition-colors text-[0.82rem] sm:text-xs block mt-0.5 break-all">
+                      shashtikadevelopers@gmail.com
                     </a>
                   </div>
                 </div>
 
+                {/* Instagram Link */}
+                <a
+                  href="https://www.instagram.com/shashtikadevelopers?obrf=cnducHcweGx5OGxz"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="contact-detail-card p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-center gap-3 hover:border-gold-primary transition-colors no-underline group"
+                >
+                  <div className="w-9 h-9 rounded-full bg-[#1A0709] text-gold-light border border-gold-border/60 flex items-center justify-center shrink-0 shadow-sm group-hover:bg-[#E1306C] group-hover:border-[#E1306C] group-hover:scale-105 transition-all">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                    </svg>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-gold-antique uppercase font-bold block">
+                      INSTAGRAM
+                    </span>
+                    <span className="font-bold text-[#1A0709] group-hover:text-[#E1306C] transition-colors text-[0.82rem] sm:text-xs block mt-0.5 truncate">
+                      @shashtikadevelopers
+                    </span>
+                  </div>
+                </a>
+
+                {/* Office Address */}
+                <div className="contact-detail-card p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-start gap-3 sm:col-span-2">
+                  <div className="w-9 h-9 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <span className="font-mono text-[9px] sm:text-[10px] tracking-wider text-gold-antique uppercase font-bold block">
+                      OFFICE ADDRESS
+                    </span>
+                    <span className="font-bold text-[#1A0709] text-[0.82rem] sm:text-xs block mt-0.5 leading-relaxed">
+                      4/598 Near Apollo Pharmacy Sarojini Naidu Road Coimbatore, Close to Siddhapudur, New Siddhapudur, Coimbatore
+                    </span>
+                  </div>
+                </div>
+
                 {/* Advisory Hours */}
-                <div className="contact-detail-card p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-center gap-3">
+                <div className="contact-detail-card p-3 rounded-lg bg-[#FAF6EE] border border-gold-border/40 flex items-center gap-3 sm:col-span-2">
                   <div className="w-9 h-9 rounded-full bg-[#1A0709] text-gold-light flex items-center justify-center shrink-0 shadow-sm">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <circle cx="12" cy="12" r="10"/>
@@ -427,9 +469,10 @@ export default function ContactPage() {
                       className="form-select"
                       required
                     >
-                      <option value="Coimbatore">Coimbatore Layouts</option>
-                      <option value="Pollachi">Pollachi Layouts</option>
-                      <option value="Both Locations">Both Coimbatore &amp; Pollachi</option>
+                      <option value="Kambalampatti">Kambalampatti Layout (64 Plots)</option>
+                      <option value="Siruvani">Siruvani Layout (47 Plots)</option>
+                      <option value="Kovilpalayam">Kovilpalayam Layout (32 Plots)</option>
+                      <option value="All Locations">All 3 Locations (Kambalampatti, Siruvani, Kovilpalayam)</option>
                     </select>
                   </div>
                 </div>
@@ -495,7 +538,7 @@ export default function ContactPage() {
                       value={formData.plot}
                       onChange={handleChange}
                       className="form-input"
-                      placeholder="e.g. Plot #104 / Kambalampatti"
+                      placeholder="e.g. Plot #14 (Kambalampatti / Siruvani / Kovilpalayam)"
                     />
                   </div>
                 </div>

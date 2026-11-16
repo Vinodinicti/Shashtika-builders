@@ -97,7 +97,7 @@ export const DEFAULT_GALLERY_IMAGES = [
     title: 'Emerald Palms Gated Residential Layout',
     category: 'villas',
     categoryLabel: 'RESIDENTIAL',
-    location: 'Kinathukadavu Bypass',
+    location: 'Kovilpalayam Corridor',
     desc: 'Scenic plotted enclave nestled amidst coconut groves with 33ft central avenue and sweet groundwater.'
   },
   {

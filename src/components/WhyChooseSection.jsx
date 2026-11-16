@@ -270,7 +270,7 @@ export default function WhyChooseSection() {
               WHY CHOOSE <span style={{ color: 'var(--gold-antique)' }}>SHASHTIKA GROUP</span>
             </h2>
             <p className="why-choose-sub-desc">
-              Pioneering 20 years of legal transparency, premier gated layout infrastructure, and strategic high-growth locations across Coimbatore &amp; Pollachi.
+              Pioneering 25+ years of legal transparency since 1999, premier gated layout infrastructure, and strategic high-growth locations across Kambalampatti, Siruvani &amp; Kovilpalayam.
             </p>
 
             <div className="why-choose-features">
@@ -306,7 +306,7 @@ export default function WhyChooseSection() {
                   <circle cx="12" cy="12" r="10" />
                   <circle cx="12" cy="12" r="3.5" />
                 </svg>
-                SHASHTIKA GROUPS • 20 YEARS TRUST
+                SHASHTIKA GROUPS • EST. 1999 • 25+ YEARS TRUST
               </div>
             </div>
           </div>

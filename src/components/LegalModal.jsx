@@ -44,7 +44,7 @@ export default function LegalModal({ type, onClose }) {
                 <strong>2. Data Usage:</strong> Your phone number is utilized solely to provide project engineer callbacks, site visits, and layout documentation. We do not sell or rent data to third-party telemarketers.
               </p>
               <p>
-                <strong>3. Contact:</strong> For inquiries regarding your records, reach us at contact@shashtika.com or +91 98422 12345.
+                <strong>3. Contact:</strong> For inquiries regarding your records, reach us at shashtikadevelopers@gmail.com or +91 93635 99754. Office Address: 4/598 Near Apollo Pharmacy Sarojini Naidu Road Coimbatore, Close to Siddhapudur, New Siddhapudur, Coimbatore.
               </p>
             </>
           ) : (

@@ -92,13 +92,13 @@ export default function ReviewsSection() {
             WHAT OUR CLIENTS SAY ABOUT SHASHTIKA
           </h2>
           <p className="reviews-sub-desc">
-            Genuine experiences from plot buyers, home builders, and families across Coimbatore, Chennai, Pollachi &amp; Tamil Nadu.
+            Genuine experiences from plot buyers, home builders, and families across Kambalampatti, Siruvani, Kovilpalayam &amp; Coimbatore region.
           </p>
           <div className="flex items-center justify-center gap-2 mt-3 font-mono text-xs text-gold-dark font-bold tracking-wider">
             <span className="text-gold-primary">★★★★★</span>
             <span>4.8 / 5.0 Average Rating</span>
             <span className="text-espresso-400">•</span>
-            <span className="text-espresso-700">850+ Verified Landowners</span>
+            <span className="text-espresso-700">1500+ Verified Landowners</span>
           </div>
         </div>
 

@@ -2,12 +2,11 @@ import React from 'react';
 
 export default function MarqueeBanner() {
   const marqueeItems = [
-    { badge: 'ONGOING', text: '4 ONGOING LAYOUTS • POLLACHI & COIMBATORE', type: 'primary' },
-    { badge: 'UPCOMING', text: '5 NEW GATED FARM & RESIDENTIAL PROJECTS', type: 'terracotta' },
-    { badge: 'FEATURED', text: 'SHASHTIKA GREEN ENCLAVE • MAHALINGAPURAM ROAD', type: 'primary' },
-    { badge: 'LAUNCHING', text: 'SHASHTIKA PALM GROVE • KOVAIPUDUR ENCLAVE', type: 'terracotta' },
-    { badge: 'COMPLETED', text: '8+ DTCP APPROVED LAYOUTS DELIVERED', type: 'primary' },
-    { badge: 'HERITAGE', text: '20 YEARS TRUSTED DEVELOPMENT', type: 'terracotta' },
+    { badge: 'PRIME LOCATIONS', text: 'KAMBALAMPATTI • SIRUVANI • KOVILPALAYAM', type: 'primary' },
+    { badge: 'ONGOING', text: 'KAMBALAMPATTI (64 PLOTS) • KOVILPALAYAM (32 PLOTS) • SIRUVANI (47 PLOTS)', type: 'terracotta' },
+    { badge: 'DTCP APPROVED', text: '100% CLEAR TITLES & IMMEDIATE REGISTRATION IN COIMBATORE REGION', type: 'primary' },
+    { badge: 'COMPLETED', text: '24 DTCP APPROVED LAYOUTS DELIVERED • 1500+ HAPPY CUSTOMERS', type: 'terracotta' },
+    { badge: 'HERITAGE', text: 'SINCE 1999 • 25+ YEARS TRUSTED PLOT DEVELOPERS & BUILDERS', type: 'primary' },
   ];
 
   const renderContent = (ariaHidden = false) => (

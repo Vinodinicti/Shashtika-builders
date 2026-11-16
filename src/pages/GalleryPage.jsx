@@ -259,11 +259,11 @@ export default function GalleryPage() {
           {/* FULL WIDTH ANIMATED EDITORIAL STATISTICS BANNER (DESKTOP) */}
           <div className="hero-stats-banner desktop-hero-stats" style={{ maxWidth: '680px', gridTemplateColumns: 'repeat(4, 1fr)', marginTop: '28px' }}>
             <div className="stat-card">
-              <span className="stat-number">6</span>
-              <span className="stat-label">Master Projects</span>
+              <span className="stat-number">24</span>
+              <span className="stat-label">Master Layouts</span>
             </div>
             <div className="stat-card">
-              <span className="stat-number">228+</span>
+              <span className="stat-number">1750+</span>
               <span className="stat-label">DTCP Plots</span>
             </div>
             <div className="stat-card">
@@ -283,11 +283,11 @@ export default function GalleryPage() {
         <div className="max-w-[1320px] mx-auto px-4 sm:px-8">
           <div className="hero-stats-banner mobile-hero-stats mobile-gallery-stats-grid">
             <div className="stat-card">
-              <span className="stat-number">6</span>
-              <span className="stat-label">Master Projects</span>
+              <span className="stat-number">24</span>
+              <span className="stat-label">Master Layouts</span>
             </div>
             <div className="stat-card">
-              <span className="stat-number">228+</span>
+              <span className="stat-number">1750+</span>
               <span className="stat-label">DTCP Plots</span>
             </div>
             <div className="stat-card">

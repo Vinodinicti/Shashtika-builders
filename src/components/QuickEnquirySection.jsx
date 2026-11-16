@@ -25,9 +25,9 @@ export default function QuickEnquirySection() {
         body: JSON.stringify({
           customerName: formData.name,
           phone: formData.mobile,
-          project: formData.area || 'Coimbatore & Pollachi',
+          project: formData.area || 'Kambalampatti, Siruvani & Kovilpalayam',
           plotNumber: 'General Enquiry',
-          message: `Enquiry for ${formData.area || 'plots & villa construction'}`,
+          message: `Enquiry for ${formData.area || 'Kambalampatti / Siruvani / Kovilpalayam plots'}`,
           budget: '₹ 25.00 - 40.00 Lakhs',
           timeline: 'Immediate (Within 15 Days)',
           paymentMode: 'Bank Loan / Self Funded',
@@ -153,7 +153,7 @@ export default function QuickEnquirySection() {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Pollachi, Coimbatore, Kovaipudur"
+                  placeholder="e.g. Kambalampatti, Siruvani, Kovilpalayam"
                   value={formData.area}
                   onChange={(e) => setFormData({ ...formData, area: e.target.value })}
                   className="w-full px-4 py-3 rounded bg-[#FAF7F2] border border-gold-border/70 text-[#1A0709] text-sm placeholder-stone-400 focus:outline-none focus:border-gold-primary focus:bg-white focus:ring-1 focus:ring-gold-primary/30 transition-all"

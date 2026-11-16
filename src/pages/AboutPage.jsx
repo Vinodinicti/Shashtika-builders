@@ -218,16 +218,16 @@ export default function AboutPage() {
           </div>
 
           <h1 className="about-hero-title">
-            <span className="gold-glow-letters">20+ YEARS OF TRUST</span>
+            <span className="gold-glow-letters">EST. 1999 • 25+ YEARS OF TRUST</span>
           </h1>
 
           <p className="font-body text-xs sm:text-sm lg:text-base text-[#D4C3A3] max-w-xl mx-auto leading-relaxed">
-            Transforming raw land into structured, clear-title residential communities across Coimbatore and Pollachi.
+            Transforming raw land into structured, clear-title residential communities across Kambalampatti, Siruvani and Kovilpalayam.
           </p>
         </div>
       </section>
 
-      {/* 2. OUR STORY & 20-YEAR PROVENANCE */}
+      {/* 2. OUR STORY & 25+ YEAR PROVENANCE (EST. 1999) */}
       <section id="our-story-section" className="py-8 sm:py-12 bg-[#FFFDF8] border-b border-gold-border/60 relative overflow-hidden">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -238,21 +238,21 @@ export default function AboutPage() {
               <div className="relative border-2 border-gold-primary/80 p-2 sm:p-2.5 bg-[#FAF5EC] rounded-2xl shadow-xl overflow-hidden flex flex-col">
                 <img
                   src="/Images/Shashtika_Heritage_Story.jpg"
-                  alt="20 Years SHASHTIKA Architectural Heritage"
+                  alt="25+ Years SHASHTIKA Architectural Heritage (Est. 1999)"
                   className="w-full h-[220px] sm:h-[300px] lg:h-[320px] object-cover rounded-xl border border-gold-border/60 group-hover:scale-[1.02] transition-transform duration-500"
                 />
                 <div className="story-heritage-badge relative mt-2.5 sm:mt-0 sm:absolute sm:bottom-5 sm:left-5 sm:right-5 bg-white sm:bg-white/95 backdrop-blur-md p-3 rounded-lg border-2 border-gold-primary text-[#1A0709] shadow-xl">
                   <div className="flex items-center justify-between gap-2">
                     <div>
                       <span className="font-mono text-[9px] text-[#99793B] uppercase tracking-widest block font-bold">
-                        FOUNDED IN 2004 • 20 YEARS HERITAGE
+                        FOUNDED IN 1999 • 25+ YEARS HERITAGE
                       </span>
                       <span className="font-heading text-xs sm:text-sm font-extrabold text-[#1A0709] tracking-wide">
-                        POLLACHI &amp; COIMBATORE CORRIDORS
+                        KAMBALAMPATTI, SIRUVANI &amp; KOVILPALAYAM
                       </span>
                     </div>
                     <span className="px-2.5 py-0.5 rounded bg-[#1A0709] border border-gold-primary/50 text-gold-light font-mono text-[9.5px] font-bold flex-shrink-0 shadow-xs">
-                      EST. 2004
+                      EST. 1999
                     </span>
                   </div>
                 </div>
@@ -262,7 +262,7 @@ export default function AboutPage() {
             {/* Story Text & Milestones */}
             <div>
               <span className="architectural-tag">
-                FOUNDED IN 2004 • 20 YEARS PROVENANCE
+                FOUNDED IN 1999 • 25+ YEARS PROVENANCE
               </span>
 
               <h2 className="font-heading font-extrabold text-xl sm:text-2xl lg:text-3xl text-[#1A0709] mt-1.5 mb-2.5 leading-tight tracking-wide">
@@ -270,14 +270,14 @@ export default function AboutPage() {
               </h2>
 
               <p className="font-body text-xs sm:text-[13px] text-[#3D141A] leading-relaxed mb-4">
-                Founded with unyielding commitment to legal excellence, <strong>SHASHTIKA</strong> has cultivated a 20-year legacy of 100% title transparency, DTCP/RERA approvals, and master-planned civil infrastructure across Tamil Nadu. We believe every piece of land should serve as a secure financial foundation and a tranquil sanctuary for families.
+                Founded in 1999 with unyielding commitment to legal excellence, <strong>SHASHTIKA</strong> has cultivated a 25+ year legacy of 100% title transparency, DTCP/RERA approvals, and master-planned civil infrastructure across Tamil Nadu. We believe every piece of land should serve as a secure financial foundation and a tranquil sanctuary for families.
               </p>
 
               {/* Milestone Timeline Cards */}
               <div className="space-y-2 mt-4">
                 <div className="p-2.5 sm:p-3 rounded-lg bg-biscuit-100/70 border border-gold-border/40 hover:border-gold-primary hover:bg-biscuit-100 transition-all flex items-start gap-3 group">
                   <span className="px-2 py-0.5 rounded bg-[#1A0709] text-gold-light border border-gold-primary/30 font-mono text-[10.5px] font-extrabold tracking-wider mt-0.5 shadow-xs">
-                    2004
+                    1999
                   </span>
                   <div>
                     <h4 className="font-heading font-bold text-xs sm:text-[13px] text-[#1A0709] tracking-wide group-hover:text-gold-dark transition-colors">
@@ -641,7 +641,7 @@ export default function AboutPage() {
                 READY TO INVEST IN A CLEAR-TITLE PLOT?
               </h4>
               <p className="font-body text-[11px] sm:text-xs text-gold-light/80 max-w-xl">
-                Explore 64 DTCP-approved plot layouts in Coimbatore &amp; Pollachi with interactive blueprint maps and instant booking details.
+                Explore 24 DTCP-approved plot layouts in Kambalampatti, Siruvani &amp; Kovilpalayam with interactive blueprint maps and instant booking details.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-3">
